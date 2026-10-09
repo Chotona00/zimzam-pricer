@@ -1,6 +1,6 @@
 /* Offline cache for the GitHub Pages copy. VERSION is filled in by build.py on every build,
    so each deploy is a new service worker and phones pick it up on the next launch. */
-var VERSION='zzp-v3-0d8bf1dd56';
+var VERSION='zzp-v4-5912153b37';
 var FILES=['./','index.html','manifest.json','app-icon-192.png','app-icon-512.png','app-icon-maskable-192.png','app-icon-maskable-512.png','apple-touch-icon-v3.png','favicon-32.png'];
 self.addEventListener('install',function(e){e.waitUntil(caches.open(VERSION).then(function(c){return c.addAll(FILES.map(function(f){return new Request(f,{cache:'reload'})}))}).then(function(){return self.skipWaiting()}))});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==VERSION}).map(function(k){return caches.delete(k)}))}).then(function(){return self.clients.claim()}))});
