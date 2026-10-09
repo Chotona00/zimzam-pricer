@@ -596,6 +596,10 @@ details.menu .mlist .dangertxt,details.menu .mlist .dangertxt .ico{color:var(--b
 .pastebox .btn{flex:0 0 auto}
 .dupbox{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.dupbox span{flex:1;min-width:140px}
 .mapslink a{display:inline-flex;align-items:center;gap:6px}
+.linkonly{border:2px solid var(--accent)}
+.linkonly p{margin:4px 0 12px}
+.linkonly ol.steps{margin-top:14px}
+.linkonly .alert{margin:6px 0 12px}
 
 </style>
 </head>
@@ -1031,7 +1035,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 </script>
 <script>
-window.__BUILD="v4-a79a1e434e";
+window.__BUILD="v4-a94bf594ac";
 window.__PWA=true;
 (function(){
 'use strict';
@@ -1378,7 +1382,7 @@ var T={
 'leads.pipe':['Quotes out {sent}/mo · Won {won}/mo · Total {total}/mo','Enviadas {sent}/mes · Ganadas {won}/mes · Total {total}/mes'],
 'bids.title':['My quotes','Mis cotizaciones'],'btn.more':['More','Más'],'lead.moreOpts':['More options','Más opciones'],
 'hero.finder':['Find clients','Buscar clientes'],'hero.import':['Import your list','Importar su lista'],'hero.proposal':['Your quote','Su cotización'],
-'share.title':['Add from Google Maps', 'Agregar desde Google Maps'],'share.intro':['Found a business on Google Maps? Send it here in 3 taps. Free, no typing.', '¿Encontró un negocio en Google Maps? Envíelo aquí con 3 toques. Gratis y sin escribir.'],'share.s1':['Open the business in Google Maps', 'Abra el negocio en Google Maps'],'share.s2':['Tap Share', 'Toque Compartir'],'share.s3':['Pick Zim Zam. The form fills itself.', 'Elija Zim Zam. El formulario se llena solo.'],'share.iphone':['iPhone, or no Zim Zam in the list? Tap Share → Copy, then tap Paste below.', '¿iPhone, o Zim Zam no aparece? Toque Compartir → Copiar y luego toque Pegar abajo.'],'share.pasteTitle':['Paste from Google Maps', 'Pegar desde Google Maps'],'share.pasteHint':['In Google Maps tap Share → Copy, then tap Paste. Name, address, phone and city fill in for you.', 'En Google Maps toque Compartir → Copiar y luego toque Pegar. El nombre, la dirección, el teléfono y la ciudad se llenan solos.'],'share.pasteBtn':['Paste', 'Pegar'],'share.pastePh':['Or long-press here and tap Paste', 'O mantenga presionado aquí y toque Pegar'],'share.pasteManual':['Long-press the box and tap Paste.', 'Mantenga presionado el cuadro y toque Pegar.'],'share.nothing':['No business found in that. Copy the share text from Google Maps and try again.', 'No se encontró un negocio. Copie el texto de Compartir de Google Maps e intente de nuevo.'],'share.filled':['Filled in from Google Maps. Check it, then tap Save.', 'Completado desde Google Maps. Revíselo y toque Guardar.'],'share.noName':['Google sent only the link. Type the business name, then tap Save.', 'Google solo envió el enlace. Escriba el nombre del negocio y toque Guardar.'],'share.dup':['{name} is already in your clients.', '{name} ya está en sus clientes.'],'share.openDup':['Open it', 'Abrirlo'],'share.mapsSaved':['Google Maps link saved', 'Enlace de Google Maps guardado'],'hero.scripts':['Scripts & emails','Guiones y correos'],'hero.settings':['Settings','Ajustes'],'hero.more':['More','Más'],
+'share.title':['Add from Google Maps', 'Agregar desde Google Maps'],'share.intro':['Found a business on Google Maps? Send it here in 3 taps. Free, no typing.', '¿Encontró un negocio en Google Maps? Envíelo aquí con 3 toques. Gratis y sin escribir.'],'share.s1':['Open the business in Google Maps', 'Abra el negocio en Google Maps'],'share.s2':['Tap Share', 'Toque Compartir'],'share.s3':['Pick Zim Zam. The form fills itself.', 'Elija Zim Zam. El formulario se llena solo.'],'share.iphone':['iPhone, or no Zim Zam in the share list? Tap Share → Copy and paste it below, then type the name if it’s missing.','¿iPhone, o Zim Zam no aparece al compartir? Toque Compartir → Copiar, péguelo abajo y escriba el nombre si falta.'],'share.pasteTitle':['Paste from Google Maps', 'Pegar desde Google Maps'],'share.pasteHint':['Best: in Google Maps tap Share → Zim Zam. Or tap Share → Copy and paste here (Copy often gives only a link, so you may need to type the name).','Mejor: en Google Maps toque Compartir → Zim Zam. O toque Compartir → Copiar y péguelo aquí (Copiar a veces da solo un enlace y tendrá que escribir el nombre).'],'share.pasteBtn':['Paste', 'Pegar'],'share.pastePh':['Or long-press here and tap Paste', 'O mantenga presionado aquí y toque Pegar'],'share.pasteManual':['Long-press the box and tap Paste.', 'Mantenga presionado el cuadro y toque Pegar.'],'share.nothing':['No business found in that. Copy the share text from Google Maps and try again.', 'No se encontró un negocio. Copie el texto de Compartir de Google Maps e intente de nuevo.'],'share.filled':['Filled in from Google Maps. Check it, then tap Save.', 'Completado desde Google Maps. Revíselo y toque Guardar.'],'share.noName':['Type the business name, then tap Save. The Maps link is already saved.','Escriba el nombre del negocio y toque Guardar. El enlace de Maps ya está guardado.'],'share.dup':['{name} is already in your clients.', '{name} ya está en sus clientes.'],'share.openDup':['Open it', 'Abrirlo'],'share.mapsSaved':['Google Maps link saved', 'Enlace de Google Maps guardado'],'share.linkOnlyTitle':['Google sent only a link','Google solo envió un enlace'],'share.linkOnlyWhy':['A copied Maps link doesn’t include the business name, and the app can’t look it up for free.','Un enlace copiado de Maps no trae el nombre del negocio y la app no puede buscarlo gratis.'],'share.openMaps':['Open in Maps to get the name','Abrir en Maps para ver el nombre'],'share.lo1':['Look at the name (and address) in Maps.','Vea el nombre (y la dirección) en Maps.'],'share.lo2':['Come back here and type the name below. Tip: in Maps, tap and hold the address to copy it, then paste it in the box.','Regrese aquí y escriba el nombre abajo. Consejo: en Maps mantenga presionada la dirección para copiarla y péguela en el cuadro.'],'share.useShare':['Next time tap Share → Zim Zam instead of Copy. Sharing sends the name and address when Google includes them.','La próxima vez toque Compartir → Zim Zam en lugar de Copiar. Al compartir se envían el nombre y la dirección cuando Google los incluye.'],'share.copyNote':['Use Share → Zim Zam, not Copy. Copy usually gives only a link without the business name.','Use Compartir → Zim Zam, no Copiar. Copiar suele dar solo un enlace sin el nombre del negocio.'],'hero.scripts':['Scripts & emails','Guiones y correos'],'hero.settings':['Settings','Ajustes'],'hero.more':['More','Más'],
 'more.scriptsSub':['What to say on the phone, emails to send','Qué decir por teléfono, correos para enviar'],'more.settingsSub':['Company, logo, pay, prices, language','Empresa, logo, pago, precios, idioma'],
 'more.importSub':['Excel or CSV list of businesses','Lista de negocios en Excel o CSV'],'more.backupSub':['Keep a copy of everything (with photos)','Guarde una copia de todo (con fotos)'],
 'more.restoreSub':['Load a backup file','Cargar un archivo de respaldo'],'more.setupSub':['The 4-step setup','La configuración de 4 pasos'],
@@ -1908,7 +1912,7 @@ function greet(){var hr=new Date().getHours(),k=hr<12?'morning':hr<18?'afternoon
 $('v-today').addEventListener('click',function(e){var a=e.target.closest('[data-act]');if(!a)return;var x=a.dataset.act;if(x==='addLead')addLeadAndOpen();else if(x==='newBid')openBid(null);else if(x==='starter'){var r=loadStarter();toast(t('toast.starter',r));renderToday()}});
 /* New leads start as an unsaved draft: nothing is stored until it has a business name. */
 var draftLead=null;
-function addLeadAndOpen(o){draftMeta={};draftLead=newLead(Object.assign({nextFollowUp:today(),clientLang:'en',city:(S.cities||[])[0]||''},o||{}));curLeadId='new';render('lead');show('lead');var f=document.querySelector('#v-lead [data-l="business"]');if(f)f.focus()}
+function addLeadAndOpen(o){draftMeta={autoCity:(S.cities||[])[0]||''};draftLead=newLead(Object.assign({nextFollowUp:today(),clientLang:'en',city:(S.cities||[])[0]||''},o||{}));curLeadId='new';render('lead');show('lead');var f=document.querySelector('#v-lead [data-l="business"]');if(f)f.focus()}
 function commitDraft(silent){var l=draftLead;if(!l)return null;l.business=String(l.business||'').trim();if(!l.business)return null;
   var dup=findDup(l);if(dup&&!silent&&!confirm(t('confirm.dup',{name:dup.business})))return null;
   logAct(l,'created');var d=enforceDnc(l);LEADS.push(l);saveLeads();draftLead=null;curLeadId=l.id;if(!silent)toast(d?t('toast.dncMatch'):t('toast.leadSaved',{name:l.business}));return l}
@@ -1961,10 +1965,14 @@ function leadHeadHTML(l){var dnc=l.status==='dnc';
     '<button class="btn sec" data-act="toWalk">'+B('walk',t('lead.walk'))+'</button><button class="btn sec" data-act="createBid"'+(dnc?' disabled':'')+'>'+B('bids',t('lead.createBid'))+'</button></div></div>';
   return h}
 function renderDraft(l){
-  var dup=findDup(l),sh=draftMeta.shared;
-  var h=(sh?'':'<div class="card pastecard"><h2>'+ic('map')+'<span>'+esc(t('share.pasteTitle'))+'</span></h2><p class="hint">'+esc(t('share.pasteHint'))+'</p>'+pasteBoxHTML('shareBox')+'</div>');
+  var dup=findDup(l),sh=draftMeta.shared,linkOnly=sh&&!l.business&&l.sourceUrl;
+  var h=linkOnly?'<div class="card linkonly"><h2>'+ic('warn')+'<span>'+esc(t('share.linkOnlyTitle'))+'</span></h2><p>'+esc(t('share.linkOnlyWhy'))+'</p>'+
+      '<a class="btn block big" target="_blank" rel="noopener" data-act="openMaps" href="'+esc(l.sourceUrl)+'">'+B('map',t('share.openMaps'))+ic('ext','sm')+'</a>'+
+      '<ol class="steps compact"><li>'+esc(t('share.lo1'))+'</li><li>'+esc(t('share.lo2'))+'</li></ol>'+
+      '<div class="alert info">'+ic('bulb')+' '+esc(t('share.useShare'))+'</div>'+pasteBoxHTML('shareBox')+'</div>':'';
+  h+=(sh?'':'<div class="card pastecard"><h2>'+ic('map')+'<span>'+esc(t('share.pasteTitle'))+'</span></h2><p class="hint">'+esc(t('share.pasteHint'))+'</p>'+pasteBoxHTML('shareBox')+'</div>');
   h+='<div class="card"><h2>'+ic('userPlus')+'<span>'+esc(t('lead.newTitle'))+'</span></h2>'+
-    (sh?'<div class="alert ok">'+ic('map')+' '+esc(l.business?t('share.filled'):t('share.noName'))+'</div>':'<p class="hint">'+esc(t('lead.newHint'))+'</p>')+
+    (sh?(l.business?'<div class="alert ok">'+ic('map')+' '+esc(t('share.filled'))+'</div>':'<p class="hint">'+esc(t('share.noName'))+'</p>'):'<p class="hint">'+esc(t('lead.newHint'))+'</p>')+
     (dup?'<div class="alert warn dupbox">'+ic('warn')+' <span>'+esc(t('share.dup',{name:dup.business||t('lead.noName')}))+'</span> <button class="btn sm" data-act="openDup" data-id="'+dup.id+'">'+B('user',t('share.openDup'))+'</button></div>':'')+
     lInp('business',l.business,'autocomplete="organization" required',t('lf.business')+' *')+'<div id="draftErr"></div>'+
     '<div class="row">'+lInp('phone',l.phone,'type="tel" inputmode="tel"')+lInp('contact',l.contact)+'</div>'+
@@ -2014,7 +2022,7 @@ function renderLead(){
 }
 var vl=$('v-lead');
 function onLeadInput(e){var el=e.target,k=el.dataset&&el.dataset.l;if(!k)return;
-  if(curLeadId==='new'){if(draftLead){draftLead[k]=el.value;if(k==='business'&&el.value.trim()&&$('draftErr'))$('draftErr').innerHTML=''}return}
+  if(curLeadId==='new'){if(draftLead){draftLead[k]=el.value;if(k==='city')draftMeta.autoCity='';if(k==='business'&&el.value.trim()&&$('draftErr'))$('draftErr').innerHTML=''}return}
   var l=getLead(curLeadId);if(!l)return;var v=el.value;
   if(k==='business'&&!v.trim()){if(e.type==='change'){toast(t('toast.needName'));el.value=l.business}return}
   if(k==='status'){if(e.type!=='change')return;if(v==='dnc'&&!confirm(t('confirm.dnc')))return render('lead');var old=l.status;l.status=v;if(v==='dnc')l.nextFollowUp='';logAct(l,'status',t('ls.'+old)+' → '+t('ls.'+v));saveLeads();return render('lead')}
@@ -2192,6 +2200,9 @@ var STREET_RE=/\b(?:st|street|ave|avenue|rd|road|blvd|boulevard|dr|drive|ln|lane
 function looksAddress(s){return /\b\d{5}(?:-\d{4})?\b/.test(s)||(/^\d+[A-Za-z]?\s+\S+/.test(s)&&(/,/.test(s)||STREET_RE.test(s)))||/,\s*(?:[A-Z]{2}|North Carolina|Carolina del Norte)\b/.test(s)}
 function parseShare(d){
   if(typeof d==='string')d={text:d};d=d||{};
+  /* Google sometimes wraps the link in a consent page: consent.google.com/ml?continue=<real maps link> */
+  var unwrap=function(x){return String(x||'').replace(/https?:\/\/consent\.google\.[a-z.]+\/[^\s]*?[?&]continue=([^&\s]+)[^\s]*/gi,function(m,c){try{return decodeURIComponent(c)}catch(e){return m}})};
+  d={title:unwrap(d.title),text:unwrap(d.text),url:unwrap(d.url)};
   var title=String(d.title||'').trim(),all=[d.title,d.text,d.url].map(function(x){return String(x||'')}).join('\n');
   var urls=(all.match(/https?:\/\/[^\s<>"]+/g)||[]).map(cleanMapsUrl);
   var mapsUrl=urls.filter(function(u){return MAPS_RE.test(u)})[0]||'',website=urls.filter(function(u){return !GOOGLE_RE.test(u)})[0]||'';
@@ -2218,6 +2229,9 @@ function parseShare(d){
       var sp2=/^(.+?),\s*(\d+.*)$/.exec(v);if(sp2){p.business=sp2[1].trim();if(!p.address)p.address=sp2[2].trim()}else if(!/^-?\d+(\.\d+)?,\s*-?\d/.test(v))p.business=v.trim()}}
   p.address=p.address.replace(/,\s*(?:USA|United States|Estados Unidos|EE\.?\s?UU\.?)$/i,'').trim();
   p.city=cityFromAny(p.address);p.cat=shareCat(p.business+' '+p.hint);
+  /* raw payload (first 300 chars) is kept in the lead's notes so real shares can be checked later */
+  p.raw=[['title',d.title],['text',d.text],['url',d.url]].filter(function(x){return String(x[1]||'').trim()}).map(function(x){return x[0]+': '+String(x[1]).trim()}).join(' | ').replace(/\s*\r?\n\s*/g,' ⏎ ').slice(0,300);
+  p.linkOnly=!!(p.mapsUrl&&!p.business&&!p.address&&!p.phone);
   return p;
 }
 function findDup(o){var n=norm(o.business),k=mapsKey(o.sourceUrl||o.mapsUrl);
@@ -2226,11 +2240,15 @@ var draftMeta={};
 function shareHasData(p){return !!(p&&(p.business||p.mapsUrl||p.phone||p.address))}
 function openShared(p,keepDraft){
   if(!shareHasData(p)){toast(t('share.nothing'));return false}
-  var base=keepDraft&&draftLead?draftLead:newLead({nextFollowUp:today(),clientLang:'en',city:(S.cities||[])[0]||''});
+  var base=keepDraft&&draftLead?draftLead:newLead({nextFollowUp:today(),clientLang:'en',city:''});
+  /* the Add client form pre-picks his first city; drop that guess when the share gave no city and nothing else is typed yet */
+  var typed=['business','phone','contact','email','address'].some(function(k){return String(base[k]||'').trim()});
+  if(!p.city&&!typed&&draftMeta.autoCity&&base.city===draftMeta.autoCity)base.city='';
   ['business','phone','website','address','city'].forEach(function(k){if(p[k])base[k]=p[k]});
   if(p.cat)base.category=t('cat.'+p.cat);if(p.mapsUrl)base.sourceUrl=p.mapsUrl;base.source='maps';
+  if(p.raw){var note='[Maps share '+today()+'] '+p.raw;if(String(base.notes||'').indexOf(note)<0)base.notes=(base.notes?base.notes+'\n':'')+note}
   draftLead=base;draftMeta={shared:true};curLeadId='new';render('lead');show('lead');window.scrollTo(0,0);
-  if(!base.business){var f=document.querySelector('#v-lead [data-l="business"]');if(f)f.focus()}
+  if(!base.business&&!(p.linkOnly&&!keepDraft)){var f=document.querySelector('#v-lead [data-l="business"]');if(f)f.focus({preventScroll:true})}
   return true}
 function sharedFromUrl(){var q;try{q=new URLSearchParams(location.search)}catch(e){return null}
   if(!q.has('title')&&!q.has('text')&&!q.has('url'))return null;
@@ -2241,6 +2259,7 @@ function pasteBoxHTML(id){return '<div class="pastebox"><div class="prow"><texta
   '<button class="btn" data-act="pasteClip" data-box="'+id+'">'+B('paste',t('share.pasteBtn'))+'</button></div></div>'}
 function shareHowtoHTML(){return '<div class="card sharehow" id="shareHow"><h2>'+ic('map')+'<span>'+esc(t('share.title'))+'</span></h2><p class="hint">'+esc(t('share.intro'))+'</p>'+
   '<ol class="sh3"><li>'+ic('map')+'<span>'+esc(t('share.s1'))+'</span></li><li>'+ic('share')+'<span>'+esc(t('share.s2'))+'</span></li><li>'+ic('userPlus')+'<span>'+esc(t('share.s3'))+'</span></li></ol>'+
+  '<div class="alert info">'+ic('bulb')+' '+esc(t('share.copyNote'))+'</div>'+
   '<p class="hint">'+ic('phoneDev')+' '+esc(t('share.iphone'))+'</p>'+pasteBoxHTML('fShareBox')+'</div>'}
 function readClip(box,apply){
   function manual(){var b=$(box);if(b)b.focus();toast(t('share.pasteManual'))}
