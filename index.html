@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e7c66">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bid Pricer">
+<title>Bid Pricer</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{--brand:#0e7c66;--brand-d:#0a5547;--brand-l:#e3f2ee;--bg:#f2f5f4;--card:#fff;--ink:#17231f;--mut:#5d6d68;--line:#dbe4e1;--warn:#9a4a00;--warnbg:#fff4e0;--bad:#b42318;--badbg:#fdecea;--ok:#13703a;--okbg:#e6f5ec}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+button{font-family:inherit;cursor:pointer}
+header.app{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top))}
+.logo{width:40px;height:40px;border-radius:10px;background:#fff;color:var(--brand);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;overflow:hidden;flex:none;letter-spacing:-.5px}
+.logo img{width:100%;height:100%;object-fit:contain}
+header .t1{font-weight:700;font-size:17px;line-height:1.15}
+header .t2{font-size:12px;opacity:.85}
+main{padding:12px 12px 170px;max-width:760px;margin:0 auto}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs button{flex:1;border:0;background:none;padding:8px 4px 10px;font-size:13px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:1px;min-height:60px}
+nav.tabs button .ic{font-size:22px;line-height:1}
+nav.tabs button.on{color:var(--brand);font-weight:700}
+.card{background:var(--card);border-radius:14px;padding:14px;margin:0 0 12px;box-shadow:0 1px 2px rgba(0,0,0,.04);border:1px solid var(--line)}
+.card h2{font-size:17px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.card h2 .n{background:var(--brand);color:#fff;border-radius:50%;width:24px;height:24px;font-size:13px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.card h3{font-size:15px;margin:14px 0 8px}
+.hint{font-size:13px;color:var(--mut);margin:-4px 0 12px}
+label.f{display:block;margin:0 0 12px;font-size:14px;color:var(--mut);font-weight:600}
+label.f input,label.f select,label.f textarea{display:block;width:100%;margin-top:5px;font-size:17px;padding:11px 12px;border:1px solid #c5d1cd;border-radius:10px;background:#fff;color:var(--ink);min-height:50px;font-family:inherit;font-weight:400}
+label.f input:focus,label.f select:focus,label.f textarea:focus{outline:2px solid var(--brand);border-color:var(--brand)}
+label.f textarea{min-height:96px}
+label.f input[type=range]{padding:0;border:0;min-height:36px;accent-color:var(--brand)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.chk{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;font-size:16px;min-height:54px;background:#fff}
+.chk input{width:26px;height:26px;accent-color:var(--brand);flex:none;margin:0}
+.chk small{color:var(--mut);display:block;font-size:12.5px}
+.chk .grow{flex:1}
+.chk.on{border-color:var(--brand);background:var(--brand-l)}
+.seg{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:5px 0 0}
+.seg button{min-width:0;min-height:48px;border:1px solid #c5d1cd;background:#fff;border-radius:10px;font-size:16px;color:var(--ink)}
+.seg button.on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:12px 16px;font-size:16px;font-weight:700;min-height:50px;background:var(--brand);color:#fff;text-decoration:none}
+.btn.sec{background:#e3ecea;color:var(--brand-d)}
+.btn.danger{background:var(--badbg);color:var(--bad)}
+.btn.sm{min-height:42px;padding:8px 12px;font-size:14px}
+.btn.block{width:100%}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btns .btn{flex:1 1 auto}
+.addon{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.addon .ttl{font-weight:700;margin-bottom:8px}
+.addon .det{display:none;margin-top:10px}
+.addon.active .det{display:block}
+.addon.active{border-color:var(--brand)}
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:15px}
+.kv div:nth-child(even){text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.kv .sep{grid-column:1/-1;border-top:1px solid var(--line);margin:4px 0}
+.kv .big{font-size:20px;font-weight:800;color:var(--brand-d)}
+.alert{border-radius:10px;padding:10px 12px;margin:0 0 10px;font-size:14.5px}
+.alert.warn{background:var(--warnbg);color:var(--warn);border:1px solid #f3d29a}
+.alert.bad{background:var(--badbg);color:var(--bad);border:1px solid #f4b8b2}
+.alert.ok{background:var(--okbg);color:var(--ok);border:1px solid #acdcbf}
+.alert.info{background:#eef4ff;color:#1d4b8f;border:1px solid #c6d8f5}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tier{border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center;background:#fff}
+.tier.rec{border:2px solid var(--brand);background:var(--brand-l)}
+.tier .nm{font-weight:800;font-size:14px}
+.tier .lb{font-size:11.5px;color:var(--mut)}
+.tier .pr{font-size:19px;font-weight:800;margin:4px 0 0;font-variant-numeric:tabular-nums}
+.tier .sub{font-size:11.5px;color:var(--mut)}
+.sticky{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom));z-index:25;background:var(--brand-d);color:#fff;display:flex;align-items:center;gap:10px;padding:8px 12px;box-shadow:0 -2px 8px rgba(0,0,0,.15)}
+.sticky .p{font-size:22px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.sticky .m{font-size:12.5px;opacity:.9}
+.sticky .grow{flex:1}
+.sticky .btn{background:#fff;color:var(--brand-d);min-height:46px}
+.badge{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700}
+.badge.ok{background:#c9f0d8;color:#0b5a2b}.badge.warn{background:#ffe2b0;color:#7a3b00}.badge.bad{background:#ffd0cb;color:#8f1a10}
+.sticky .badge.ok{background:#bdf3d1}
+.list .item{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.list .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.list .nm{font-weight:700;font-size:17px}
+.list .meta{font-size:13px;color:var(--mut)}
+.list .pr{font-weight:800;font-size:18px;color:var(--brand-d);white-space:nowrap;text-align:right}
+.list .acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.list .acts .btn{flex:1 1 0;min-height:46px;font-size:14px;padding:8px 4px;white-space:nowrap;gap:4px}
+.list .acts .btn.danger{flex:0 0 50px}
+.status{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:6px;background:#eef1f0;color:var(--mut)}
+.status.Sent{background:#e6efff;color:#1d4b8f}.status.Won{background:#d9f4e3;color:#0b5a2b}.status.Lost{background:#fde5e2;color:#8f1a10}
+.empty{text-align:center;color:var(--mut);padding:30px 10px}
+table.ed{width:100%;border-collapse:collapse;font-size:15px}
+table.ed td{padding:4px 3px;vertical-align:middle}
+table.ed input,table.ed select{width:100%;font-size:16px;padding:9px;border:1px solid #c5d1cd;border-radius:8px;min-height:44px;font-family:inherit}
+table.ed th{font-size:12px;color:var(--mut);text-align:left;padding:2px 3px}
+.x{border:0;background:var(--badbg);color:var(--bad);border-radius:8px;min-width:40px;min-height:44px;font-size:18px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:140px;background:#17231f;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;z-index:99;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90%}
+#toast.show{opacity:1}
+.hidden{display:none!important}
+/* proposal */
+.prop{background:#fff;border-radius:14px;border:1px solid var(--line);padding:18px;font-size:14.5px;color:#1a1a1a}
+.prop .ph{display:flex;gap:12px;align-items:center;border-bottom:3px solid var(--brand);padding-bottom:12px;margin-bottom:14px}
+.prop .ph .logo{width:56px;height:56px;font-size:20px;background:var(--brand);color:#fff;border-radius:12px}
+.prop .ph .logo.img{background:#fff}
+.prop .co{font-weight:800;font-size:18px;line-height:1.2}
+.prop .co2{font-size:12.5px;color:#555}
+.prop h1{font-size:21px;margin:0 0 4px;color:var(--brand-d)}
+.prop h4{font-size:15px;margin:18px 0 8px;color:var(--brand-d);border-bottom:1px solid #e3e3e3;padding-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.prop .meta2{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13.5px}
+.prop .meta2 b{display:block;font-size:11.5px;color:#666;text-transform:uppercase;letter-spacing:.4px}
+.prop ul.scope{list-style:none;padding:0;margin:0 0 8px}
+.prop ul.scope li{padding:3px 0 3px 26px;position:relative}
+.prop ul.scope li:before{content:"";position:absolute;left:2px;top:6px;width:13px;height:13px;border:1.5px solid var(--brand);border-radius:3px}
+.prop ul.scope li:after{content:"";position:absolute;left:6px;top:8px;width:4px;height:7px;border:solid var(--brand);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.prop .freq{font-weight:700;margin:10px 0 2px;font-size:14px}
+.prop .ptiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.prop .pt{border:1px solid #d7d7d7;border-radius:10px;padding:10px;text-align:center}
+.prop .pt.rec{border:2px solid var(--brand);background:var(--brand-l)}
+.prop .pt .nm{font-weight:800}
+.prop .pt .pr{font-size:20px;font-weight:800;margin:4px 0}
+.prop .pt .d{font-size:12px;color:#444;text-align:left;margin-top:6px}
+.prop .pt .tag{font-size:10.5px;font-weight:800;color:var(--brand-d);text-transform:uppercase;letter-spacing:.5px}
+.prop table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+.prop table.t th,.prop table.t td{border-bottom:1px solid #e3e3e3;padding:6px 4px;text-align:left}
+.prop table.t td.r,.prop table.t th.r{text-align:right}
+.prop ol.terms{padding-left:20px;margin:0}
+.prop ol.terms li{margin-bottom:4px}
+.prop .sig{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:10px}
+.prop .sig .ln{border-bottom:1px solid #333;height:34px}
+.prop .sig .lb{font-size:12px;color:#555;margin-top:3px}
+.prop .choose{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 10px}
+.prop .choose span:before{content:"☐ ";font-size:16px}
+.prop .foot{font-size:11.5px;color:#666;text-align:center;margin-top:16px;border-top:1px solid #e3e3e3;padding-top:8px}
+@media (max-width:420px){.prop .ptiers{grid-template-columns:1fr}.prop .meta2{grid-template-columns:1fr}.prop .sig{grid-template-columns:1fr}}
+@media print{
+  @page{size:letter;margin:.5in}
+  html,body{background:#fff}
+  header.app,nav.tabs,.sticky,.noprint,#toast{display:none!important}
+  main{padding:0;max-width:none}
+  .prop{border:0;padding:0;border-radius:0;font-size:12.5px}
+  .prop .ptiers{grid-template-columns:repeat(3,1fr)}
+  .prop .meta2{grid-template-columns:1fr 1fr}
+  .prop .sig{grid-template-columns:1fr 1fr}
+  .prop h4{break-after:avoid}
+  .prop .pt,.prop .sigwrap,.prop table.t tr{break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+/* ===== v2: header language button, 5 tabs ===== */
+header.app .hgrow{flex:1;min-width:0}
+header.app .t1,header.app .t2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#langBtn{flex:none;border:1.5px solid rgba(255,255,255,.75);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;font-weight:800;font-size:13px;padding:7px 11px;min-height:38px;letter-spacing:.5px}
+#langBtn:active{background:rgba(255,255,255,.3)}
+nav.tabs button{font-size:11.5px;padding:8px 2px 10px}
+/* ===== Today ===== */
+.hello{background:linear-gradient(135deg,var(--brand),var(--brand-d));color:#fff;border:0}
+.hello .hdate{font-size:20px;font-weight:800;margin-bottom:10px}
+.hello .hdate::first-letter{text-transform:uppercase}
+.hello .hint{color:rgba(255,255,255,.9);margin:10px 0 0}
+.qbtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.qbtns .btn{min-width:0;padding:8px 4px;font-size:14px;min-height:48px}
+.hello .qbtns .btn{background:#fff;color:var(--brand-d);border-color:#fff}
+.hello .qbtns .btn.sec{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.6)}
+.cnt{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--brand-l);color:var(--brand-d);font-size:13px;font-weight:800;margin-left:auto}
+.cnt.bad{background:var(--badbg);color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:14px;color:var(--ink);min-height:40px}
+.chip b{font-size:15px;margin-right:2px}
+.walkwhen{font-size:13.5px;color:var(--brand-d);font-weight:700;margin-top:2px}
+/* ===== Lead rows ===== */
+.list2{padding:4px 14px}
+.lrow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:0}
+.lmain{flex:1;min-width:0;cursor:pointer}
+.lmain .nm{font-weight:700;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lmain .meta{font-size:13px;color:var(--mut);margin-top:2px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.callbtn{flex:none;width:48px;height:48px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:21px}
+.pri{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;background:#eef2f1;color:var(--mut);font-size:11.5px;font-weight:800;vertical-align:2px}
+.lstatus{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef2f1;color:#41504b;white-space:nowrap}
+.s-new{background:#e8f0fe;color:#1a4fb4}.s-called{background:#eef2f1;color:#41504b}.s-vm{background:#f3ecfb;color:#6b3fa0}
+.s-interested{background:#fff4e0;color:#9a4a00}.s-walk{background:#e0f4fb;color:#0b6585}.s-bidsent{background:#fdf2d6;color:#7a5600}
+.s-won{background:var(--okbg);color:var(--ok)}.s-lost{background:#f1f1f1;color:#6b6b6b}.s-dnc{background:var(--badbg);color:var(--bad)}
+.chip.s-new,.chip.s-called,.chip.s-vm,.chip.s-interested,.chip.s-walk,.chip.s-bidsent,.chip.s-won,.chip.s-lost,.chip.s-dnc{border-color:transparent}
+.due{font-size:12.5px;color:var(--mut);white-space:nowrap}
+.due.od{color:var(--bad);font-weight:700}.due.td{color:var(--warn);font-weight:700}
+.filters .row{margin-top:0}
+.filters label.f{margin-bottom:8px}
+.linked{font-size:13px}
+/* ===== Lead detail ===== */
+.lhead .lt{font-size:21px;font-weight:800;line-height:1.2}
+.lhead .meta{color:var(--mut);font-size:14px;margin-top:3px}
+.abtns{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0 0 12px}
+.abtns .btn{flex-direction:column;gap:2px;font-size:12.5px;min-height:62px;padding:6px 2px;min-width:0;line-height:1.15;text-align:center}
+.abtns .btn .ic{font-size:21px}
+.abtns .btn[disabled],.abtns a.btn.off{opacity:.35;pointer-events:none}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.qgrid .btn{min-width:0;font-size:14.5px;min-height:48px;padding:6px 8px}
+.seg4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:-4px 0 12px}
+.seg4 .btn{min-width:0;padding:6px 2px;font-size:13.5px}
+ul.acts{list-style:none;margin:0;padding:0}
+ul.acts li{padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+ul.acts li:last-child{border-bottom:0}
+ul.acts li .when{display:block;font-size:12px;color:var(--mut)}
+.linkbar{cursor:pointer}
+/* ===== Finder & templates ===== */
+.linkgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.linkgrid .lk{min-width:0;font-size:13.5px;min-height:50px;padding:6px 8px;text-align:center;line-height:1.2;text-decoration:none}
+.tpl{border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 10px;background:#fbfdfc}
+.tpl .tname{font-weight:800;font-size:15px;margin-bottom:6px;color:var(--brand-d)}
+.tsub{font-size:14px;margin:0 0 6px;padding-bottom:6px;border-bottom:1px dashed var(--line)}
+.tbody{white-space:pre-wrap;font-size:15px;line-height:1.5;margin:0 0 10px}
+details.obj{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px;background:#fbfdfc}
+details.obj summary{font-weight:700;cursor:pointer;font-size:15px}
+details.obj[open] summary{margin-bottom:8px}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;word-spacing:4px;line-height:1.8}
+.langpick{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;font-size:14px;color:var(--mut);font-weight:600}
+.seg2{display:inline-grid;grid-template-columns:repeat(2,1fr);border:1px solid #c5d1cd;border-radius:10px;overflow:hidden;background:#fff}
+.seg2 button{border:0;background:none;padding:9px 16px;font-size:15px;color:var(--ink);min-height:44px}
+.seg2 button.on{background:var(--brand);color:#fff;font-weight:700}
+/* ===== Settings ===== */
+.ftrow{margin:0 0 10px;padding:0 0 10px;border-bottom:1px solid var(--line)}
+.ftrow:last-of-type{border-bottom:0}
+.ftrow input,.ftrow select{width:100%;font-size:16px;padding:9px 10px;border:1px solid #c5d1cd;border-radius:9px;min-height:44px;background:#fff;color:var(--ink);font-family:inherit}
+.g3{display:grid;grid-template-columns:1fr 90px 44px;gap:6px;margin-bottom:6px}
+.g3b{display:grid;grid-template-columns:1fr 70px 110px;gap:6px;margin-bottom:6px}
+input.es{font-style:italic;background:#fafcfb}
+.starter{border:1.5px dashed var(--brand);background:var(--brand-l);border-radius:12px;padding:12px;margin:4px 0 0}
+.starter .hint{margin:4px 0 10px}
+@media (max-width:360px){.abtns .btn{font-size:11.5px}.qbtns .btn{font-size:13px}}
+@media print{.langpick{display:none!important}}
+
+</style>
+</head>
+<body>
+<header class="app">
+  <div class="logo" id="hLogo"></div>
+  <div class="hgrow"><div class="t1" id="hName"></div><div class="t2" id="hSub"></div></div>
+  <button type="button" id="langBtn"></button>
+</header>
+<main>
+  <section id="v-today"></section>
+  <section id="v-leads" class="hidden"></section>
+  <section id="v-lead" class="hidden"></section>
+  <section id="v-finder" class="hidden"></section>
+  <section id="v-import" class="hidden"></section>
+  <section id="v-bids" class="hidden"></section>
+  <section id="v-bid" class="hidden"></section>
+  <section id="v-proposal" class="hidden"></section>
+  <section id="v-scripts" class="hidden"></section>
+  <section id="v-settings" class="hidden"></section>
+</main>
+<div class="sticky hidden" id="sticky">
+  <div class="grow"><div class="p" id="stP"></div><div class="m" id="stM"></div></div>
+  <button class="btn" id="stProp"></button>
+</div>
+<nav class="tabs" id="navTabs"></nav>
+<div id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="importFile" accept=".json,application/json" class="hidden">
+<input type="file" id="logoFile" accept="image/*" class="hidden">
+<input type="file" id="csvFile" accept=".csv,text/csv,text/plain" class="hidden">
+<script>
+window.__PWA=true;
+(function(){
+'use strict';
+/* ===== Translation dictionary =====
+   Every visible UI string lives here as  key: [English, Español].
+   To add a language: add it to LANGS, then add a 3rd string to every entry.
+   The test suite fails if any key is missing for any language. */
+var LANGS=[{code:'en',name:'English'},{code:'es',name:'Español'}];
+var T={
+'app.title':['Bid Pricer','Cotizador'],
+'lang.switch':['Cambiar a español / Switch language','Switch to English / Cambiar idioma'],
+'nav.today':['Today','Hoy'],'nav.leads':['Leads','Prospectos'],'nav.bids':['Bids','Cotizaciones'],'nav.scripts':['Scripts','Guiones'],'nav.settings':['Settings','Ajustes'],
+'sub.today':['Today','Hoy'],'sub.leads':['Leads','Prospectos'],'sub.lead':['Lead','Prospecto'],'sub.finder':['Find new leads','Buscar prospectos'],'sub.import':['Import leads','Importar prospectos'],
+'sub.bids':['Saved bids','Cotizaciones guardadas'],'sub.bid':['Bid calculator','Calculadora de cotización'],'sub.proposal':['Proposal','Propuesta'],'sub.scripts':['Scripts & templates','Guiones y plantillas'],'sub.settings':['Settings','Ajustes'],
+'common.today':['Today','Hoy'],'common.perMo':['/mo','/mes'],'common.month':['/month','/mes'],'common.perHr':['/hr','/h'],'common.perVisit':['/visit','/visita'],
+'common.sqft':['sq ft','pies²'],'common.sqftCap':['Sq ft','Pies²'],'common.sqftHr':['sq ft/hr','pies²/h'],'common.hrs':['{n} hrs','{n} h'],
+'btn.copy':['Copy','Copiar'],'btn.edit':['Edit','Editar'],'btn.proposal':['Proposal','Propuesta'],'btn.copyBid':['Copy','Duplicar'],'btn.delete':['Delete','Eliminar'],
+/* Today */
+'today.addLead':['Add lead','Agregar'],'today.findLeads':['Find leads','Buscar'],'today.newBid':['New bid','Cotizar'],
+'today.emptyTitle':['No leads yet.','Aún no tiene prospectos.'],'today.emptyBody':['Find businesses to call, or import a list.','Busque negocios para llamar o importe una lista.'],
+'today.starterHint':['Zim Zam: your 81-business call list is ready under Settings → Leads & outreach → Load Zim Zam starter list.','Zim Zam: su lista de 81 negocios está lista en Ajustes → Prospectos y contacto → Cargar lista inicial de Zim Zam.'],
+'today.overdue':['Overdue follow-ups','Seguimientos atrasados'],'today.dueToday':['Follow-ups due today','Seguimientos para hoy'],'today.nothingDue':['Nothing due today. Nice work!','No hay pendientes para hoy. ¡Buen trabajo!'],
+'today.walks':['Walkthroughs (next 7 days)','Recorridos (próximos 7 días)'],'today.noWalks':['No walkthroughs booked. Your walkthrough day is {day}.','No hay recorridos programados. Su día de recorridos es el {day}.'],
+'today.pipeline':['Pipeline','Embudo de ventas'],'today.valSent':['Bids sent ({n})','Cotizaciones enviadas ({n})'],'today.valWon':['Won ({n})','Ganadas ({n})'],'today.valTotal':['Pipeline value','Valor del embudo'],
+'today.valHint':['Monthly value of the recommended option on the latest bid linked to each lead.','Valor mensual de la opción recomendada en la cotización más reciente de cada prospecto.'],
+/* Lead statuses */
+'ls.new':['New','Nuevo'],'ls.called':['Called','Llamado'],'ls.vm':['Left VM','Mensaje de voz'],'ls.interested':['Interested','Interesado'],'ls.walk':['Walkthrough booked','Recorrido agendado'],
+'ls.bidsent':['Bid sent','Cotización enviada'],'ls.won':['Won','Ganado'],'ls.lost':['Lost','Perdido'],'ls.dnc':['Do not contact','No contactar'],
+'bstatus.Draft':['Draft','Borrador'],'bstatus.Sent':['Sent','Enviada'],'bstatus.Won':['Won','Ganada'],'bstatus.Lost':['Lost','Perdida'],
+/* Leads list */
+'leads.add':['Add lead','Nuevo'],'leads.find':['Find leads','Buscar'],'leads.import':['Import CSV','Importar CSV'],
+'leads.search':['Search','Buscar'],'leads.searchPh':['Name, city, phone, notes…','Nombre, ciudad, teléfono, notas…'],'leads.status':['Status','Estado'],'leads.city':['City','Ciudad'],
+'leads.fActive':['Active (open)','Activos'],'leads.fAll':['All leads','Todos'],'leads.fDue':['Due / overdue','Pendientes / atrasados'],'leads.fAllCities':['All cities','Todas las ciudades'],
+'leads.count':['Showing {n} of {total} leads','Mostrando {n} de {total} prospectos'],'leads.none':['No leads match.','Ningún prospecto coincide.'],
+'leads.exportTitle':['Export','Exportar'],'leads.exportCsv':['Leads CSV','CSV de prospectos'],
+/* Lead fields */
+'lf.business':['Business name','Nombre del negocio'],'lf.contact':['Contact name','Contacto'],'lf.title':['Title','Cargo'],'lf.phone':['Phone','Teléfono'],'lf.email':['Email','Correo electrónico'],
+'lf.website':['Website','Sitio web'],'lf.address':['Address','Dirección'],'lf.city':['City','Ciudad'],'lf.category':['Category','Categoría'],'lf.source':['Source','Origen'],'lf.status':['Status','Estado'],
+'lf.priority':['Priority','Prioridad'],'lf.nextFollowUp':['Next follow-up','Próximo seguimiento'],'lf.bestTime':['Best time to call','Mejor horario para llamar'],'lf.notes':['Notes','Notas'],
+'lf.walkthrough':['Walkthrough date & time','Fecha y hora del recorrido'],'lf.clientLang':['Client language (emails & proposals)','Idioma del cliente (correos y propuestas)'],
+/* Sources */
+'src.maps':['Google Maps','Google Maps'],'src.google':['Google search','Búsqueda en Google'],'src.linkedin':['LinkedIn','LinkedIn'],'src.yelp':['Yelp','Yelp'],'src.driveby':['Drive-by','Lo vi en la calle'],
+'src.referral':['Referral','Recomendación'],'src.calllist':['Call list','Lista de llamadas'],'src.webform':['Website form','Formulario web'],'src.import':['Imported','Importado'],'src.other':['Other','Otro'],
+/* Lead detail */
+'lead.noName':['(no name)','(sin nombre)'],'lead.call':['Call','Llamar'],'lead.email':['Email','Correo'],'lead.walk':['Walkthrough','Recorrido'],'lead.createBid':['Create bid','Crear cotización'],
+'lead.dncBanner':['Do not contact. Calls and emails are turned off for this business.','No contactar. Las llamadas y los correos están desactivados para este negocio.'],
+'lead.logTitle':['Log a call or email','Registrar llamada o correo'],'lead.noteOpt':['Note (optional)','Nota (opcional)'],'lead.notePh':['e.g. Spoke with Anne, call back Tuesday','p. ej., Hablé con Anne, volver a llamar el martes'],
+'quick.noanswer':['No answer','No contestó'],'quick.vm':['Left voicemail','Dejé mensaje'],'quick.interested':['Interested','Interesado'],'quick.notint':['Not interested','No le interesa'],'quick.emailed':['Emailed','Correo enviado'],'quick.note':['Add note','Agregar nota'],
+'lead.statusFollow':['Status & follow-up','Estado y seguimiento'],'fu.tomorrow':['Tomorrow','Mañana'],'fu.3days':['+3 days','+3 días'],'fu.week':['+1 week','+1 semana'],'fu.clear':['Clear','Quitar'],
+'lead.walkTitle':['Walkthrough','Recorrido'],'lead.suggest':['Next {when}','Próximo: {when}'],'lead.addCal':['Add to calendar (.ics)','Agregar al calendario (.ics)'],'lead.gcal':['Google Calendar','Google Calendar'],'lead.clearWalk':['Cancel','Cancelar'],
+'lead.details':['Details','Datos'],'lead.openSite':['Open website','Abrir sitio web'],'lead.sourceLink':['Where this info came from','Fuente de esta información'],
+'lead.bids':['Bids','Cotizaciones'],'lead.noBids':['No bids yet.','Aún no hay cotizaciones.'],'lead.activity':['Activity','Actividad'],'lead.noActivity':['No activity yet.','Sin actividad.'],
+'lead.back':['Back to leads','Volver a prospectos'],'lead.delete':['Delete lead','Eliminar prospecto'],
+'cal.title':['Walkthrough: {business} ({company})','Recorrido: {business} ({company})'],
+/* Activity log */
+'act.created':['Lead added','Prospecto agregado'],'act.imported':['Imported','Importado'],'act.noanswer':['Called, no answer','Llamada sin respuesta'],'act.vm':['Left voicemail','Dejó mensaje de voz'],
+'act.interested':['Spoke, interested','Habló, interesado'],'act.notint':['Spoke, not interested','Habló, no le interesa'],'act.emailed':['Emailed','Correo enviado'],'act.note':['Note','Nota'],
+'act.status':['Status changed','Cambio de estado'],'act.walk':['Walkthrough booked','Recorrido agendado'],'act.walkCleared':['Walkthrough canceled','Recorrido cancelado'],'act.dncAuto':['Marked Do not contact (on your list)','Marcado No contactar (está en su lista)'],
+'act.bidCreated':['Bid created','Cotización creada'],'act.bidSent':['Bid sent','Cotización enviada'],'act.bidWon':['Bid won','Cotización ganada'],'act.bidLost':['Bid lost','Cotización perdida'],'act.bidDraft':['Bid back to draft','Cotización regresó a borrador'],
+/* Prospect finder */
+'finder.title':['Find new leads','Buscar prospectos nuevos'],
+'finder.intro':['Pick a type of business and a city, then tap a search. Each one opens in a new tab. When you find a good one, save it below.','Elija un tipo de negocio y una ciudad, y toque una búsqueda. Cada una se abre en otra pestaña. Cuando encuentre uno bueno, guárdelo abajo.'],
+'finder.cat':['Type of business','Tipo de negocio'],'finder.city':['City','Ciudad'],'finder.kw':['Custom keywords (optional)','Palabras clave (opcional)'],'finder.kwPh':['e.g. pediatric dentist','p. ej., pediatric dentist'],
+'finder.gBiz':['Find businesses','Encontrar negocios'],'finder.gPeople':['Find the decision maker','Encontrar a quien decide'],'finder.gFresh':['New openings & buildings','Aperturas y edificios nuevos'],
+'finder.netNote':['Searches need internet and open Google, LinkedIn, etc. Search terms are in English because local listings are in English.','Las búsquedas necesitan internet y abren Google, LinkedIn, etc. Los términos van en inglés porque los listados locales están en inglés.'],
+'finder.quickAdd':['Quick-add a lead','Agregar prospecto rápido'],'finder.quickHint':['Type of business and city are filled in from your search.','El tipo de negocio y la ciudad se toman de su búsqueda.'],'finder.save':['Save lead','Guardar prospecto'],
+'fl.maps':['Google Maps','Google Maps'],'fl.google':['Google search','Búsqueda en Google'],'fl.yelp':['Yelp','Yelp'],'fl.linkedin':['LinkedIn: {title}','LinkedIn: {title}'],'fl.xray':['Google → LinkedIn profiles','Google → perfiles de LinkedIn'],
+'fl.newOpen':['News: new openings','Noticias: aperturas nuevas'],'fl.grand':['Grand openings & ribbon cuttings','Inauguraciones y cortes de listón'],'fl.coming':['"Coming soon" businesses','Negocios "próximamente"'],
+'fl.cre':['New commercial buildings / leases','Edificios comerciales nuevos / arrendamientos'],'fl.tbj':['Triangle Business Journal','Triangle Business Journal'],'fl.chamber':['Chamber of Commerce new members','Nuevos socios de la Cámara de Comercio'],'fl.sos':['NC business registrations (SOS)','Registros de empresas de NC (SOS)'],
+'cat.office':['Office buildings','Edificios de oficinas'],'cat.medical':['Medical offices','Consultorios médicos'],'cat.dental':['Dental offices','Consultorios dentales'],'cat.chiro':['Chiropractic / PT clinics','Quiroprácticos / fisioterapia'],
+'cat.church':['Churches','Iglesias'],'cat.daycare':['Daycares & preschools','Guarderías y preescolares'],'cat.gym':['Gyms & fitness studios','Gimnasios y estudios de fitness'],'cat.vet':['Veterinary clinics','Clínicas veterinarias'],
+'cat.property':['Property managers','Administradoras de propiedades'],'cat.apartment':['Apartment communities','Complejos de apartamentos'],'cat.dealership':['Auto dealerships','Concesionarios de autos'],'cat.cowork':['Coworking spaces','Espacios de coworking'],
+'cat.school':['Private schools','Escuelas privadas'],'cat.retail':['Retail stores','Tiendas'],
+/* Import */
+'imp.title':['Import leads from CSV','Importar prospectos desde CSV'],'imp.intro':['Use a CSV from Excel, Google Sheets or another app. You choose which column goes where. Duplicates are skipped and your Do-not-contact list is respected.','Use un CSV de Excel, Google Sheets u otra aplicación. Usted elige qué columna va en cada campo. Los duplicados se omiten y se respeta su lista de No contactar.'],
+'imp.choose':['Choose CSV file','Elegir archivo CSV'],'imp.paste':['…or paste CSV text','…o pegue el texto CSV'],'imp.readPaste':['Read pasted text','Leer texto pegado'],'imp.pasted':['Pasted text','Texto pegado'],
+'imp.mapTitle':['Match your columns','Relacione sus columnas'],'imp.found':['{n} rows found in {file}.','Se encontraron {n} filas en {file}.'],'imp.skip':['— Skip —','— Omitir —'],'imp.preview':['First rows:','Primeras filas:'],
+'imp.import':['Import {n} rows','Importar {n} filas'],'imp.result':['Imported {added}. Skipped {dup} duplicates and {skipped} rows without a name. {dnc} marked Do not contact.','Se importaron {added}. Se omitieron {dup} duplicados y {skipped} filas sin nombre. {dnc} marcados No contactar.'],
+'imp.bad':['That file needs a header row and at least one row of data.','El archivo necesita una fila de encabezados y al menos una fila de datos.'],
+/* Scripts */
+'sc.title':['Scripts & email templates','Guiones y plantillas de correo'],'sc.intro':['Pick a lead to fill in names automatically. Choose the language the client speaks.','Elija un prospecto para llenar los nombres automáticamente. Elija el idioma del cliente.'],
+'sc.lead':['Lead','Prospecto'],'sc.noLead':['— No lead (show placeholders) —','— Sin prospecto (mostrar marcadores) —'],'sc.clientLang':['Client language','Idioma del cliente'],
+'sc.phone':['Phone scripts','Guiones telefónicos'],'sc.p.gatekeeper':['Front desk opener','Apertura con recepción'],'sc.p.decision':['Decision-maker opener','Apertura con quien decide'],'sc.p.ask':['The ask: book a walkthrough','La petición: agendar un recorrido'],
+'sc.p.voicemail':['Voicemail','Mensaje de voz'],'sc.p.objections':['Common objections','Objeciones comunes'],
+'sc.emails':['Email templates','Plantillas de correo'],'sc.e.intro':['Introduction','Presentación'],'sc.e.aftercall':['Follow-up after a call','Seguimiento después de llamar'],'sc.e.afterwalk':['After walkthrough (with proposal)','Después del recorrido (con propuesta)'],'sc.e.checkin':['Check-in','Seguimiento'],
+'sc.subject':['Subject','Asunto'],'sc.emailLead':['Email this lead','Enviar a este prospecto'],'sc.copyBody':['Copy text','Copiar texto'],'sc.copySubject':['Copy subject','Copiar asunto'],
+'sc.noEmail':['This lead has no email address yet. Add one on the lead, or use Copy.','Este prospecto no tiene correo. Agréguelo en el prospecto o use Copiar.'],'sc.pickLead':['Pick a lead above to turn on “Email this lead”.','Elija un prospecto arriba para activar “Enviar a este prospecto”.'],
+'sc.attachHint':['Your email app opens with the text filled in. Attach the proposal PDF before you send.','Su aplicación de correo se abre con el texto listo. Adjunte el PDF de la propuesta antes de enviar.'],
+'sc.varsTitle':['Fill-in fields','Campos automáticos'],'sc.varsHint':['These fill in from Settings and the selected lead:','Estos se llenan con sus Ajustes y el prospecto elegido:'],
+/* Bids list */
+'bids.new':['New bid','Nueva cotización'],'bids.emptyTitle':['No bids yet.','Aún no hay cotizaciones.'],'bids.emptyBody':['Tap New bid at your next walkthrough.','Toque Nueva cotización en su próximo recorrido.'],
+'bids.noClient':['(no client name)','(sin nombre de cliente)'],'bids.perWk':['{n}×/wk','{n}×/sem'],'bids.copySuffix':['(copy)','(copia)'],
+'data.title':['Backup & export','Respaldo y exportación'],'data.hint':['Everything is saved on this phone only. Make a backup now and then, and before switching phones or browsers.','Todo se guarda solo en este teléfono. Haga un respaldo de vez en cuando y antes de cambiar de teléfono o navegador.'],
+'data.backup':['Backup (JSON)','Respaldo (JSON)'],'data.restore':['Restore','Restaurar'],'data.bidsCsv':['Bids CSV','CSV de cotizaciones'],
+/* Bid editor */
+'bid.linkedLead':['Lead','Prospecto'],'bid.staleRates':['This bid uses the rates from when it was created.','Esta cotización usa las tarifas de cuando se creó.'],'bid.useCurrent':['Use my current Settings rates','Usar mis tarifas actuales'],
+'bid.s1':['Client','Cliente'],'bid.client':['Business name','Nombre del negocio'],'bid.clientPh':['e.g. Wake Family Dental','p. ej., Wake Family Dental'],'bid.contact':['Contact name','Contacto'],'bid.contactPh':['Decision maker','Quien decide'],
+'bid.title':['Title','Cargo'],'bid.titlePh':['Office manager','Gerente de oficina'],'bid.addressPh':['Street, city','Calle, ciudad'],'bid.date':['Bid date','Fecha'],'bid.status':['Status','Estado'],
+'bid.s2':['Facility','Instalaciones'],'bid.facType':['Facility type','Tipo de instalación'],'bid.sqft':['Cleanable sq ft','Pies² a limpiar'],'bid.sqftPh':['e.g. 5000','p. ej., 5000'],'bid.restrooms':['Restrooms','Baños'],
+'bid.floors':['Floors / levels','Pisos / niveles'],'bid.prodRate':['Speed for this bid (sq ft/hr)','Rendimiento para esta cotización (pies²/h)'],'bid.defaultPh':['{v} (default)','{v} (predeterminado)'],
+'bid.mix':['Flooring mix:','Tipo de piso:'],'bid.mixLbl':['{c}% carpet / {h}% hard floor','{c}% alfombra / {h}% piso duro'],
+'bid.s3':['Schedule & tasks','Horario y tareas'],'bid.vpw':['Visits per week','Visitas por semana'],'bid.vpwType':['…or type it (0.5 = every other week)','…o escríbalo (0.5 = cada dos semanas)'],
+'bid.days':['Days','Días'],'bid.daysPh':['Mon / Wed / Fri','Lun / Mié / Vie'],'bid.time':['Time of service','Horario de servicio'],'bid.tasks':['Tasks each visit','Tareas en cada visita'],
+'bid.taskPer1000':['+{m} min per 1,000 sq ft','+{m} min por cada 1,000 pies²'],'bid.taskPerRoom':['+{m} min per breakroom','+{m} min por comedor'],'bid.taskPerVisit':['+{m} min per visit','+{m} min por visita'],'bid.taskIncluded':['Included in base time','Incluido en el tiempo base'],
+'bid.howManyRooms':['How many breakrooms?','¿Cuántos comedores?'],
+'bid.s4':['Add-on services','Servicios adicionales'],'bid.s4hint':['(priced separately)','(se cotizan aparte)'],'bid.howOften':['How often','Frecuencia'],'bid.ratePerSqft':['Rate $/sq ft','Tarifa $/pie²'],
+'bid.flatPer':['Or set a flat price per service ($)','O un precio fijo por servicio ($)'],'bid.flat':['Or set a flat price ($)','O un precio fijo ($)'],'bid.optional':['optional','opcional'],'bid.deepHint':['Priced from labor hours ({m}× a regular visit)','Se calcula por horas de trabajo ({m}× una visita normal)'],
+'bid.s5':['Price & proposal','Precio y propuesta'],'bid.override':['Your monthly price (optional, overrides the calculator)','Su precio mensual (opcional, reemplaza el cálculo)'],'bid.overridePh':['Leave blank to use calculated price','Déjelo en blanco para usar el precio calculado'],
+'bid.recommend':['Option to recommend on the proposal','Opción recomendada en la propuesta'],'bid.clientLang':['Proposal language (client)','Idioma de la propuesta (cliente)'],
+'bid.scopeNotes':['Extra scope notes for the proposal','Notas adicionales para la propuesta'],'bid.scopeNotesPh':['e.g. Clean 2 exam rooms nightly; lock all doors and set alarm','p. ej., Limpiar 2 consultorios cada noche; cerrar con llave y activar la alarma'],
+'bid.privNotes':['Private notes (not on proposal)','Notas privadas (no salen en la propuesta)'],'bid.privNotesPh':['Walkthrough notes, gate codes, competitor price…','Notas del recorrido, códigos de acceso, precio de la competencia…'],
+'bid.viewProp':['View proposal','Ver propuesta'],'bid.saveClose':['Save & close','Guardar y cerrar'],'bid.proposalBtn':['Proposal ›','Propuesta ›'],
+'freq.none':['Not included','No incluido'],'freq.once':['One-time','Una sola vez'],'freq.monthly':['Monthly','Mensual'],'freq.quarterly':['Quarterly','Trimestral'],'freq.semiannual':['Twice a year','Dos veces al año'],'freq.annual':['Once a year','Una vez al año'],
+'time.afterhours':['After hours (evenings)','Fuera de horario (por la noche)'],'time.earlymorning':['Early morning (before open)','Temprano (antes de abrir)'],'time.weekend':['Weekends','Fines de semana'],'time.daytime':['Daytime (while occupied)','Durante el día (con personal presente)'],
+'ad.carpet':['Carpet hot-water extraction','Lavado de alfombras por extracción con agua caliente'],'ad.strip':['Hard floor strip & wax','Decapado y encerado de pisos'],'ad.pressure':['Exterior pressure washing','Lavado a presión de exteriores'],'ad.deep':['One-time deep clean & disinfection','Limpieza profunda y desinfección (única vez)'],
+/* Results */
+'res.title':['Results','Resultados'],'res.ok':['Price meets your {pct} profit target and monthly minimum.','El precio cumple su meta de ganancia de {pct} y el mínimo mensual.'],
+'res.monthly':['Monthly price','Precio mensual'],'res.perVisit':['Per visit','Por visita'],'res.perSqft':['Per sq ft (monthly)','Por pie² (mensual)'],'res.billed':['Effective billed rate','Tarifa efectiva por hora'],
+'res.hrsVisit':['Labor hours per visit','Horas de trabajo por visita'],'res.visitsMo':['Visits per month ({w} wks)','Visitas al mes ({w} semanas)'],'res.hrsMonth':['Labor hours per month','Horas de trabajo al mes'],
+'res.labor':['Labor cost ({rate}/hr loaded)','Costo de mano de obra ({rate}/h con cargas)'],'res.supplies':['Supplies ({p}%)','Insumos ({p}%)'],'res.gross':['Gross margin (after labor & supplies)','Margen bruto (después de mano de obra e insumos)'],
+'res.overhead':['Overhead ({p}%)','Gastos generales ({p}%)'],'res.profit':['Profit (after overhead)','Ganancia (después de gastos generales)'],'res.profitBadge':['{p} profit','{p} ganancia'],
+'res.tiers':['Good / Better / Best','Opciones Básica / Plus / Premium'],'res.tierProfit':['/mo · {p} profit','/mes · {p} ganancia'],'res.tierHrs':['{n} hrs/visit','{n} h/visita'],
+'res.addons':['Add-ons','Servicios adicionales'],'res.deepDetail':['Approx. {h} labor hours','Aprox. {h} horas de trabajo'],'res.areaDetail':['{sq} sq ft @ {rate}/sq ft','{sq} pies² a {rate}/pie²'],
+'res.how':['How the hours were figured','Cómo se calcularon las horas'],'res.hArea':['Floor area: {sq} ÷ {rate} sq ft/hr × {f} (floor mix)','Área: {sq} ÷ {rate} pies²/h × {f} (tipo de piso)'],
+'res.hRest':['Restrooms ({m} min each)','Baños ({m} min c/u)'],'res.hFloors':['Extra floors ({m} min each)','Pisos adicionales ({m} min c/u)'],'res.hTasks':['Tasks','Tareas'],'res.hSetup':['Setup & lockup','Preparación y cierre'],
+'res.hDay':['Daytime (occupied) adjustment','Ajuste por horario diurno'],'res.hMethod':['Pricing method','Método de precio'],'res.mRate':['{r}/hr bill rate','Tarifa de {r}/h'],'res.mMargin':['Target margin','Margen objetivo'],
+'w.noSqft':['Enter the cleanable square feet to see a price.','Ingrese los pies cuadrados a limpiar para ver un precio.'],'w.noVpw':['Enter visits per week.','Ingrese las visitas por semana.'],
+'w.minApplied':['Calculated price {calc}/mo is under your {min} monthly minimum, so the minimum is used.','El precio calculado de {calc}/mes es menor que su mínimo de {min}, así que se usa el mínimo.'],
+'w.overUnderMin':['Your price is under your {min} monthly minimum.','Su precio es menor que su mínimo mensual de {min}.'],
+'w.loss':['This price LOSES money: profit is {net}/mo ({pct}).','Este precio PIERDE dinero: la ganancia es de {net}/mes ({pct}).'],
+'w.belowTarget':['Profit margin {pct} is below your {target} target.','El margen de ganancia de {pct} está por debajo de su meta de {target}.'],
+'err.denom':['Supplies + overhead + target margin add up to 95% or more. Lower one of them in Settings.','Insumos + gastos generales + margen suman 95% o más. Reduzca alguno en Ajustes.'],
+/* Proposal toolbar (UI language) */
+'prop.print':['Print / Save PDF','Imprimir / Guardar PDF'],'prop.back':['Back to bid','Volver a la cotización'],'prop.lang':['Proposal language:','Idioma de la propuesta:'],
+'prop.pdfHint':['To save as PDF: tap Print / Save PDF, then choose Save to Files (iPhone: pinch out on the preview, then Share) or Save as PDF (Android).','Para guardar como PDF: toque Imprimir / Guardar PDF y elija Guardar en Archivos (iPhone: amplíe la vista previa con dos dedos y toque Compartir) o Guardar como PDF (Android).'],
+/* Settings */
+'set.lang':['Language','Idioma'],'set.uiLang':['App language','Idioma de la aplicación'],'set.langAuto':['Automatic (phone language)','Automático (idioma del teléfono)'],
+'set.langHint':['This only changes the app screens. Each bid and lead has its own client language for proposals, emails and scripts.','Esto solo cambia las pantallas de la aplicación. Cada cotización y prospecto tiene su propio idioma del cliente para propuestas, correos y guiones.'],
+'set.company':['Company','Empresa'],'set.dba':['Business name (dba)','Nombre comercial (dba)'],'set.legal':['Legal name','Razón social'],'set.area':['Service area','Zona de servicio'],
+'set.servicesEn':['Services you offer (English)','Servicios que ofrece (inglés)'],'set.servicesEs':['Services you offer (Spanish)','Servicios que ofrece (español)'],
+'set.yourName':['Your name','Su nombre'],'set.prefix':['Proposal # prefix','Prefijo de propuesta'],'set.titleEn':['Your title (English)','Su cargo (inglés)'],'set.titleEs':['Your title (Spanish)','Su cargo (español)'],
+'set.logoText':['Logo letters','Letras del logo'],'set.color':['Brand color','Color de marca'],'set.uploadLogo':['Upload logo','Subir logo'],'set.removeLogo':['Remove logo','Quitar logo'],
+'set.leads':['Leads & outreach','Prospectos y contacto'],'set.walkDay':['Walkthrough day','Día de recorridos'],'set.walkTime':['Usual start time','Hora habitual'],'set.walkMin':['Walkthrough length (minutes)','Duración del recorrido (minutos)'],
+'set.cities':['Cities you serve (one per line)','Ciudades donde trabaja (una por línea)'],'set.dnc':['Do-not-contact list (one per line)','Lista de No contactar (una por línea)'],
+'set.dncHint':['Any lead whose business name contains one of these is marked Do not contact, including imports.','Todo prospecto cuyo nombre contenga uno de estos se marca No contactar, incluso al importar.'],
+'set.starterTitle':['Zim Zam starter list','Lista inicial de Zim Zam'],'set.starterHint':['Loads {n} researched Raleigh-area businesses from your call list. Duplicates are skipped, so it is safe to tap twice.','Carga {n} negocios investigados del área de Raleigh de su lista de llamadas. Los duplicados se omiten, así que puede tocarlo dos veces sin problema.'],
+'set.starterBtn':['Load Zim Zam starter list','Cargar lista inicial de Zim Zam'],
+'set.labor':['Labor','Mano de obra'],'set.wage':['Cleaner wage ($/hr)','Salario del limpiador ($/h)'],'set.burden':['Payroll burden %','Cargas laborales %'],'set.burdenHint':['Payroll taxes, workers comp, insurance (usually 15–25%).','Impuestos de nómina, seguro de accidentes laborales, seguros (normalmente 15–25%).'],
+'set.pricing':['Pricing','Precios'],'set.method':['Pricing method','Método de precio'],'set.mMargin':['Target profit margin','Margen de ganancia objetivo'],'set.mRate':['Hourly bill rate','Tarifa por hora'],
+'set.supply':['Supplies %','Insumos %'],'set.overhead':['Overhead %','Gastos generales %'],'set.overheadHint':['Insurance, gas, phone, software, your admin time.','Seguro, gasolina, teléfono, software, su tiempo administrativo.'],
+'set.margin':['Target profit %','Ganancia objetivo %'],'set.billRate':['Bill rate ($/hr)','Tarifa ($/h)'],'set.min':['Monthly minimum ($)','Mínimo mensual ($)'],'set.round':['Round up to ($)','Redondear a ($)'],
+'set.weeks':['Weeks per month','Semanas por mes'],'set.valid':['Proposal valid (days)','Vigencia de la propuesta (días)'],
+'set.prod':['Cleaning speed by facility type','Rendimiento por tipo de instalación'],'set.prodHint':['Square feet one cleaner finishes per hour. Lower = slower, more detailed work.','Pies cuadrados que un limpiador termina por hora. Menos = trabajo más lento y detallado.'],
+'set.prodCols':['Name (English) · sq ft/hr · Name (Spanish)','Nombre (inglés) · pies²/h · Nombre (español)'],'set.addFt':['Add facility type','Agregar tipo de instalación'],'set.newFt':['New facility type','Nuevo tipo de instalación'],
+'set.adders':['Time adders','Tiempos adicionales'],'set.restMin':['Minutes per restroom','Minutos por baño'],'set.setupMin':['Setup & lockup (min/visit)','Preparación y cierre (min/visita)'],
+'set.floorMin':['Minutes per extra floor','Minutos por piso adicional'],'set.hardAdj':['Hard floor speed adjustment %','Ajuste por piso duro %'],'set.dayAdj':['Daytime (occupied) slowdown %','Ajuste por horario diurno %'],
+'set.tasks':['Tasks','Tareas'],'set.perVisit':['min per visit','min por visita'],'set.perRoom':['min per breakroom','min por comedor'],'set.minutes':['Minutes','Minutos'],'set.per1000':['per 1,000 sq ft','por cada 1,000 pies²'],'set.taskCols':['Name (English) · minutes · how it counts · Name (Spanish)','Nombre (inglés) · minutos · cómo se cuenta · Nombre (español)'],
+'set.nameEn':['Name (English)','Nombre (inglés)'],'set.nameEs':['Name (Spanish)','Nombre (español)'],
+'set.addonRates':['Add-on rates','Tarifas de servicios adicionales'],'set.placeholder':['Starting numbers only. Check them against your real costs and local prices.','Son cifras de referencia. Compárelas con sus costos reales y los precios locales.'],
+'set.carpet':['Carpet extraction ($/sq ft)','Lavado de alfombras ($/pie²)'],'set.strip':['Strip & wax ($/sq ft)','Decapado y encerado ($/pie²)'],'set.pressure':['Pressure washing ($/sq ft)','Lavado a presión ($/pie²)'],
+'set.addonMin':['Add-on minimum ($)','Mínimo por servicio adicional ($)'],'set.deepMult':['Deep clean = regular visit ×','Limpieza profunda = visita normal ×'],
+'set.tiers':['Good / Better / Best options','Opciones Básica / Plus / Premium'],'set.tiersHint':['Multiplier on the base price, plus the name and description on the proposal in each language.','Multiplicador sobre el precio base, y el nombre y la descripción de la propuesta en cada idioma.'],
+'set.tName':['Name (EN)','Nombre (EN)'],'set.tNameEs':['Name (ES)','Nombre (ES)'],'set.tLabel':['Label (EN)','Etiqueta (EN)'],'set.tLabelEs':['Label (ES)','Etiqueta (ES)'],'set.tMult':['× price','× precio'],
+'set.tDesc':['Description (EN)','Descripción (EN)'],'set.tDescEs':['Description (ES)','Descripción (ES)'],
+'set.terms':['Proposal terms','Condiciones de la propuesta'],'set.termsHint':['One term per line. {legal} and {company} fill in automatically.','Una condición por línea. {legal} y {company} se llenan automáticamente.'],
+'set.termsEn':['Terms (English)','Condiciones (inglés)'],'set.termsEs':['Terms (Spanish)','Condiciones (español)'],
+'set.applyNew':['Changes apply to new bids. Open a saved bid and tap “Use my current Settings rates” to update it.','Los cambios aplican a cotizaciones nuevas. Abra una cotización guardada y toque “Usar mis tarifas actuales” para actualizarla.'],
+'set.reset':['Reset settings to defaults','Restablecer ajustes'],'set.version':['Version {v} · Data is stored only on this device.','Versión {v} · Los datos se guardan solo en este dispositivo.'],
+/* Toasts & confirms */
+'toast.bidSaved':['Bid saved','Cotización guardada'],'toast.bidCopied':['Bid duplicated','Cotización duplicada'],'toast.bidDeleted':['Bid deleted','Cotización eliminada'],'toast.bidFromLead':['Bid started from lead','Cotización creada desde el prospecto'],
+'toast.leadSaved':['Saved {name}','Se guardó {name}'],'toast.leadDeleted':['Lead deleted','Prospecto eliminado'],'toast.leadUpdated':['Lead is now: {s}','Prospecto ahora: {s}'],
+'toast.logged':['Logged','Registrado'],'toast.logCall':['Call logged','Llamada registrada'],'toast.emailLogged':['Email logged','Correo registrado'],'toast.typeNote':['Type a note first','Escriba una nota primero'],
+'toast.walkSet':['Walkthrough booked','Recorrido agendado'],'toast.needName':['Business name is required','El nombre del negocio es obligatorio'],'toast.copied':['Copied','Copiado'],
+'toast.dncMatch':['On your Do-not-contact list, saved as Do not contact','Está en su lista de No contactar; se guardó como No contactar'],'toast.dncSwept':['{n} leads marked Do not contact','{n} prospectos marcados No contactar'],
+'toast.starter':['Added {added} leads ({dup} already there, {dnc} do-not-contact skipped)','Se agregaron {added} prospectos ({dup} ya existían, {dnc} de No contactar omitidos)'],
+'toast.backup':['Backup downloaded','Respaldo descargado'],'toast.badBackup':['That is not a valid backup file','Ese no es un archivo de respaldo válido'],'toast.restored':['Restored: {a} added, {r} updated','Restaurado: {a} agregados, {r} actualizados'],
+'toast.csv':['CSV downloaded','CSV descargado'],'toast.noBids':['No bids to export','No hay cotizaciones para exportar'],'toast.noLeads':['No leads to export','No hay prospectos para exportar'],
+'toast.logo':['Logo saved','Logo guardado'],'toast.ratesUpdated':['Rates updated','Tarifas actualizadas'],'toast.reset':['Settings reset','Ajustes restablecidos'],'toast.keepOne':['Keep at least one','Debe quedar al menos uno'],
+'toast.storageFail':['Could not save, phone storage is full or blocked','No se pudo guardar: el almacenamiento está lleno o bloqueado'],
+'confirm.delBid':['Delete bid for {name}?','¿Eliminar la cotización de {name}?'],'confirm.delLead':['Delete {name} and its activity? Linked bids are kept.','¿Eliminar a {name} y su actividad? Las cotizaciones vinculadas se conservan.'],
+'confirm.delFt':['Remove facility type {name}?','¿Quitar el tipo de instalación {name}?'],'confirm.dup':['{name} is already in your leads. Save anyway?','{name} ya está en sus prospectos. ¿Guardar de todos modos?'],
+'confirm.dnc':['Mark this business Do not contact?','¿Marcar este negocio como No contactar?'],'confirm.reset':['Reset all settings to defaults? Bids and leads are kept.','¿Restablecer todos los ajustes? Las cotizaciones y prospectos se conservan.'],
+'confirm.restoreSettings':['Also replace your Settings with the ones in the backup?','¿También reemplazar sus Ajustes con los del respaldo?'],
+/* Proposal (rendered in the CLIENT language) */
+'p.title':['Commercial Cleaning Proposal','Propuesta de Limpieza Comercial'],'p.preparedFor':['Prepared for','Preparada para'],'p.attn':['Attn:','Atención:'],
+'p.proposal':['Proposal','Propuesta'],'p.date':['Date','Fecha'],'p.valid':['Valid until','Válida hasta'],
+'p.facSched':['Facility & schedule','Instalaciones y horario'],'p.facility':['Facility','Instalaciones'],'p.sqftClean':['{n} sq ft cleanable','{n} pies² a limpiar'],
+'p.restroom1':['1 restroom','1 baño'],'p.restroomN':['{n} restrooms','{n} baños'],'p.floorsN':['{n} floors','{n} pisos'],
+'p.schedule':['Service schedule','Horario de servicio'],'p.perWeek':['{n}× per week','{n} veces por semana'],'p.perWeek1':['Once a week','Una vez por semana'],'p.biweekly':['Every other week','Cada dos semanas'],
+'p.scope':['Scope of work','Alcance del trabajo'],'p.each':['Each visit ({f})','En cada visita ({f})'],'p.weekly':['Weekly','Semanal'],'p.monthly':['Monthly','Mensual'],'p.notes':['Additional notes','Notas adicionales'],
+'p.pricing':['Pricing options','Opciones de precio'],'p.recommended':['Recommended','Recomendada'],'p.month':['/month','/mes'],'p.perVisit':['≈ {v} per visit','≈ {v} por visita'],
+'p.addons':['Add-on services (optional, billed separately)','Servicios adicionales (opcionales, se facturan aparte)'],'p.service':['Service','Servicio'],'p.frequency':['Frequency','Frecuencia'],'p.pricePer':['Price per service','Precio por servicio'],
+'p.sqftUnit':['sq ft','pies²'],'p.terms':['Terms','Condiciones'],'p.accept':['Acceptance','Aceptación'],'p.selected':['Selected option:','Opción elegida:'],'p.start':['Start date:','Fecha de inicio:'],
+'p.clientSig':['Client signature & date','Firma del cliente y fecha'],'p.printed':['Printed name & title','Nombre y cargo'],'p.client':['Client','Cliente'],'p.coSig':['{legal}: signature & date','{legal}: firma y fecha'],
+'p.thanks':['Thank you for the opportunity!','¡Gracias por la oportunidad!'],
+/* Scope of work lines (client language) */
+'sc.trash':['Empty trash and recycling; replace liners','Vaciar la basura y el reciclaje; cambiar las bolsas'],
+'sc.vacuum':['Vacuum carpeted areas and entry mats','Aspirar las áreas alfombradas y los tapetes de entrada'],
+'sc.mop':['Sweep and damp-mop hard floors','Barrer y trapear los pisos duros'],
+'sc.restrooms':['Clean and sanitize restrooms: toilets, urinals, sinks, mirrors and counters ({n})','Limpiar y desinfectar los baños: inodoros, mingitorios, lavabos, espejos y mostradores ({n})'],
+'sc.refill':['Refill paper towels, toilet tissue and hand soap (client-supplied)','Reponer toallas de papel, papel higiénico y jabón de manos (suministrados por el cliente)'],
+'sc.kitchen':['Clean breakroom / kitchen: counters, sinks, tables and appliance exteriors','Limpiar el comedor / cocina: mostradores, fregaderos, mesas y exterior de los electrodomésticos'],
+'sc.kitchenN':['Clean breakroom / kitchen: counters, sinks, tables and appliance exteriors ({n} breakrooms)','Limpiar los comedores / cocinas: mostradores, fregaderos, mesas y exterior de los electrodomésticos ({n} comedores)'],
+'sc.glass':['Clean entry glass and interior glass doors','Limpiar los vidrios de la entrada y las puertas de vidrio interiores'],
+'sc.disinfect':['Disinfect high-touch points: door handles, light switches, railings and shared equipment','Desinfectar puntos de alto contacto: manijas, interruptores, barandales y equipo compartido'],
+'sc.dust':['Dust and wipe reachable cleared desks, counters and surfaces','Sacudir y limpiar escritorios despejados, mostradores y superficies al alcance'],
+'sc.w.dust':['Detail dust reachable ledges, sills and furniture','Sacudir a detalle repisas, marcos de ventana y muebles al alcance'],
+'sc.w.spot':['Spot-clean walls, doors, frames and switch plates','Limpiar manchas en paredes, puertas, marcos y placas de interruptores'],
+'sc.w.micro':['Clean inside of microwaves','Limpiar el interior de los microondas'],'sc.w.edges':['Detail-mop edges and corners','Trapear a detalle orillas y esquinas'],
+'sc.m.high':['High dusting: vents, return grilles, corners and reachable light fixtures','Sacudir en alto: ventilas, rejillas, esquinas y lámparas al alcance'],
+'sc.m.base':['Wipe baseboards','Limpiar los zoclos'],'sc.m.uph':['Vacuum upholstered chairs and furniture','Aspirar sillas y muebles tapizados'],
+'sc.f.medical1':['Disinfect exam / operatory room counters, chairs and touch surfaces with EPA-registered disinfectant (no sharps or regulated medical waste handling)','Desinfectar mostradores, sillas y superficies de contacto en consultorios con desinfectante registrado ante la EPA (no incluye manejo de objetos punzocortantes ni residuos médicos regulados)'],
+'sc.f.medical2':['Clean waiting room seating and check-in counters','Limpiar los asientos de la sala de espera y los mostradores de recepción'],
+'sc.f.church1':['Tidy and clean sanctuary / worship space: seating, aisles and platform area','Ordenar y limpiar el santuario: asientos, pasillos y plataforma'],
+'sc.f.church2':['Clean fellowship hall, classrooms and nursery as scheduled','Limpiar el salón social, los salones de clase y la guardería según el horario'],
+'sc.f.daycare1':['Sanitize child-height surfaces, tables and cubby tops with child-safe products','Desinfectar superficies a la altura de los niños, mesas y casilleros con productos seguros para niños'],
+'sc.f.daycare2':['Clean and sanitize classroom sinks and diaper-changing station surfaces','Limpiar y desinfectar los lavabos de los salones y los cambiadores de pañales'],
+'sc.f.gym1':['Clean and disinfect locker rooms and showers','Limpiar y desinfectar vestidores y regaderas'],
+'sc.f.gym2':['Wipe down equipment touchpoints, benches and mats','Limpiar los puntos de contacto de los aparatos, bancas y tapetes'],
+'sc.f.vet1':['Disinfect exam rooms, lobby counters and seating','Desinfectar consultorios, mostradores y asientos de la recepción'],
+'sc.f.vet2':['Clean and disinfect treatment and kennel-area floors (animal waste removal by clinic staff)','Limpiar y desinfectar los pisos de tratamiento y de las jaulas (el personal de la clínica retira los desechos de animales)'],
+'sc.f.apartment1':['Clean clubhouse, leasing office, mailroom and fitness room','Limpiar la casa club, la oficina de arrendamiento, el cuarto de correo y el gimnasio'],
+'sc.f.apartment2':['Clean common hallways, stairwells and elevator interiors','Limpiar pasillos comunes, escaleras e interior de elevadores'],
+'sc.f.dealership1':['Clean showroom floor, desks and glass','Limpiar el piso de exhibición, escritorios y vidrios'],
+'sc.f.dealership2':['Clean service lounge, coffee area and customer restrooms','Limpiar la sala de espera de servicio, el área de café y los baños de clientes']
+};
+
+/* ===== Bilingual sales content: phone scripts, email templates, finder categories =====
+   Variables in {braces} are filled in from Settings and the selected lead.
+   To add a language, add a matching key (e.g. "pt") next to "en" and "es". */
+var HOOKS={
+  medical:{en:'Patients notice a spotless waiting room and restrooms. We disinfect high-touch surfaces every visit, after hours, so we never get in the way of patients.',
+           es:'Los pacientes notan una sala de espera y unos baños impecables. Desinfectamos las superficies de alto contacto en cada visita, fuera de horario, para no interferir nunca con sus pacientes.'},
+  vet:{en:'We handle the daily disinfecting and odor control that pet hospitals need, after you close.',
+       es:'Nos encargamos de la desinfección diaria y del control de olores que necesita una clínica veterinaria, después de que cierran.'},
+  daycare:{en:'We sanitize classrooms, restrooms and high-touch surfaces after the kids go home.',
+           es:'Desinfectamos salones, baños y superficies de alto contacto después de que los niños se van a casa.'},
+  church:{en:'We can do a weekly clean plus a quick reset after Sunday services or events.',
+          es:'Podemos hacer una limpieza semanal y una puesta a punto rápida después de los servicios del domingo o de sus eventos.'},
+  gym:{en:'Locker rooms, restrooms and equipment are what members judge you on, and we keep them fresh.',
+       es:'Los socios juzgan su gimnasio por los vestidores, los baños y los equipos, y nosotros los mantenemos impecables.'},
+  apartment:{en:'We can take care of common areas, vacant-unit turnovers, carpets and exterior washing, and you only deal with one local vendor.',
+             es:'Podemos encargarnos de las áreas comunes, la limpieza de unidades desocupadas, las alfombras y el lavado a presión de exteriores, y usted trata con un solo proveedor local.'},
+  dealership:{en:'We clean showrooms, restrooms and service lounges, and we pressure wash the lot and entry.',
+              es:'Limpiamos salas de exhibición, baños y salas de espera de servicio, y lavamos a presión el estacionamiento y la entrada.'},
+  office:{en:'We work after hours, so your team walks into a clean office every morning without any disruption.',
+          es:'Trabajamos fuera de horario, así que su equipo llega cada mañana a una oficina limpia, sin interrupciones.'},
+  other:{en:'We work around your hours, so your customers and staff always walk into a clean space.',
+         es:'Trabajamos en el horario que a usted le convenga, para que sus clientes y su personal siempre encuentren un espacio limpio.'}
+};
+var SEGMENTS={
+  medical:{en:'medical and dental offices',es:'consultorios médicos y dentales'},
+  vet:{en:'veterinary clinics',es:'clínicas veterinarias'},
+  daycare:{en:'daycares and preschools',es:'guarderías y preescolares'},
+  church:{en:'churches',es:'iglesias'},
+  gym:{en:'gyms and fitness studios',es:'gimnasios y estudios de fitness'},
+  apartment:{en:'property managers',es:'administradoras de propiedades'},
+  dealership:{en:'auto dealerships',es:'concesionarios de autos'},
+  office:{en:'offices',es:'oficinas'},
+  other:{en:'local businesses',es:'negocios locales'}
+};
+var PHONE_SCRIPTS=[
+  {id:'gatekeeper',
+   en:'"Hi, this is {owner} with {company}. We\'re a local cleaning company here in {city}. Quick question: who takes care of your cleaning, the office manager or the owner? … Great, what\'s their name? … Is {contact} around for a minute?"\n\nIf they\'re not available: "No problem. When\'s a good time to catch them? And what\'s the best email for them?"\n\nIf you already emailed: "I sent {contact} a short email this week about cleaning, and I\'m just following up on it."',
+   es:'"Buenos días, le habla {owner}, de {company}. Somos una empresa de limpieza local aquí en {city}. Una pregunta rápida: ¿quién se encarga de la limpieza de sus instalaciones, el gerente de la oficina o el dueño? … Perfecto, ¿cómo se llama? … ¿Estará {contact} disponible un minuto?"\n\nSi no está disponible: "No se preocupe. ¿A qué hora me conviene llamarle? ¿Y cuál es su mejor correo electrónico?"\n\nSi ya le envió un correo: "Esta semana le envié a {contact} un breve correo sobre servicios de limpieza y solo quería darle seguimiento."'},
+  {id:'decision',
+   en:'"Hi {first}, this is {owner}. I own {company}, a local commercial cleaning company serving {city} and the surrounding area. I\'ll be quick. We do {services} for {segment} like yours. I\'m not calling to sell you anything over the phone. I just wanted to see if you\'d be open to a free walkthrough so I can give you a no-pressure quote."\n\nHook: "{hook}"',
+   es:'"Hola, {first}, le habla {owner}. Soy dueño de {company}, una empresa local de limpieza comercial que atiende {city} y sus alrededores. Seré breve. Ofrecemos {services} para {segment} como el suyo. No le llamo para venderle nada por teléfono; solo quería saber si le interesaría un recorrido gratuito para darle una cotización sin compromiso."\n\nGancho: "{hook}"'},
+  {id:'ask',
+   en:'"I do walkthroughs on {walkdays}. It takes about 20 minutes and there\'s no obligation. Would {walkdate} work, or is {walkdate2} better? Morning or afternoon?"\n\nThen confirm: "Perfect. I have you down for {walkday} [date] at [time] at [address]. What\'s the best email for a confirmation? And who should I ask for when I get there?"\n\nIf they\'re open to it: "About how big is the space?" · "How often are you cleaned now, and is there anything you wish was done better?"',
+   es:'"Hago los recorridos los {walkdays}. Toma unos 20 minutos y no hay ningún compromiso. ¿Le queda bien el {walkdate} o prefiere el {walkdate2}? ¿Por la mañana o por la tarde?"\n\nLuego confirme: "Perfecto. Lo tengo anotado para el {walkday} [fecha] a las [hora] en [dirección]. ¿A qué correo le envío la confirmación? ¿Y por quién pregunto cuando llegue?"\n\nSi tiene disposición: "¿Más o menos de qué tamaño es el espacio?" · "¿Con qué frecuencia limpian ahora y hay algo que le gustaría que se hiciera mejor?"'},
+  {id:'voicemail',
+   en:'"Hi {first}, this is {owner} with {company}, a local commercial cleaning company. I\'d love to set up a free walkthrough and quote for your space. Please call me at {phoneSpoken}. That\'s {phone}. Thanks!"\n\nAbout 15 seconds. Say the number slowly. Leave at most 2 voicemails, a few days apart, and send the follow-up email the same day.',
+   es:'"Hola, {first}, le habla {owner}, de {company}, una empresa local de limpieza comercial. Me gustaría programar un recorrido gratuito y darle una cotización para sus instalaciones. Por favor llámeme al {phoneSpoken}. Repito: {phone}. ¡Muchas gracias!"\n\nUnos 15 segundos. Diga el número despacio. Deje como máximo 2 mensajes, con unos días de diferencia, y envíe el correo de seguimiento el mismo día.'}
+];
+var OBJECTIONS=[
+  {en:['"We already have a cleaner."','"That\'s great, most businesses do. A lot of my clients had someone too and just wanted a second opinion on price or quality. Is there anything you\'d change about your current service? A free walkthrough gives you a comparison quote to keep on file, with no pressure to switch."'],
+   es:['"Ya tenemos a alguien que limpia."','"¡Qué bien! La mayoría de los negocios ya tiene a alguien. Muchos de mis clientes también tenían un servicio y solo querían una segunda opinión sobre el precio o la calidad. ¿Hay algo que le gustaría mejorar de su servicio actual? Con un recorrido gratuito usted tendría una cotización para comparar, sin ninguna presión para cambiar."']},
+  {en:['"Just send me some info."','"Happy to. What\'s the best email? … Most people find it easier to compare once they see real numbers for their space, and I can only price it after a quick look. Could I pencil in 20 minutes on {walkdate}, and you can cancel if the info doesn\'t fit?"'],
+   es:['"Mándeme información."','"Con mucho gusto. ¿Cuál es su mejor correo? … A la mayoría le resulta más fácil comparar cuando ve números reales para su espacio, y solo puedo cotizar después de verlo. ¿Le parece si apartamos 20 minutos el {walkdate}? Si la información no le sirve, lo cancelamos sin problema."']},
+  {en:['"It\'s too expensive." / "What do you charge?"','"I get it, every dollar counts. Pricing depends on square footage and how often you want service, so I don\'t want to guess and be wrong. Owners who go with us usually save because we set the schedule to what you actually need. The walkthrough and quote are free, so you can decide from there."'],
+   es:['"Es muy caro." / "¿Cuánto cobran?"','"Lo entiendo, cada dólar cuenta. El precio depende de los pies cuadrados y de la frecuencia del servicio, así que no quiero adivinar y darle un número equivocado. Los clientes que trabajan con nosotros suelen ahorrar porque ajustamos el horario a lo que realmente necesitan. El recorrido y la cotización son gratis, así que usted decide después."']},
+  {en:['"I\'m not the right person."','"Thanks for telling me. Who handles cleaning or facilities there? … What\'s the best way to reach them, phone or email? Mind if I say you sent me?"'],
+   es:['"No soy la persona indicada."','"Gracias por decírmelo. ¿Quién se encarga de la limpieza o del mantenimiento? … ¿Cuál es la mejor forma de contactarle, por teléfono o por correo? ¿Le molesta si le digo que usted me lo recomendó?"']},
+  {en:['"Not interested."','"No problem, I appreciate you being straight with me. Just so I know, is that because you\'re happy with your current setup, or because you don\'t need it right now? … Would it be OK if I checked back in a few months?" (If they say don\'t call: mark the lead "Do not contact" and stop.)'],
+   es:['"No me interesa."','"No hay problema, le agradezco la sinceridad. Solo para saber, ¿es porque está contento con su servicio actual o porque no lo necesita por ahora? … ¿Le parece bien si le vuelvo a llamar en unos meses?" (Si le pide que no vuelva a llamar: marque el prospecto como "No contactar" y no insista.)']},
+  {en:['"Call back later." / "I\'m busy."','"Of course. When\'s a better time, later today or tomorrow morning? … I\'ll call you then. If it\'s easier, I can put a walkthrough on the calendar now for {walkdate} and you can move it if you need to."'],
+   es:['"Llámeme después." / "Estoy ocupado."','"Claro que sí. ¿Cuándo le queda mejor, más tarde hoy o mañana por la mañana? … Le llamo entonces. Si le resulta más fácil, podemos apartar ahora un recorrido para el {walkdate} y lo cambia si lo necesita."']}
+];
+var EMAILS=[
+  {id:'intro',
+   en:{subject:'Free cleaning walkthrough for {business}',
+       body:'{greet}\n\nI\'m {owner}, owner of {company}, a local commercial cleaning company serving {area}.\n\nWe provide {services}, all scheduled around your hours, for {segment} like {business}.\n\nI\'d love to offer you a free, no-obligation walkthrough. It takes about 20 minutes, and I\'ll send a written quote within a day or two. I do walkthroughs on {walkdays}. Would {walkdate} work for you?\n\nThank you,\n{signature}'},
+   es:{subject:'Recorrido gratuito de limpieza para {business}',
+       body:'{greet}\n\nMi nombre es {owner} y soy dueño de {company}, una empresa local de limpieza comercial que atiende {area}.\n\nOfrecemos {services}, siempre en horarios que se adaptan a su negocio, para {segment} como {business}.\n\nMe gustaría ofrecerle un recorrido gratuito y sin compromiso. Toma unos 20 minutos y le envío una cotización por escrito en uno o dos días. Hago los recorridos los {walkdays}. ¿Le queda bien el {walkdate}?\n\nSaludos cordiales,\n{signature}'}},
+  {id:'aftercall',
+   en:{subject:'Great talking with you – {company}',
+       body:'{greet}\n\nThanks for taking my call today. As promised, here\'s a quick overview: {company} handles {services}, all scheduled around your hours.\n\n{walkline}\n\nIf you have any questions, just reply to this email or call me at {phone}.\n\nThanks again,\n{signature}'},
+   es:{subject:'Gracias por su tiempo – {company}',
+       body:'{greet}\n\nGracias por atender mi llamada hoy. Como le comenté, en {company} ofrecemos {services}, siempre en horarios que se adaptan a su negocio.\n\n{walkline}\n\nSi tiene alguna pregunta, puede responder a este correo o llamarme al {phone}.\n\nSaludos cordiales,\n{signature}'}},
+  {id:'afterwalk',
+   en:{subject:'Your cleaning proposal from {company}',
+       body:'{greet}\n\nThank you for showing me around {business}. Attached is our proposal for your facility, with three service options so you can choose the level that fits your needs and budget.\n\n{bidline}\n\nEvery option includes after-hours service, a dedicated local team, and full insurance coverage (general liability and workers\' compensation). I\'m happy to adjust the scope or schedule.\n\nOnce you\'ve picked an option, just sign and return the proposal and we\'ll schedule your first cleaning.\n\nThank you,\n{signature}'},
+   es:{subject:'Su propuesta de limpieza de {company}',
+       body:'{greet}\n\nGracias por mostrarme las instalaciones de {business}. Le adjunto nuestra propuesta con tres opciones de servicio para que elija la que mejor se adapte a sus necesidades y a su presupuesto.\n\n{bidline}\n\nTodas las opciones incluyen servicio fuera de horario, un equipo local dedicado y cobertura de seguro completa (responsabilidad civil general y compensación laboral). Con gusto ajusto el alcance o el horario.\n\nCuando elija una opción, solo firme y devuélvanos la propuesta y programaremos su primera limpieza.\n\nSaludos cordiales,\n{signature}'}},
+  {id:'checkin',
+   en:{subject:'Checking in – {company}',
+       body:'{greet}\n\nI wanted to check in and see if you\'ve had a chance to think about your cleaning needs at {business}. If the timing wasn\'t right before, I\'m happy to come by for a quick, free walkthrough whenever it\'s convenient. I do walkthroughs on {walkdays}.\n\nIs there anything I can answer for you?\n\nBest regards,\n{signature}'},
+   es:{subject:'Seguimiento – {company}',
+       body:'{greet}\n\nQuería saber si ha tenido oportunidad de pensar en el servicio de limpieza para {business}. Si antes no era el momento, con gusto paso a hacer un recorrido rápido y gratuito cuando le convenga. Hago los recorridos los {walkdays}.\n\n¿Hay algo en lo que le pueda ayudar?\n\nSaludos cordiales,\n{signature}'}}
+];
+var TEMPLATE_BITS={
+  greetName:{en:'Hi {first},',es:'Hola, {first}:'},
+  greetNone:{en:'Hello,',es:'Buenos días:'},
+  walkBooked:{en:'I have you down for a free walkthrough on {walkwhen}{at}. It takes about 20 minutes, and I\'ll send you a written quote within a day or two.',
+              es:'Quedamos para un recorrido gratuito el {walkwhen}{at}. Toma unos 20 minutos y le enviaré una cotización por escrito en uno o dos días.'},
+  walkOpen:{en:'If a free walkthrough would help, just reply with a day that works. I do walkthroughs on {walkdays}, and {walkdate} is open.',
+            es:'Si le interesa un recorrido gratuito, solo responda con el día que mejor le quede. Hago los recorridos los {walkdays} y tengo disponible el {walkdate}.'},
+  atAddr:{en:' at {address}',es:' en {address}'},
+  bidline:{en:'Monthly options: {tiers}.',es:'Opciones mensuales: {tiers}.'},
+  timeAt:{en:'{date} at {time}',es:'{date} a las {time}'},
+  phName:{en:'[Name]',es:'[Nombre]'},
+  phBusiness:{en:'[Business]',es:'[Negocio]'},
+  phCity:{en:'your area',es:'su zona'},
+  and:{en:'and',es:'y'}
+};
+var DIGITS={en:['zero','one','two','three','four','five','six','seven','eight','nine'],es:['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve']};
+/* Prospect Finder categories. q = English search phrase (businesses here are listed in English). */
+var FINDER_CATS=[
+  {k:'office',q:'office building',titles:['office manager','facilities manager']},
+  {k:'medical',q:'medical office',titles:['practice manager','office manager']},
+  {k:'dental',q:'dentist',titles:['dental office manager','practice manager']},
+  {k:'chiro',q:'chiropractor',titles:['office manager','clinic director']},
+  {k:'church',q:'church',titles:['church administrator','facilities director']},
+  {k:'daycare',q:'daycare',titles:['center director','childcare owner']},
+  {k:'gym',q:'gym',titles:['gym general manager','fitness studio owner']},
+  {k:'vet',q:'veterinary clinic',titles:['veterinary practice manager','hospital manager']},
+  {k:'property',q:'property management company',titles:['property manager','facilities manager']},
+  {k:'apartment',q:'apartment complex',titles:['community manager','property manager']},
+  {k:'dealership',q:'car dealership',titles:['dealership general manager','facilities manager']},
+  {k:'cowork',q:'coworking space',titles:['community manager','operations manager']},
+  {k:'school',q:'private school',titles:['facilities director','business manager']},
+  {k:'retail',q:'retail store',titles:['store manager','owner']}
+];
+
+var SKEY='zzp_settings_v1',BKEY='zzp_bids_v1',LKEY='zzp_leads_v1',APP_VERSION=2;
+var LANG_CODES=LANGS.map(function(l){return l.code});
+
+/* ===================== Defaults (all editable in Settings) ===================== */
+var DEFAULTS={
+  schema:2, lang:'',
+  company:{legalName:'Choto Enterprises, Inc.',dba:'Zim Zam Cleaning',logoText:'ZZ',logoImage:'',
+    phone:'(984) 274-4313',email:'NapoleonChotojr@gmail.com',website:'https://zimzamcleaning.com/',
+    serviceArea:'Raleigh · Cary · Durham · Garner · Clayton, NC',brandColor:'#0e7c66',proposalPrefix:'ZZ',
+    repName:'Napoleon Choto',repTitle:'Owner',repTitleEs:'Propietario',
+    services:'recurring janitorial, deep cleaning and disinfection, carpet cleaning, and exterior pressure washing',
+    servicesEs:'limpieza comercial recurrente, limpieza profunda y desinfección, lavado de alfombras y lavado a presión de exteriores'},
+  wage:18, burdenPct:20,
+  pricingMode:'margin', targetMarginPct:30, billRate:40,
+  supplyPct:6, overheadPct:10, minMonthly:300, roundTo:5, weeksPerMonth:4.33,
+  restroomMin:12, extraFloorMin:5, setupMin:10, hardFloorAdjPct:10, daytimeAdjPct:10,
+  facilityTypes:[
+    {id:'office',name:'General office',nameEs:'Oficina general',rate:3000},
+    {id:'medical',name:'Medical / dental office',nameEs:'Consultorio médico / dental',rate:2000},
+    {id:'church',name:'Church / place of worship',nameEs:'Iglesia / templo',rate:3500},
+    {id:'daycare',name:'Daycare / childcare',nameEs:'Guardería / cuidado infantil',rate:2000},
+    {id:'gym',name:'Gym / fitness center',nameEs:'Gimnasio / centro de fitness',rate:2500},
+    {id:'vet',name:'Veterinary clinic',nameEs:'Clínica veterinaria',rate:1800},
+    {id:'apartment',name:'Apartment common areas / clubhouse',nameEs:'Áreas comunes de apartamentos / casa club',rate:2500},
+    {id:'dealership',name:'Auto dealership',nameEs:'Concesionario de autos',rate:3000},
+    {id:'other',name:'Retail / other',nameEs:'Comercio / otro',rate:3000}
+  ],
+  tasks:[
+    {id:'trash',label:'Trash & recycling removal',labelEs:'Retiro de basura y reciclaje',mode:'visit',minutes:0},
+    {id:'kitchen',label:'Kitchen / breakroom',labelEs:'Cocina / comedor',mode:'visit',minutes:15,qty:'breakrooms'},
+    {id:'glass',label:'Entry & interior glass',labelEs:'Vidrios de entrada e interiores',mode:'visit',minutes:10},
+    {id:'disinfect',label:'Disinfect high-touch points',labelEs:'Desinfección de superficies de alto contacto',mode:'per1000',minutes:3}
+  ],
+  tiers:[
+    {name:'Good',label:'Essential',nameEs:'Básica',labelEs:'Esencial',mult:1.00,
+     desc:'Core cleaning on the schedule above: trash, restrooms, floors, and the tasks listed each visit.',
+     descEs:'Limpieza esencial según el horario indicado: basura, baños, pisos y las tareas incluidas en cada visita.'},
+    {name:'Better',label:'Enhanced',nameEs:'Plus',labelEs:'Mejorada',mult:1.15,
+     desc:'Everything in Essential, plus detail dusting, baseboards and high-touch disinfection every visit.',
+     descEs:'Todo lo de la opción Esencial, más sacudido detallado, zócalos y desinfección de superficies de alto contacto en cada visita.'},
+    {name:'Best',label:'Premium',nameEs:'Premium',labelEs:'Integral',mult:1.30,
+     desc:'Everything in Enhanced, plus monthly high dusting and vents, interior glass detail, and extra attention to entries and lobbies.',
+     descEs:'Todo lo de la opción Mejorada, más limpieza mensual de partes altas y rejillas, detalle de vidrios interiores y atención especial a entradas y recepciones.'}
+  ],
+  addons:{carpetRate:0.30, stripRate:0.40, pressureRate:0.20, minCharge:150, deepCleanMult:2.5},
+  validDays:30,
+  terms:{
+    en:['Either party may cancel this agreement with 30 days written notice.',
+      'Services are invoiced monthly; payment is due net 15 days from the invoice date.',
+      '{legal} is insured with General Liability and Workers Compensation coverage. Certificates of insurance are available on request.',
+      'Cleaning chemicals and equipment are provided by {company}. Restroom paper products, hand soap and trash liners are supplied by the client unless otherwise agreed in writing.',
+      'Add-on services are scheduled and billed separately at the prices listed.',
+      'This proposal is valid for 30 days from the date shown.'],
+    es:['Cualquiera de las partes puede cancelar este acuerdo con un aviso por escrito de 30 días.',
+      'Los servicios se facturan mensualmente; el pago vence a los 15 días de la fecha de la factura (neto 15).',
+      '{legal} cuenta con seguro de Responsabilidad Civil General (General Liability) y de Compensación Laboral (Workers Compensation). Los certificados de seguro están disponibles a solicitud.',
+      '{company} proporciona los productos químicos y el equipo de limpieza. El papel higiénico, las toallas de papel, el jabón de manos y las bolsas de basura los suministra el cliente, salvo acuerdo por escrito.',
+      'Los servicios adicionales se programan y facturan por separado a los precios indicados.',
+      'Esta propuesta es válida por 30 días a partir de la fecha indicada.']
+  },
+  walkDay:2, walkTime:'10:00', walkMinutes:30,
+  cities:['Raleigh, NC','Cary, NC','Durham, NC','Garner, NC','Clayton, NC'],
+  dncList:['Noah Family Dentistry']
+};
+var PRICING_KEYS=['wage','burdenPct','pricingMode','targetMarginPct','billRate','supplyPct','overheadPct','minMonthly','roundTo','weeksPerMonth','restroomMin','extraFloorMin','setupMin','hardFloorAdjPct','daytimeAdjPct','facilityTypes','tasks','tiers','addons'];
+var FREQS={none:0,once:0,monthly:12,quarterly:4,semiannual:2,annual:1};
+var TIMES=['afterhours','earlymorning','weekend','daytime'];
+var BSTATUS=['Draft','Sent','Won','Lost'];
+var LSTATUS=['new','called','vm','interested','walk','bidsent','won','lost','dnc'];
+var RANK={new:0,called:1,vm:2,interested:3,walk:4,bidsent:5,won:6,lost:6,dnc:9};
+var SOURCES=['maps','google','linkedin','yelp','driveby','referral','calllist','webform','import','other'];
+var LEAD_FIELDS=['business','contact','title','phone','email','website','address','city','category','source','status','priority','nextFollowUp','bestTime','notes'];
+
+/* ===================== Helpers ===================== */
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function merge(def,val){
+  if(Array.isArray(def)) return Array.isArray(val)?val:clone(def);
+  if(def&&typeof def==='object'){var out={},k;for(k in def)out[k]=merge(def[k],val?val[k]:undefined);if(val&&typeof val==='object')for(k in val)if(!(k in out))out[k]=val[k];return out}
+  return (val===undefined||val===null)?def:val;
+}
+function num(v,d){var n=parseFloat(v);return isFinite(n)?n:(d===undefined?0:d)}
+function ceilTo(n,step){step=num(step);return step>0?Math.ceil(n/step-1e-9)*step:Math.round(n*100)/100}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function money(n,cents){n=num(n);return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:cents?2:0,maximumFractionDigits:cents?2:0})}
+function pct(n){return (num(n)*100).toFixed(1)+'%'}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function nowIso(){return new Date().toISOString()}
+function getPath(o,p){return p.split('.').reduce(function(a,k){return a==null?undefined:a[k]},o)}
+function setPath(o,p,v){var ks=p.split('.'),last=ks.pop();ks.forEach(function(k){if(o[k]==null||typeof o[k]!=='object')o[k]={};o=o[k]});o[last]=v}
+function $(id){return document.getElementById(id)}
+function fill(s,vars){return String(s).replace(/\{(\w+)\}/g,function(m,k){return vars&&vars[k]!==undefined?vars[k]:m})}
+function pad(n){return String(n).padStart(2,'0')}
+function isoDate(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function today(){return isoDate(new Date())}
+function parseD(iso){var p=String(iso).slice(0,10).split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function addDays(iso,n){var d=parseD(iso);d.setDate(d.getDate()+n);return isoDate(d)}
+function addBizDays(iso,n){var d=parseD(iso);while(n>0){d.setDate(d.getDate()+1);if(d.getDay()!==0&&d.getDay()!==6)n--}return isoDate(d)}
+function loc(lang){return lang==='es'?'es-US':'en-US'}
+function fmtDate(iso,lang){if(!iso)return'';return parseD(iso).toLocaleDateString(loc(lang||uiLang()),{month:'long',day:'numeric',year:'numeric'})}
+function fmtShort(iso,lang){if(!iso)return'';return parseD(iso).toLocaleDateString(loc(lang||uiLang()),{weekday:'short',month:'short',day:'numeric'})}
+function fmtDay(iso,lang){return parseD(iso).toLocaleDateString(loc(lang||uiLang()),{weekday:'long',month:'long',day:'numeric'})}
+function dtParts(v){var m=/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/.exec(v||'');return m?{date:m[1],h:+m[2],mi:+m[3]}:null}
+function fmtTime(h,mi,lang){var d=new Date(2000,0,1,h,mi);return d.toLocaleTimeString(loc(lang||uiLang()),{hour:'numeric',minute:'2-digit'})}
+function fmtWhen(v,lang){var p=dtParts(v);if(!p)return'';return fill(tbit('timeAt',lang||uiLang()),{date:fmtDay(p.date,lang),time:fmtTime(p.h,p.mi,lang)})}
+function telHref(p){return 'tel:'+String(p||'').replace(/[^\d+]/g,'')}
+function norm(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'')}
+
+/* ===================== i18n ===================== */
+var S=null;
+function uiLang(){var l=S&&S.lang;if(l&&LANG_CODES.indexOf(l)>=0)return l;var n=String((typeof navigator!=='undefined'&&navigator.language)||'en').slice(0,2).toLowerCase();return LANG_CODES.indexOf(n)>=0?n:'en'}
+function tl(lang,key,vars){var a=T[key],i=LANG_CODES.indexOf(lang);if(i<0)i=0;var s=a?a[i]:undefined;if(s===undefined||s===null)return '⟦'+key+'⟧';return vars?fill(s,vars):s}
+function t(key,vars){return tl(uiLang(),key,vars)}
+function tbit(k,lang){var b=TEMPLATE_BITS[k];return b?(b[lang]||b.en):k}
+function pick(obj,lang){return obj?(obj[lang]||obj.en):''}
+function locName(o,field,lang){if(!o)return'';if(lang==='es'&&o[field+'Es'])return o[field+'Es'];return o[field]||''}
+function cityName(c){return String(c||'').replace(/,\s*[A-Z]{2}\s*$/,'').trim()}
+function weekdayName(i,lang){var d=new Date(2024,0,7+num(i));return d.toLocaleDateString(loc(lang),{weekday:'long'})}
+function weekdayPlural(i,lang){var n=weekdayName(i,lang);if(lang==='es')return /[oa]$/.test(n)?n+'s':n;return n+'s'}
+
+/* ===================== Storage & migration ===================== */
+var mem={};
+function load(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return mem[k]||null}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){mem[k]=v;toast(t('toast.storageFail'))}}
+function fillEs(p){
+  if(!p)return p;
+  (p.facilityTypes||[]).forEach(function(f){if(f.nameEs==null){var d=DEFAULTS.facilityTypes.filter(function(x){return x.id===f.id})[0];f.nameEs=d&&d.name===f.name?d.nameEs:''}});
+  (p.tasks||[]).forEach(function(x){if(x.labelEs==null){var d=DEFAULTS.tasks.filter(function(y){return y.id===x.id})[0];x.labelEs=d?d.labelEs:''}});
+  (p.tiers||[]).forEach(function(x,i){var d=DEFAULTS.tiers[i];if(x.nameEs==null)x.nameEs=d?d.nameEs:'';if(x.labelEs==null)x.labelEs=d?d.labelEs:'';if(x.descEs==null)x.descEs=d?d.descEs:''});
+  return p;
+}
+function migrateSettings(raw){
+  raw=raw||{};
+  if(Array.isArray(raw.terms))raw.terms={en:raw.terms};
+  var s=merge(DEFAULTS,raw);s.schema=2;fillEs(s);return s;
+}
+function migrateBid(b){if(b.clientLang==null)b.clientLang='en';if(b.leadId==null)b.leadId='';if(b.pricing)fillEs(b.pricing);return b}
+function migrateLead(l){return Object.assign(newLead(),l)}
+S=migrateSettings(load(SKEY));
+var BIDS=(load(BKEY)||[]).map(migrateBid);
+var LEADS=(load(LKEY)||[]).map(migrateLead);
+function saveSettings(){store(SKEY,S);applyBrand()}
+function saveBids(){store(BKEY,BIDS)}
+function saveLeads(){store(LKEY,LEADS)}
+
+/* ===================== Pricing engine (pure) ===================== */
+function pricingSettings(bid){var out=clone(S);if(bid&&bid.pricing)PRICING_KEYS.forEach(function(k){if(bid.pricing[k]!==undefined)out[k]=clone(bid.pricing[k])});return out}
+function snapshotPricing(){var p={};PRICING_KEYS.forEach(function(k){p[k]=clone(S[k])});return p}
+function calcBid(b,s){
+  var r={warnings:[],errors:[]};
+  var loaded=num(s.wage)*(1+num(s.burdenPct)/100);r.loadedRate=loaded;
+  var ft=(s.facilityTypes||[]).filter(function(f){return f.id===b.facilityType})[0]||(s.facilityTypes||[])[0]||{id:'x',name:'Facility',rate:3000};
+  r.facility=ft;
+  var sqft=Math.max(0,num(b.sqft));r.sqft=sqft;
+  var prate=num(b.prodRate)>0?num(b.prodRate):Math.max(1,num(ft.rate,3000));r.prodRate=prate;
+  var hard=Math.min(100,Math.max(0,num(b.hardPct,50)));
+  var floorFactor=1+num(s.hardFloorAdjPct)/100*(hard-50)/100;r.floorFactor=floorFactor;
+  var dayFactor=b.timeOfService==='daytime'?1+num(s.daytimeAdjPct)/100:1;r.dayFactor=dayFactor;
+  var p={};
+  p.area=sqft/prate*floorFactor;
+  p.restrooms=Math.max(0,num(b.restrooms))*num(s.restroomMin)/60;
+  p.floors=Math.max(0,num(b.floors,1)-1)*num(s.extraFloorMin)/60;
+  var tasks=0;(s.tasks||[]).forEach(function(x){if(b.tasks&&b.tasks[x.id]){var m=num(x.minutes);if(x.mode==='per1000')m=m*sqft/1000;if(x.qty)m*=Math.max(1,num(b[x.qty],1));tasks+=m/60}});
+  p.tasks=tasks;
+  p.setup=sqft>0?num(s.setupMin)/60:0;
+  r.parts=p;
+  var baseVisit=(p.area+p.restrooms+p.floors+p.tasks+p.setup)*dayFactor;r.baseVisitHrs=baseVisit;
+  var vpw=Math.max(0,num(b.visitsPerWeek));var vpm=vpw*num(s.weeksPerMonth,4.33);r.visitsPerMonth=vpm;
+  var supply=num(s.supplyPct)/100,over=num(s.overheadPct)/100,margin=num(s.targetMarginPct)/100;
+  var denom=1-supply-over-margin;r.denom=denom;
+  var rateMode=s.pricingMode==='rate';
+  if(!rateMode&&denom<=0.05)r.errors.push({key:'err.denom'});
+  function priceFor(visitHrs,overridePrice){
+    var monthHrs=visitHrs*vpm,labor=monthHrs*loaded;
+    var raw=rateMode?monthHrs*num(s.billRate):(denom>0.05?labor/denom:0);
+    var calc=ceilTo(raw,s.roundTo),price=calc,minApplied=false;
+    if(overridePrice>0)price=overridePrice;
+    else if(vpm>0&&calc<num(s.minMonthly)){price=num(s.minMonthly);minApplied=true}
+    var supplies=price*supply,overhead=price*over,gross=price-labor-supplies,net=gross-overhead;
+    return {visitHrs:visitHrs,monthHrs:monthHrs,labor:labor,raw:raw,calc:calc,price:price,minApplied:minApplied,overridden:overridePrice>0,
+      supplies:supplies,overhead:overhead,gross:gross,grossPct:price?gross/price:0,net:net,netPct:price?net/price:0,
+      perVisit:vpm?price/vpm:0,perSqft:sqft?price/sqft:0,billedPerHour:monthHrs?price/monthHrs:0};
+  }
+  var tiers=s.tiers&&s.tiers.length?s.tiers:DEFAULTS.tiers;var m0=num(tiers[0].mult,1)||1;var ov=num(b.overridePrice);
+  r.tiers=tiers.map(function(x,i){var mult=num(x.mult,1);var o=ov>0?(i===0?ov:ceilTo(ov*mult/m0,s.roundTo)):0;var y=priceFor(baseVisit*mult,o);y.tier=x;y.name=x.name;y.mult=mult;return y});
+  var main=r.tiers[0];r.main=main;
+  if(!sqft)r.warnings.push({lvl:'info',key:'w.noSqft'});
+  if(!vpw)r.warnings.push({lvl:'info',key:'w.noVpw'});
+  if(sqft&&vpw){
+    if(main.minApplied)r.warnings.push({lvl:'warn',key:'w.minApplied',vars:{calc:money(main.calc),min:money(s.minMonthly)}});
+    if(main.overridden&&main.price<num(s.minMonthly))r.warnings.push({lvl:'warn',key:'w.overUnderMin',vars:{min:money(s.minMonthly)}});
+    if(main.netPct<0)r.warnings.push({lvl:'bad',key:'w.loss',vars:{net:money(main.net),pct:pct(main.netPct)}});
+    else if(main.netPct<margin-0.0005)r.warnings.push({lvl:'warn',key:'w.belowTarget',vars:{pct:pct(main.netPct),target:pct(margin)}});
+  }
+  var A=b.addons||{},addons=[];
+  function area(key,rateKey){var a=A[key]||{};if(!a.freq||a.freq==='none'||FREQS[a.freq]===undefined)return;var sq=num(a.sqft);var rate=(a.rate!==''&&a.rate!=null)?num(a.rate):num(s.addons[rateKey]);
+    var per=Math.max(num(s.addons.minCharge),ceilTo(sq*rate,s.roundTo));if(num(a.price)>0)per=num(a.price);
+    addons.push({key:key,sqft:sq,rate:rate,freq:a.freq,perService:per,monthly:per*FREQS[a.freq]/12,oneTime:a.freq==='once'?per:0})}
+  area('carpet','carpetRate');area('strip','stripRate');area('pressure','pressureRate');
+  if(A.deep&&A.deep.on){var dh=(sqft/prate*floorFactor*num(s.addons.deepCleanMult,2.5))+Math.max(0,num(b.restrooms))*num(s.restroomMin)*2/60+p.setup;
+    var draw=rateMode?dh*num(s.billRate):(denom>0.05?dh*loaded/denom:0);var dp=Math.max(num(s.addons.minCharge),ceilTo(draw,s.roundTo));if(num(A.deep.price)>0)dp=num(A.deep.price);
+    addons.push({key:'deep',hours:dh,labor:dh*loaded,freq:'once',perService:dp,monthly:0,oneTime:dp})}
+  r.addons=addons;
+  r.addonOneTime=addons.reduce(function(a,x){return a+x.oneTime},0);
+  r.addonMonthly=addons.reduce(function(a,x){return a+x.monthly},0);
+  return r;
+}
+
+/* ===================== Bids model ===================== */
+function propNumber(){return (S.company.proposalPrefix||'BID')+'-'+today().replace(/-/g,'').slice(2)+'-'+String(Math.floor(Math.random()*900)+100)}
+function newBid(){
+  return {id:uid(),number:propNumber(),created:nowIso(),updated:nowIso(),date:today(),status:'Draft',
+    client:'',contact:'',contactTitle:'',phone:'',email:'',address:'',
+    facilityType:(S.facilityTypes[0]||{}).id,prodRate:'',sqft:'',restrooms:'',floors:'1',hardPct:'50',
+    visitsPerWeek:'3',days:'',timeOfService:'afterhours',
+    tasks:{trash:true,kitchen:false,glass:false,disinfect:false},breakrooms:'1',
+    addons:{carpet:{freq:'none',sqft:'',rate:'',price:''},strip:{freq:'none',sqft:'',rate:'',price:''},pressure:{freq:'none',sqft:'',rate:'',price:''},deep:{on:false,price:''}},
+    overridePrice:'',recommendedTier:'1',scopeNotes:'',notes:'',clientLang:'en',leadId:'',pricing:snapshotPricing()};
+}
+function getBid(id){return BIDS.filter(function(b){return b.id===id})[0]}
+function bidCalc(b){return calcBid(b,pricingSettings(b))}
+function recPrice(b){var r=bidCalc(b);var i=Math.min(r.tiers.length-1,Math.max(0,num(b.recommendedTier)));return r.tiers[i].price}
+
+/* ===================== Leads model ===================== */
+function newLead(o){return Object.assign({id:uid(),created:nowIso(),updated:nowIso(),business:'',contact:'',title:'',phone:'',email:'',website:'',address:'',city:'',category:'',source:'',status:'new',priority:'',bestTime:'',nextFollowUp:'',walkthrough:'',notes:'',sourceUrl:'',clientLang:'en',activity:[]},o||{})}
+function getLead(id){return LEADS.filter(function(l){return l.id===id})[0]}
+function isDnc(name){var n=norm(name);if(!n)return false;return (S.dncList||[]).some(function(d){var x=norm(d);return x.length>2&&n.indexOf(x)>=0})}
+function logAct(l,type,note){l.activity=l.activity||[];l.activity.push({ts:nowIso(),type:type,note:note||''});l.updated=nowIso()}
+function enforceDnc(l){if(isDnc(l.business)&&l.status!=='dnc'){l.status='dnc';l.nextFollowUp='';logAct(l,'dncAuto');return true}return false}
+function sweepDnc(){var c=0;LEADS.forEach(function(l){if(enforceDnc(l))c++});if(c)saveLeads();return c}
+function advance(l,st){if(!l||l.status==='dnc')return false;if(st==='won'||st==='lost'){if(l.status!==st){l.status=st;return true}return false}
+  if(l.status==='won'||l.status==='lost')return false;if(RANK[st]>RANK[l.status]){l.status=st;return true}return false}
+function bidsForLead(l){return BIDS.filter(function(b){return b.leadId===l.id}).sort(function(a,b){return (b.updated||'').localeCompare(a.updated||'')})}
+function isActive(l){return ['won','lost','dnc'].indexOf(l.status)<0}
+function guessType(text){
+  var s=String(text||'');
+  var R=[['vet',/vet|animal|\bpet|veterin/i],['church',/church|chapel|ministr|worship|iglesia|templo|parroquia/i],['daycare',/daycare|day care|preschool|child|montessori|learning center|guarder|preescolar|infantil/i],
+    ['medical',/dental|dentist|ortho|medic|clinic|chiro|physical therap|pediatric|health|wellness|therap|doctor|cl[ií]nica|m[eé]dic|consultorio/i],
+    ['gym',/gym|fitness|crossfit|yoga|pilates|training|gimnasio/i],['apartment',/apartment|propert|residential|hoa|propiedad|apartamento|condo/i],
+    ['dealership',/\bauto|dealer|motor|\bcars?\b|concesionario/i],['office',/office|cowork|law|insurance|real estate|bank|oficina|suites|agency/i]];
+  for(var i=0;i<R.length;i++)if(R[i][1].test(s))return R[i][0];return 'other';
+}
+function nextWalkDate(fromIso){var d=parseD(fromIso||today());var wd=num(S.walkDay,2);do{d.setDate(d.getDate()+1)}while(d.getDay()!==wd);return isoDate(d)}
+function srcLabel(s){return SOURCES.indexOf(s)>=0?t('src.'+s):(s||'')}
+
+/* ===================== Templates ===================== */
+function firstName(n){n=String(n||'').trim();if(!n)return'';var p=n.split(/\s+/);if(/^(dr|mr|mrs|ms|pastor|rev|fr)\.?$/i.test(p[0])&&p.length>1)return p[0]+' '+p[p.length-1];return p[0]}
+function spokenPhone(ph,lang){var d=String(ph||'').replace(/\D/g,'');if(d.length===11&&d[0]==='1')d=d.slice(1);var w=DIGITS[lang]||DIGITS.en;var g=d.length===10?[d.slice(0,3),d.slice(3,6),d.slice(6)]:[d];return g.map(function(x){return x.split('').map(function(c){return w[+c]}).join('-')}).join('… ')}
+function areaText(lang){var c=(S.cities||[]).map(cityName).filter(Boolean);if(!c.length)return S.company.serviceArea||'';if(c.length===1)return c[0];return c.slice(0,-1).join(', ')+' '+tbit('and',lang)+' '+c[c.length-1]}
+function templateVars(lead,lang,bid){
+  var c=S.company,l=lead||{},type=guessType((l.category||'')+' '+(l.business||''));
+  if(bid&&bid.facilityType&&!lead)type=bid.facilityType;
+  var walk=nextWalkDate();var first=firstName(l.contact);
+  var v={company:c.dba||c.legalName,legal:c.legalName&&c.dba?c.legalName+' dba '+c.dba:(c.dba||c.legalName),owner:c.repName||'',phone:c.phone||'',email:c.email||'',website:c.website||'',
+    phoneSpoken:spokenPhone(c.phone,lang),area:areaText(lang),services:lang==='es'?(c.servicesEs||c.services):c.services,
+    business:l.business||tbit('phBusiness',lang),contact:l.contact||tbit('phName',lang),first:first||tbit('phName',lang),
+    city:cityName(l.city)||cityName((S.cities||[])[0])||tbit('phCity',lang),address:l.address||'',
+    walkday:weekdayName(S.walkDay,lang),walkdays:weekdayPlural(S.walkDay,lang),walkdate:fmtDay(walk,lang),walkdate2:fmtDay(addDays(walk,7),lang),
+    hook:pick(HOOKS[type]||HOOKS.other,lang),segment:pick(SEGMENTS[type]||SEGMENTS.other,lang)};
+  v.greet=first?fill(tbit('greetName',lang),{first:first}):tbit('greetNone',lang);
+  v.signature=[c.repName,c.dba||c.legalName,[c.phone,c.email].filter(Boolean).join(' | '),c.website].filter(Boolean).join('\n');
+  v.walkwhen=l.walkthrough?fmtWhen(l.walkthrough,lang):'';
+  v.walkline=l.walkthrough?fill(tbit('walkBooked',lang),{walkwhen:v.walkwhen,at:l.address?fill(tbit('atAddr',lang),{address:l.address}):''}):fill(tbit('walkOpen',lang),v);
+  var b=bid||(lead?bidsForLead(lead)[0]:null);
+  if(b){var r=bidCalc(b);v.tiers=r.tiers.map(function(x){return locName(x.tier,'name',lang)+' '+money(x.price)}).join(' · ');v.bidline=fill(tbit('bidline',lang),{tiers:v.tiers})}else v.bidline='';
+  return v;
+}
+function fillTemplate(text,vars){return fill(text,vars).replace(/\n{3,}/g,'\n\n')}
+
+/* ===================== UI shell ===================== */
+function toast(msg){var x=$('toast');if(!x)return;x.textContent=msg;x.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){x.classList.remove('show')},2400)}
+function shade(hex,amt){var m=/^#?([0-9a-f]{6})$/i.exec(hex||'');if(!m)return hex;var n=parseInt(m[1],16),rgb=[n>>16,(n>>8)&255,n&255];
+  rgb=rgb.map(function(v){return Math.round(amt<0?v*(1+amt):v+(255-v)*amt)});return '#'+rgb.map(function(v){return v.toString(16).padStart(2,'0')}).join('')}
+function logoHTML(cls){var c=S.company;if(c.logoImage)return '<div class="logo img '+(cls||'')+'"><img alt="" src="'+esc(c.logoImage)+'"></div>';return '<div class="logo '+(cls||'')+'">'+esc(c.logoText||'')+'</div>'}
+function applyBrand(){
+  var c=S.company,col=c.brandColor||'#0e7c66',st=document.documentElement.style;
+  st.setProperty('--brand',col);st.setProperty('--brand-d',shade(col,-0.3));st.setProperty('--brand-l',shade(col,0.88));
+  $('hLogo').innerHTML=c.logoImage?'<img alt="" src="'+esc(c.logoImage)+'">':esc(c.logoText||'');
+  $('hName').textContent=c.dba||c.legalName||t('app.title');
+  document.title=(c.dba?c.dba+' · ':'')+t('app.title');
+  document.documentElement.lang=uiLang();
+  var mt=document.querySelector('meta[name=theme-color]');if(mt)mt.setAttribute('content',col);
+}
+var NAV=[['today','📅'],['leads','👥'],['bids','🧮'],['scripts','💬'],['settings','⚙️']];
+var NAVMAP={today:'today',leads:'leads',lead:'leads',finder:'leads',import:'leads',bids:'bids',bid:'bids',proposal:'bids',scripts:'scripts',settings:'settings'};
+var VIEWS=['today','leads','lead','finder','import','bids','bid','proposal','scripts','settings'];
+var view='today',curId=null,curLeadId=null;
+function renderShell(){
+  $('navTabs').innerHTML=NAV.map(function(n){return '<button data-nav="'+n[0]+'"'+(NAVMAP[view]===n[0]?' class="on"':'')+'><span class="ic">'+n[1]+'</span>'+esc(t('nav.'+n[0]))+'</button>'}).join('');
+  var other=LANG_CODES[(LANG_CODES.indexOf(uiLang())+1)%LANG_CODES.length];
+  $('langBtn').textContent='🌐 '+other.toUpperCase();$('langBtn').setAttribute('aria-label',t('lang.switch'));$('langBtn').title=t('lang.switch');
+  $('hSub').textContent=t('sub.'+view);$('stProp').textContent=t('bid.proposalBtn');
+  applyBrand();
+}
+function show(v){
+  view=v;VIEWS.forEach(function(x){$('v-'+x).classList.toggle('hidden',x!==v)});
+  $('sticky').classList.toggle('hidden',v!=='bid');renderShell();window.scrollTo(0,0);
+}
+function render(v){({today:renderToday,leads:renderLeads,lead:renderLead,finder:renderFinder,import:renderImport,bids:renderBids,bid:function(){var b=getBid(curId);b?renderBid(b):renderBids()},proposal:function(){var b=getBid(curId);b&&renderProposal(b)},scripts:renderScripts,settings:renderSettings})[v]()}
+function go(v){cleanupEmpty();render(v);show(v)}
+function setLang(code){S.lang=code;saveSettings();var y=window.scrollY;render(view);renderShell();window.scrollTo(0,y)}
+function cleanupEmpty(){if(curId&&view==='bid'){var b=getBid(curId);if(b&&!b.client&&!num(b.sqft)&&!b.leadId){BIDS=BIDS.filter(function(x){return x.id!==b.id});saveBids()}}}
+function sel(label,attr,val,opts){return '<label class="f">'+label+'<select '+attr+'>'+opts.map(function(o){return '<option value="'+esc(o[0])+'"'+(String(o[0])===String(val)?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select></label>'}
+function copyText(text){
+  function fb(){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}ta.remove()}
+  try{if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(text).catch(fb);else fb()}catch(e){fb()}
+  toast(t('toast.copied'));
+}
+function download(name,text,type){var blob=new Blob([text],{type:type});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
+var COPY={};var copySeq=0;function copyBtn(text,label){var id='c'+(++copySeq);COPY[id]=text;return '<button class="btn sec sm" data-copy="'+id+'">📋 '+esc(label||t('btn.copy'))+'</button>'}
+document.addEventListener('click',function(e){var c=e.target.closest('[data-copy]');if(c){copyText(COPY[c.dataset.copy]||'');return}
+  var n=e.target.closest('[data-nav]');if(n){go(n.dataset.nav);return}
+  var g=e.target.closest('[data-go]');if(g){var d=g.dataset;if(d.lead){curLeadId=d.lead}if(d.bid){curId=d.bid}if(d.filter!==undefined){leadFilter.status=d.filter}go(d.go)}});
+
+/* ===================== Lead UI helpers ===================== */
+function statusBadge(s){return '<span class="lstatus s-'+esc(s)+'">'+esc(t('ls.'+s))+'</span>'}
+function leadRow(l,extra){
+  var due=l.nextFollowUp&&isActive(l)?(l.nextFollowUp<today()?'<span class="due od">⏰ '+esc(fmtShort(l.nextFollowUp))+'</span>':(l.nextFollowUp===today()?'<span class="due td">⏰ '+esc(t('common.today'))+'</span>':'<span class="due">⏰ '+esc(fmtShort(l.nextFollowUp))+'</span>')):'';
+  var call=l.phone&&l.status!=='dnc'?'<a class="callbtn" href="'+esc(telHref(l.phone))+'" data-calllead="'+l.id+'" aria-label="'+esc(t('lead.call'))+'">📞</a>':'';
+  return '<div class="lrow"><div class="lmain" data-go="lead" data-lead="'+l.id+'"><div class="nm">'+(l.priority?'<span class="pri">'+esc(l.priority)+'</span> ':'')+esc(l.business||t('lead.noName'))+'</div>'+
+    '<div class="meta">'+esc([l.category,cityName(l.city)].filter(Boolean).join(' · '))+'</div><div class="meta">'+statusBadge(l.status)+' '+due+(extra||'')+'</div></div>'+call+'</div>';
+}
+document.addEventListener('click',function(e){var a=e.target.closest('[data-calllead]');if(a){var l=getLead(a.dataset.calllead);if(l){curLeadId=l.id;setTimeout(function(){render('lead');show('lead');toast(t('toast.logCall'))},400)}}});
+
+/* ===================== Today ===================== */
+function renderToday(){
+  var td=today(),act=LEADS.filter(isActive);
+  var overdue=act.filter(function(l){return l.nextFollowUp&&l.nextFollowUp<td}).sort(function(a,b){return a.nextFollowUp.localeCompare(b.nextFollowUp)});
+  var dueToday=act.filter(function(l){return l.nextFollowUp===td});
+  var end=addDays(td,7);
+  var walks=LEADS.filter(function(l){var p=dtParts(l.walkthrough);return p&&p.date>=td&&p.date<=end&&l.status!=='dnc'}).sort(function(a,b){return a.walkthrough.localeCompare(b.walkthrough)});
+  var h='<div class="card hello"><div class="hdate">'+esc(parseD(td).toLocaleDateString(loc(uiLang()),{weekday:'long',month:'long',day:'numeric'}))+'</div>'+
+    '<div class="qbtns"><button class="btn" data-act="addLead">➕ '+esc(t('today.addLead'))+'</button><button class="btn sec" data-go="finder">🔎 '+esc(t('today.findLeads'))+'</button><button class="btn sec" data-act="newBid">🧮 '+esc(t('today.newBid'))+'</button></div></div>';
+  if(!LEADS.length){h+='<div class="card empty"><div style="font-size:40px">👋</div><p><b>'+esc(t('today.emptyTitle'))+'</b><br>'+esc(t('today.emptyBody'))+'</p><div class="btns"><button class="btn sec" data-go="finder">🔎 '+esc(t('today.findLeads'))+'</button><button class="btn sec" data-go="import">⬆️ '+esc(t('leads.import'))+'</button></div>'+(typeof STARTER!=='undefined'?'<p class="hint" style="margin-top:12px">'+esc(t('today.starterHint'))+'</p>':'')+'</div>'}
+  function sect(title,list,cls,empty){return '<div class="card"><h2>'+title+' <span class="cnt '+(cls||'')+'">'+list.length+'</span></h2>'+(list.length?list.map(function(l){return leadRow(l)}).join(''):'<p class="hint">'+esc(empty)+'</p>')+'</div>'}
+  if(LEADS.length){
+    if(overdue.length)h+=sect('⚠️ '+esc(t('today.overdue')),overdue,'bad');
+    h+=sect('📞 '+esc(t('today.dueToday')),dueToday,'',t('today.nothingDue'));
+    h+='<div class="card"><h2>🗓️ '+esc(t('today.walks'))+' <span class="cnt">'+walks.length+'</span></h2>'+(walks.length?walks.map(function(l){return leadRow(l,'<div class="walkwhen">🚶 '+esc(fmtWhen(l.walkthrough))+'</div>')}).join(''):'<p class="hint">'+esc(t('today.noWalks',{day:weekdayName(S.walkDay,uiLang())}))+'</p>')+'</div>';
+  }
+  var counts={};LSTATUS.forEach(function(s){counts[s]=0});LEADS.forEach(function(l){counts[l.status]=(counts[l.status]||0)+1});
+  var val={bidsent:0,won:0},n={bidsent:0,won:0};
+  LEADS.forEach(function(l){if(l.status==='bidsent'||l.status==='won'){var b=bidsForLead(l)[0];if(b){val[l.status]+=recPrice(b);n[l.status]++}}});
+  h+='<div class="card"><h2>📊 '+esc(t('today.pipeline'))+'</h2><div class="chips">'+LSTATUS.map(function(s){return '<button class="chip s-'+s+'" data-go="leads" data-filter="'+s+'"><b>'+counts[s]+'</b> '+esc(t('ls.'+s))+'</button>'}).join('')+'</div>'+
+    '<div class="kv" style="margin-top:12px"><div>'+esc(t('today.valSent',{n:n.bidsent}))+'</div><div>'+money(val.bidsent)+esc(t('common.perMo'))+'</div><div>'+esc(t('today.valWon',{n:n.won}))+'</div><div>'+money(val.won)+esc(t('common.perMo'))+'</div>'+
+    '<div class="sep"></div><div class="hidden"></div><div><b>'+esc(t('today.valTotal'))+'</b></div><div class="big">'+money(val.bidsent+val.won)+esc(t('common.perMo'))+'</div></div><p class="hint" style="margin-top:8px">'+esc(t('today.valHint'))+'</p></div>';
+  $('v-today').innerHTML=h;
+}
+$('v-today').addEventListener('click',function(e){var a=e.target.closest('[data-act]');if(!a)return;if(a.dataset.act==='addLead')addLeadAndOpen();else if(a.dataset.act==='newBid')openBid(null)});
+function addLeadAndOpen(o){var l=newLead(Object.assign({nextFollowUp:today(),clientLang:'en',city:(S.cities||[])[0]||''},o||{}));LEADS.push(l);logAct(l,'created');saveLeads();curLeadId=l.id;render('lead');show('lead');var f=document.querySelector('[data-l="business"]');if(f)f.focus()}
+
+/* ===================== Leads list ===================== */
+var leadFilter={q:'',status:'active',city:''};
+function renderLeads(){
+  var cities={};LEADS.forEach(function(l){var c=cityName(l.city);if(c)cities[c]=1});
+  var h='<div class="qbtns" style="margin-bottom:12px"><button class="btn" data-act="addLead">➕ '+esc(t('leads.add'))+'</button><button class="btn sec" data-go="finder">🔎 '+esc(t('leads.find'))+'</button><button class="btn sec" data-go="import">⬆️ '+esc(t('leads.import'))+'</button></div>';
+  h+='<div class="card filters"><label class="f">'+esc(t('leads.search'))+'<input type="search" id="lq" value="'+esc(leadFilter.q)+'" placeholder="'+esc(t('leads.searchPh'))+'"></label><div class="row">'+
+    sel(esc(t('leads.status')),'id="lst"',leadFilter.status,[['active',t('leads.fActive')],['all',t('leads.fAll')],['due',t('leads.fDue')]].concat(LSTATUS.map(function(s){return[s,t('ls.'+s)]})))+
+    sel(esc(t('leads.city')),'id="lcity"',leadFilter.city,[['',t('leads.fAllCities')]].concat(Object.keys(cities).sort().map(function(c){return[c,c]})))+'</div></div><div id="leadList"></div>';
+  h+='<div class="card"><h2>'+esc(t('leads.exportTitle'))+'</h2><div class="btns"><button class="btn sec" data-act="exportLeads">📊 '+esc(t('leads.exportCsv'))+'</button><button class="btn sec" data-act="exportJson">⬇️ '+esc(t('data.backup'))+'</button></div></div>';
+  $('v-leads').innerHTML=h;renderLeadList();
+}
+function filteredLeads(){
+  var q=norm(leadFilter.q),td=today();
+  return LEADS.filter(function(l){
+    if(leadFilter.status==='active'&&!isActive(l))return false;
+    if(leadFilter.status==='due'&&!(isActive(l)&&l.nextFollowUp&&l.nextFollowUp<=td))return false;
+    if(LSTATUS.indexOf(leadFilter.status)>=0&&l.status!==leadFilter.status)return false;
+    if(leadFilter.city&&cityName(l.city)!==leadFilter.city)return false;
+    if(q&&norm([l.business,l.contact,l.category,l.city,l.phone,l.email,l.notes].join(' ')).indexOf(q)<0)return false;
+    return true}).sort(function(a,b){var fa=a.nextFollowUp||'9999',fb=b.nextFollowUp||'9999';if(fa!==fb)return fa.localeCompare(fb);var pa=a.priority||'Z',pb=b.priority||'Z';if(pa!==pb)return pa.localeCompare(pb);return (a.business||'').localeCompare(b.business||'')});
+}
+function renderLeadList(){var L=filteredLeads();$('leadList').innerHTML='<p class="hint">'+esc(t('leads.count',{n:L.length,total:LEADS.length}))+'</p>'+(L.length?'<div class="card list2">'+L.map(function(l){return leadRow(l)}).join('')+'</div>':'<div class="card empty">'+esc(t('leads.none'))+'</div>')}
+$('v-leads').addEventListener('input',function(e){if(e.target.id==='lq'){leadFilter.q=e.target.value;renderLeadList()}});
+$('v-leads').addEventListener('change',function(e){if(e.target.id==='lst'){leadFilter.status=e.target.value;renderLeadList()}if(e.target.id==='lcity'){leadFilter.city=e.target.value;renderLeadList()}});
+$('v-leads').addEventListener('click',function(e){var a=e.target.closest('[data-act]');if(!a)return;var x=a.dataset.act;if(x==='addLead')addLeadAndOpen();else if(x==='exportLeads')exportLeadsCsv();else if(x==='exportJson')exportJson()});
+
+/* ===================== Lead detail ===================== */
+function lInp(key,val,attrs,label){return '<label class="f">'+esc(label||t('lf.'+key))+'<input data-l="'+key+'" value="'+esc(val)+'" '+(attrs||'')+'></label>'}
+function leadHeadHTML(l){var dnc=l.status==='dnc';
+  var h='<div class="card lhead"><div class="lt">'+(l.priority?'<span class="pri">'+esc(l.priority)+'</span> ':'')+esc(l.business||t('lead.noName'))+'</div><div class="meta">'+esc([l.contact,l.title].filter(Boolean).join(', '))+'</div><div style="margin-top:6px">'+statusBadge(l.status)+'</div>';
+  if(dnc)h+='<div class="alert bad" style="margin-top:10px">🚫 '+esc(t('lead.dncBanner'))+'</div>';
+  h+='<div class="abtns">'+
+    (l.phone&&!dnc?'<a class="btn" href="'+esc(telHref(l.phone))+'" data-act="call">📞 '+esc(t('lead.call'))+'</a>':'<button class="btn" disabled>📞 '+esc(t('lead.call'))+'</button>')+
+    (!dnc?'<button class="btn sec" data-act="emailTpl">✉️ '+esc(t('lead.email'))+'</button>':'<button class="btn sec" disabled>✉️ '+esc(t('lead.email'))+'</button>')+
+    '<button class="btn sec" data-act="toWalk">🚶 '+esc(t('lead.walk'))+'</button><button class="btn sec" data-act="createBid"'+(dnc?' disabled':'')+'>🧮 '+esc(t('lead.createBid'))+'</button></div></div>';
+  return h}
+function renderLead(){
+  var l=getLead(curLeadId);if(!l){renderLeads();show('leads');return}
+  var dnc=l.status==='dnc',bids=bidsForLead(l);
+  var h=leadHeadHTML(l);vl._head=h;
+  h+='<div class="card"><h2>'+esc(t('lead.logTitle'))+'</h2><label class="f">'+esc(t('lead.noteOpt'))+'<textarea id="actNote" rows="2" style="min-height:60px" placeholder="'+esc(t('lead.notePh'))+'"></textarea></label><div class="qgrid">'+
+    [['noanswer','📵'],['vm','📼'],['interested','👍'],['notint','👎'],['emailed','✉️'],['note','📝']].map(function(q){return '<button class="btn sec" data-quick="'+q[0]+'"'+(dnc&&q[0]!=='note'?' disabled':'')+'>'+q[1]+' '+esc(t('quick.'+q[0]))+'</button>'}).join('')+'</div></div>';
+  h+='<div class="card"><h2>'+esc(t('lead.statusFollow'))+'</h2>'+sel(esc(t('lf.status')),'data-l="status"',l.status,LSTATUS.map(function(s){return[s,t('ls.'+s)]}))+
+    lInp('nextFollowUp',l.nextFollowUp,'type="date"')+'<div class="seg4">'+[['1',t('fu.tomorrow')],['3',t('fu.3days')],['7',t('fu.week')],['0',t('fu.clear')]].map(function(x){return '<button class="btn sec sm" data-fu="'+x[0]+'">'+esc(x[1])+'</button>'}).join('')+'</div></div>';
+  var sug=nextWalkDate()+'T'+(S.walkTime||'10:00');
+  h+='<div class="card" id="walkCard"><h2>🚶 '+esc(t('lead.walkTitle'))+'</h2>'+lInp('walkthrough',l.walkthrough,'type="datetime-local" step="900"')+
+    (l.walkthrough?'<div class="alert ok">✅ '+esc(fmtWhen(l.walkthrough))+'</div>':'')+
+    '<div class="btns"><button class="btn sec" data-act="suggestWalk">📅 '+esc(t('lead.suggest',{when:fmtWhen(sug)}))+'</button></div>'+
+    (l.walkthrough?'<div class="btns" style="margin-top:8px"><button class="btn" data-act="ics">🗓️ '+esc(t('lead.addCal'))+'</button><a class="btn sec" target="_blank" rel="noopener" href="'+esc(gcalUrl(l))+'">G '+esc(t('lead.gcal'))+'</a><button class="btn danger sm" data-act="clearWalk">✕ '+esc(t('lead.clearWalk'))+'</button></div>':'')+'</div>';
+  h+='<div class="card"><h2>'+esc(t('lead.details'))+'</h2>'+lInp('business',l.business,'autocomplete="organization"')+'<div class="row">'+lInp('contact',l.contact)+lInp('title',l.title)+'</div>'+
+    '<div class="row">'+lInp('phone',l.phone,'type="tel" inputmode="tel"')+lInp('email',l.email,'type="email" inputmode="email"')+'</div>'+
+    (l.email&&!dnc?'<p class="hint"><a href="mailto:'+esc(l.email)+'">✉️ '+esc(l.email)+'</a></p>':'')+
+    lInp('website',l.website,'type="url" inputmode="url"')+(l.website?'<p class="hint"><a target="_blank" rel="noopener" href="'+esc(/^https?:/i.test(l.website)?l.website:'https://'+l.website)+'">🌐 '+esc(t('lead.openSite'))+'</a></p>':'')+
+    lInp('address',l.address)+'<div class="row">'+lInp('city',l.city,'list="dlCities"')+lInp('category',l.category,'list="dlCats"')+'</div>'+
+    '<datalist id="dlCities">'+(S.cities||[]).map(function(c){return '<option value="'+esc(c)+'">'}).join('')+'</datalist><datalist id="dlCats">'+FINDER_CATS.map(function(c){return '<option value="'+esc(t('cat.'+c.k))+'">'}).join('')+'</datalist>'+
+    '<div class="row">'+sel(esc(t('lf.source')),'data-l="source"',l.source,[['','—']].concat(SOURCES.map(function(s){return[s,t('src.'+s)]})).concat(l.source&&SOURCES.indexOf(l.source)<0?[[l.source,l.source]]:[]))+
+    sel(esc(t('lf.priority')),'data-l="priority"',l.priority,[['','—'],['A','A'],['B','B'],['C','C']])+'</div>'+
+    sel(esc(t('lf.clientLang')),'data-l="clientLang"',l.clientLang,LANGS.map(function(x){return[x.code,x.name]}))+
+    lInp('bestTime',l.bestTime)+'<label class="f">'+esc(t('lf.notes'))+'<textarea data-l="notes">'+esc(l.notes)+'</textarea></label>'+
+    (l.sourceUrl?'<p class="hint"><a target="_blank" rel="noopener" href="'+esc(l.sourceUrl)+'">🔗 '+esc(t('lead.sourceLink'))+'</a></p>':'')+'</div>';
+  h+='<div class="card"><h2>🧮 '+esc(t('lead.bids'))+'</h2>'+(bids.length?bids.map(function(b){return '<div class="lrow"><div class="lmain" data-go="bid" data-bid="'+b.id+'"><div class="nm">'+esc(b.number)+' · '+money(recPrice(b))+esc(t('common.perMo'))+'</div><div class="meta">'+esc(fmtDate(b.date))+' · '+esc(t('bstatus.'+b.status))+'</div></div></div>'}).join(''):'<p class="hint">'+esc(t('lead.noBids'))+'</p>')+
+    '<button class="btn sec block" data-act="createBid"'+(dnc?' disabled':'')+'>➕ '+esc(t('lead.createBid'))+'</button></div>';
+  h+='<div class="card"><h2>🕑 '+esc(t('lead.activity'))+'</h2>'+((l.activity||[]).length?'<ul class="acts">'+(l.activity||[]).slice().reverse().map(function(a){var d=new Date(a.ts);return '<li><span class="when">'+esc(d.toLocaleDateString(loc(uiLang()),{month:'short',day:'numeric'})+' '+d.toLocaleTimeString(loc(uiLang()),{hour:'numeric',minute:'2-digit'}))+'</span> <b>'+esc(t('act.'+a.type))+'</b>'+(a.note?' – '+esc(a.note):'')+'</li>'}).join('')+'</ul>':'<p class="hint">'+esc(t('lead.noActivity'))+'</p>')+'</div>';
+  h+='<div class="btns" style="margin-bottom:12px"><button class="btn sec" data-go="leads">‹ '+esc(t('lead.back'))+'</button><button class="btn danger" data-act="delLead">🗑 '+esc(t('lead.delete'))+'</button></div>';
+  $('v-lead').innerHTML=h;
+}
+var vl=$('v-lead');
+function onLeadInput(e){var el=e.target,k=el.dataset&&el.dataset.l;if(!k)return;var l=getLead(curLeadId);if(!l)return;var v=el.value;
+  if(k==='status'){if(e.type!=='change')return;if(v==='dnc'&&!confirm(t('confirm.dnc')))return render('lead');var old=l.status;l.status=v;if(v==='dnc')l.nextFollowUp='';logAct(l,'status',t('ls.'+old)+' → '+t('ls.'+v));saveLeads();return render('lead')}
+  if(e.type==='input'&&(k==='walkthrough'||k==='nextFollowUp'||el.tagName==='SELECT'))return;
+  if(k==='walkthrough'){l.walkthrough=v;if(v){advance(l,'walk');logAct(l,'walk',fmtWhen(v))}saveLeads();return render('lead')}
+  l[k]=v;l.updated=nowIso();if(k==='business'&&e.type==='change'&&enforceDnc(l)){saveLeads();toast(t('toast.dncMatch'));return render('lead')}saveLeads();
+  if(['business','contact','title','phone','priority'].indexOf(k)>=0){var nh=leadHeadHTML(l),hd=vl.querySelector('.lhead');if(hd&&nh!==vl._head){hd.outerHTML=nh;vl._head=nh}}
+  if(e.type==='change'&&(k==='nextFollowUp'||k==='priority'||k==='source'||k==='clientLang'))render('lead');
+}
+vl.addEventListener('input',onLeadInput);vl.addEventListener('change',onLeadInput);
+vl.addEventListener('click',function(e){var l=getLead(curLeadId);if(!l)return;
+  var q=e.target.closest('[data-quick]');if(q){quickLog(l,q.dataset.quick);return}
+  var f=e.target.closest('[data-fu]');if(f){var n=+f.dataset.fu;l.nextFollowUp=n?addBizDays(today(),n===7?5:n):'';saveLeads();render('lead');return}
+  var a=e.target.closest('[data-act]');if(!a)return;var x=a.dataset.act;
+  if(x==='call'){toast(t('toast.logCall'));return}
+  if(x==='emailTpl'){scriptState.leadId=l.id;scriptState.lang=l.clientLang||'en';go('scripts');return}
+  if(x==='toWalk'){var c=$('walkCard');if(c)window.scrollTo(0,c.getBoundingClientRect().top+window.scrollY-70);return}
+  if(x==='suggestWalk'){l.walkthrough=nextWalkDate()+'T'+(S.walkTime||'10:00');advance(l,'walk');logAct(l,'walk',fmtWhen(l.walkthrough));saveLeads();render('lead');toast(t('toast.walkSet'));return}
+  if(x==='clearWalk'){l.walkthrough='';logAct(l,'walkCleared');saveLeads();render('lead');return}
+  if(x==='ics'){download('walkthrough-'+norm(l.business).slice(0,24)+'.ics',makeIcs(l),'text/calendar');return}
+  if(x==='createBid'){createBidFromLead(l);return}
+  if(x==='delLead'){if(confirm(t('confirm.delLead',{name:l.business||t('lead.noName')}))){LEADS=LEADS.filter(function(y){return y.id!==l.id});BIDS.forEach(function(b){if(b.leadId===l.id)b.leadId=''});saveLeads();saveBids();toast(t('toast.leadDeleted'));go('leads')}}
+});
+function quickLog(l,type){
+  var noteEl=$('actNote'),note=noteEl?noteEl.value.trim():'';
+  if(type==='note'){if(!note){toast(t('toast.typeNote'));noteEl&&noteEl.focus();return}logAct(l,'note',note)}
+  else{logAct(l,type,note);
+    if(type==='noanswer'){advance(l,'called');l.nextFollowUp=addBizDays(today(),2)}
+    if(type==='vm'){advance(l,'vm');l.nextFollowUp=addBizDays(today(),2)}
+    if(type==='interested'){advance(l,'interested');l.nextFollowUp=addBizDays(today(),1)}
+    if(type==='notint'){advance(l,'lost');l.nextFollowUp=''}
+    if(type==='emailed'){if(l.status==='new')advance(l,'called');l.nextFollowUp=addBizDays(today(),3)}}
+  saveLeads();render('lead');toast(t('toast.logged'));
+}
+function createBidFromLead(l){
+  var b=newBid();var type=guessType((l.category||'')+' '+l.business);var cn=cityName(l.city);
+  b.client=l.business;b.contact=l.contact;b.contactTitle=l.title;b.phone=l.phone;b.email=l.email;
+  b.address=l.address?(cn&&l.address.indexOf(cn)<0?l.address+', '+l.city:l.address):(l.city||'');
+  if(S.facilityTypes.some(function(f){return f.id===type}))b.facilityType=type;
+  b.leadId=l.id;b.clientLang=l.clientLang||'en';BIDS.push(b);saveBids();logAct(l,'bidCreated',b.number);saveLeads();
+  curId=b.id;render('bid');show('bid');toast(t('toast.bidFromLead'));
+}
+function icsEsc(s){return String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n')}
+function walkRange(l){var p=dtParts(l.walkthrough);var st=parseD(p.date);st.setHours(p.h,p.mi,0,0);var en=new Date(st.getTime()+num(S.walkMinutes,30)*60000);
+  function f(d){return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00'}return [f(st),f(en)]}
+function walkTitle(l){return t('cal.title',{business:l.business||t('lead.noName'),company:S.company.dba||''})}
+function walkDesc(l){return [l.contact?t('lf.contact')+': '+l.contact+(l.title?' ('+l.title+')':''):'',l.phone?t('lf.phone')+': '+l.phone:'',l.email?t('lf.email')+': '+l.email:'',l.notes||''].filter(Boolean).join('\n')}
+function walkLoc(l){var cn=cityName(l.city);return [l.address,l.address&&cn&&l.address.indexOf(cn)>=0?'':l.city].filter(Boolean).join(', ')}
+function makeIcs(l){var r=walkRange(l),d=new Date(),stamp=d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';
+  return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Cleaning Bid Pricer//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT','UID:'+l.id+'-'+r[0]+'@bidpricer','DTSTAMP:'+stamp,'DTSTART:'+r[0],'DTEND:'+r[1],
+    'SUMMARY:'+icsEsc(walkTitle(l)),'LOCATION:'+icsEsc(walkLoc(l)),'DESCRIPTION:'+icsEsc(walkDesc(l)),'BEGIN:VALARM','TRIGGER:-PT60M','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(walkTitle(l)),'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n')+'\r\n'}
+function gcalUrl(l){if(!dtParts(l.walkthrough))return '#';var r=walkRange(l),tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(walkTitle(l))+'&dates='+r[0]+'/'+r[1]+'&details='+encodeURIComponent(walkDesc(l))+'&location='+encodeURIComponent(walkLoc(l))+(tz?'&ctz='+encodeURIComponent(tz):'')}
+
+/* ===================== Prospect finder ===================== */
+var finder={cat:'dental',city:'',kw:''};
+function finderLinks(){
+  var c=FINDER_CATS.filter(function(x){return x.k===finder.cat})[0]||FINDER_CATS[0];var city=finder.city||(S.cities||[])[0]||'';var cn=cityName(city);
+  var q=finder.kw.trim()||c.q;var yr=new Date().getFullYear();var E=encodeURIComponent;
+  var G=function(s){return 'https://www.google.com/search?q='+E(s)};
+  return {
+    biz:[['maps',t('fl.maps'),'https://www.google.com/maps/search/?api=1&query='+E(q+' in '+city)],['google',t('fl.google'),G(q+' '+city)],['yelp',t('fl.yelp'),'https://www.yelp.com/search?find_desc='+E(q)+'&find_loc='+E(city)]],
+    people:c.titles.map(function(ti){return ['linkedin',t('fl.linkedin',{title:ti}),'https://www.linkedin.com/search/results/people/?keywords='+E(ti+' '+q+' '+cn)]})
+      .concat([['google',t('fl.xray'),G('site:linkedin.com/in ("'+c.titles.join('" OR "')+'") '+q+' "'+cn+'"')]]),
+    fresh:[['news',t('fl.newOpen'),'https://www.google.com/search?tbm=nws&q='+E('new '+q+' opening '+cn+' NC')],
+      ['google',t('fl.grand'),G('("grand opening" OR "ribbon cutting") '+cn+' NC '+yr)],
+      ['google',t('fl.coming'),G('"coming soon" '+q+' '+cn+' NC')],
+      ['google',t('fl.cre'),G('new commercial building OR office space lease '+cn+' NC '+yr)],
+      ['google',t('fl.tbj'),G('site:bizjournals.com/triangle '+q+' '+cn)],
+      ['google',t('fl.chamber'),G(cn+' chamber of commerce new members')],
+      ['sos',t('fl.sos'),'https://www.sosnc.gov/online_services/search/by_title/_Business_Registration']]
+  };
+}
+function renderFinder(){
+  if(!finder.city||(S.cities||[]).indexOf(finder.city)<0)finder.city=(S.cities||[])[0]||'';
+  var h='<div class="card"><h2>🔎 '+esc(t('finder.title'))+'</h2><p class="hint">'+esc(t('finder.intro'))+'</p>'+
+    sel(esc(t('finder.cat')),'id="fcat"',finder.cat,FINDER_CATS.map(function(c){return[c.k,t('cat.'+c.k)]}))+
+    sel(esc(t('finder.city')),'id="fcity"',finder.city,(S.cities||[]).map(function(c){return[c,c]}))+
+    '<label class="f">'+esc(t('finder.kw'))+'<input id="fkw" value="'+esc(finder.kw)+'" placeholder="'+esc(t('finder.kwPh'))+'"></label></div><div id="flinks"></div>';
+  h+='<div class="card" id="qaCard"><h2>➕ '+esc(t('finder.quickAdd'))+'</h2><p class="hint">'+esc(t('finder.quickHint'))+'</p>'+
+    '<label class="f">'+esc(t('lf.business'))+' *<input id="qa_business" autocomplete="off"></label><div class="row"><label class="f">'+esc(t('lf.phone'))+'<input id="qa_phone" type="tel" inputmode="tel"></label><label class="f">'+esc(t('lf.contact'))+'<input id="qa_contact"></label></div>'+
+    '<label class="f">'+esc(t('lf.website'))+'<input id="qa_website" type="url" inputmode="url"></label><label class="f">'+esc(t('lf.address'))+'<input id="qa_address"></label>'+
+    sel(esc(t('lf.source')),'id="qa_source"','maps',SOURCES.map(function(s){return[s,t('src.'+s)]}))+'<label class="f">'+esc(t('lf.notes'))+'<textarea id="qa_notes" rows="2" style="min-height:60px"></textarea></label>'+
+    '<button class="btn block" data-act="qaSave">💾 '+esc(t('finder.save'))+'</button></div>';
+  $('v-finder').innerHTML=h;renderFinderLinks();
+}
+function renderFinderLinks(){var L=finderLinks();function grp(title,arr){return '<div class="card"><h2>'+title+'</h2><div class="linkgrid">'+arr.map(function(x){return '<a class="btn sec lk" target="_blank" rel="noopener" data-src="'+x[0]+'" href="'+esc(x[2])+'">'+esc(x[1])+' ↗</a>'}).join('')+'</div></div>'}
+  $('flinks').innerHTML=grp('🏢 '+esc(t('finder.gBiz')),L.biz)+grp('👤 '+esc(t('finder.gPeople')),L.people)+grp('🆕 '+esc(t('finder.gFresh')),L.fresh)+'<p class="hint">'+esc(t('finder.netNote'))+'</p>'}
+var vf=$('v-finder');
+vf.addEventListener('change',function(e){if(e.target.id==='fcat'){finder.cat=e.target.value;renderFinderLinks()}if(e.target.id==='fcity'){finder.city=e.target.value;renderFinderLinks()}});
+vf.addEventListener('input',function(e){if(e.target.id==='fkw'){finder.kw=e.target.value;renderFinderLinks()}});
+vf.addEventListener('click',function(e){var lk=e.target.closest('a.lk');if(lk){var s=$('qa_source');if(s&&SOURCES.indexOf(lk.dataset.src)>=0)s.value=lk.dataset.src;return}
+  var a=e.target.closest('[data-act="qaSave"]');if(!a)return;var g=function(k){return ($('qa_'+k).value||'').trim()};
+  var name=g('business');if(!name){toast(t('toast.needName'));$('qa_business').focus();return}
+  var dup=LEADS.filter(function(l){return norm(l.business)===norm(name)})[0];if(dup&&!confirm(t('confirm.dup',{name:dup.business})))return;
+  var l=newLead({business:name,phone:g('phone'),contact:g('contact'),website:g('website'),address:g('address'),notes:g('notes'),source:$('qa_source').value,category:t('cat.'+finder.cat),city:finder.city,nextFollowUp:today()});
+  logAct(l,'created',srcLabel(l.source));var d=enforceDnc(l);LEADS.push(l);saveLeads();
+  ['business','phone','contact','website','address','notes'].forEach(function(k){$('qa_'+k).value=''});toast(d?t('toast.dncMatch'):t('toast.leadSaved',{name:name}));});
+
+/* ===================== CSV import ===================== */
+function parseCSV(text){text=String(text||'').replace(/^\uFEFF/,'');var rows=[],row=[],f='',q=false,i,c;
+  for(i=0;i<text.length;i++){c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=''}else f+=c}
+  if(f!==''||row.length){row.push(f);rows.push(row)}
+  return rows.filter(function(r){return r.some(function(x){return String(x).trim()!==''})});
+}
+var GUESS={business:['business','businessname','company','companyname','name','organization','account','empresa','negocio'],contact:['contact','contactname','contactperson','person','fullname','nombre','contacto'],title:['title','contacttitle','jobtitle','role','position','cargo','puesto'],
+  phone:['phone','phonenumber','telephone','tel','mobile','cell','telefono'],email:['email','emailaddress','mail','correo'],website:['website','web','url','site','sitioweb'],address:['address','streetaddress','street','direccion'],
+  city:['city','town','ciudad'],category:['category','industry','businesstype','segment','categoria'],source:['source','leadsource','origen','fuente'],status:['status','stage','estado'],priority:['priority','prioridad'],
+  nextFollowUp:['nextfollowup','followup','followupdate','callback','callbackdate','seguimiento'],bestTime:['besttime','besttimetocall','hours','horario'],notes:['notes','note','comments','comment','notas']};
+function guessMap(headers){var used={},map={};LEAD_FIELDS.forEach(function(f){var i=headers.findIndex(function(h,j){return !used[j]&&GUESS[f].indexOf(norm(h))>=0});if(i>=0){map[f]=i;used[i]=1}else map[f]=-1});
+  if(map.business<0){var j=headers.findIndex(function(h,k){return !used[k]&&/business|company|empresa/i.test(h)});if(j>=0){map.business=j;used[j]=1}}return map}
+var imp={rows:null,headers:[],map:{},fileName:'',result:null};
+function statusFromText(s){s=norm(s);if(!s)return'new';for(var i=0;i<LSTATUS.length;i++){var k=LSTATUS[i];if(s===k||LANG_CODES.some(function(lc){return norm(tl(lc,'ls.'+k))===s}))return k}return'new'}
+function importRows(rows,headers,map,sourceName){
+  var res={added:0,dup:0,dnc:0,skipped:0};var col=function(r,f){var i=map[f];return i>=0&&r[i]!=null?String(r[i]).trim():''};
+  rows.forEach(function(r){var name=col(r,'business');if(!name){res.skipped++;return}
+    var phone=col(r,'phone'),city=col(r,'city');
+    var dup=LEADS.some(function(l){return norm(l.business)===norm(name)&&((phone&&norm(l.phone)===norm(phone))||norm(cityName(l.city))===norm(cityName(city))||(!phone&&!city))});if(dup){res.dup++;return}
+    var fu=col(r,'nextFollowUp');var fd=/^\d{4}-\d{2}-\d{2}/.test(fu)?fu.slice(0,10):(fu&&!isNaN(Date.parse(fu))?isoDate(new Date(Date.parse(fu))):'');
+    var l=newLead({business:name,contact:col(r,'contact'),title:col(r,'title'),phone:phone,email:col(r,'email'),website:col(r,'website'),address:col(r,'address'),city:city,category:col(r,'category'),
+      source:col(r,'source')||'import',status:statusFromText(col(r,'status')),priority:(col(r,'priority').match(/\b([ABC])\b/)||[])[1]||'',nextFollowUp:fd,bestTime:col(r,'bestTime'),notes:col(r,'notes')});
+    logAct(l,'imported',sourceName||'');if(enforceDnc(l))res.dnc++;LEADS.push(l);res.added++});
+  saveLeads();return res;
+}
+function renderImport(){
+  var h='<div class="card"><h2>⬆️ '+esc(t('imp.title'))+'</h2><p class="hint">'+esc(t('imp.intro'))+'</p><div class="btns"><button class="btn" data-act="pick">📂 '+esc(t('imp.choose'))+'</button></div>'+
+    '<label class="f" style="margin-top:12px">'+esc(t('imp.paste'))+'<textarea id="impText" placeholder="business,phone,city&#10;Acme Dental,(919) 555-0100,Cary"></textarea></label><button class="btn sec" data-act="parsePaste">'+esc(t('imp.readPaste'))+'</button></div>';
+  if(imp.rows){h+='<div class="card"><h2>'+esc(t('imp.mapTitle'))+'</h2><p class="hint">'+esc(t('imp.found',{n:imp.rows.length,file:imp.fileName}))+'</p>'+
+    LEAD_FIELDS.map(function(f){return sel(esc(t('lf.'+f))+(f==='business'?' *':''),'data-map="'+f+'"',imp.map[f],[[-1,t('imp.skip')]].concat(imp.headers.map(function(hd,i){return[i,hd]})))}).join('')+
+    '<p class="hint"><b>'+esc(t('imp.preview'))+'</b> '+esc(imp.rows.slice(0,3).map(function(r){return imp.map.business>=0?r[imp.map.business]:'?'}).join(' · '))+'</p>'+
+    '<button class="btn block" data-act="doImport"'+(imp.map.business<0?' disabled':'')+'>✅ '+esc(t('imp.import',{n:imp.rows.length}))+'</button></div>'}
+  if(imp.result)h+='<div class="alert ok">'+esc(t('imp.result',imp.result))+'</div>';
+  h+='<div class="btns"><button class="btn sec" data-go="leads">‹ '+esc(t('lead.back'))+'</button></div>';
+  $('v-import').innerHTML=h;
+}
+function loadCsvText(text,name){var rows=parseCSV(text);if(rows.length<2){alert(t('imp.bad'));return}imp.headers=rows[0].map(function(x){return String(x).trim()});imp.rows=rows.slice(1);imp.map=guessMap(imp.headers);imp.fileName=name||'';imp.result=null;renderImport()}
+var vi=$('v-import');
+vi.addEventListener('click',function(e){var a=e.target.closest('[data-act]');if(!a)return;var x=a.dataset.act;
+  if(x==='pick')$('csvFile').click();
+  else if(x==='parsePaste')loadCsvText($('impText').value,t('imp.pasted'));
+  else if(x==='doImport'){imp.result=importRows(imp.rows,imp.headers,imp.map,imp.fileName);imp.rows=null;renderImport();toast(t('imp.result',imp.result))}});
+vi.addEventListener('change',function(e){var m=e.target.dataset&&e.target.dataset.map;if(m){imp.map[m]=+e.target.value;renderImport()}});
+$('csvFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){loadCsvText(rd.result,f.name)};rd.readAsText(f);e.target.value=''});
+function loadStarter(){
+  var res={added:0,dup:0,dnc:0};if(typeof STARTER==='undefined')return res;
+  STARTER.leads.forEach(function(r){if(isDnc(r.b)){res.dnc++;return}
+    if(LEADS.some(function(l){return norm(l.business)===norm(r.b)})){res.dup++;return}
+    var l=newLead({business:r.b,city:r.c?r.c+', NC':'',category:r.cat,phone:r.ph,website:r.w,contact:r.n,title:r.ti,bestTime:r.bt,notes:r.no,sourceUrl:r.u,source:'calllist',priority:r.p,nextFollowUp:r.p==='A'?today():''});
+    if(r.t==='follow-up')l.activity.push({ts:'2026-10-07T16:00:00.000Z',type:'emailed',note:'Oct 6–7'});
+    logAct(l,'imported',STARTER.name);LEADS.push(l);res.added++});
+  saveLeads();return res;
+}
+
+/* ===================== Bids list ===================== */
+function renderBids(){
+  var h='<div class="btns" style="margin-bottom:12px"><button class="btn block" data-act="new">➕ '+esc(t('bids.new'))+'</button></div>';
+  if(!BIDS.length)h+='<div class="card empty"><div style="font-size:40px">🧽</div><p><b>'+esc(t('bids.emptyTitle'))+'</b><br>'+esc(t('bids.emptyBody'))+'</p></div>';
+  else{h+='<div class="list">';BIDS.slice().sort(function(a,b){return (b.updated||'').localeCompare(a.updated||'')}).forEach(function(b){var r=bidCalc(b);var lead=b.leadId&&getLead(b.leadId);
+    h+='<div class="item"><div class="top"><div><div class="nm">'+esc(b.client||t('bids.noClient'))+'</div><div class="meta">'+esc(locName(r.facility,'name',uiLang()))+' · '+(num(b.sqft)?num(b.sqft).toLocaleString('en-US')+' '+esc(t('common.sqft')):'—')+' · '+esc(t('bids.perWk',{n:num(b.visitsPerWeek)}))+'</div><div class="meta">'+esc(b.number)+' · '+esc(fmtDate(b.date))+' <span class="status '+esc(b.status)+'">'+esc(t('bstatus.'+b.status))+'</span>'+(lead?' <span class="linked">👥</span>':'')+'</div></div>'+
+      '<div class="pr">'+money(r.main.price)+'<div class="meta">'+esc(t('common.month'))+'</div></div></div>'+
+      '<div class="acts"><button class="btn sec" data-act="edit" data-id="'+b.id+'">✏️ '+esc(t('btn.edit'))+'</button><button class="btn sec" data-act="prop" data-id="'+b.id+'">📄 '+esc(t('btn.proposal'))+'</button><button class="btn sec" data-act="dup" data-id="'+b.id+'">📑 '+esc(t('btn.copyBid'))+'</button><button class="btn danger" data-act="del" data-id="'+b.id+'" aria-label="'+esc(t('btn.delete'))+'">🗑</button></div></div>'});
+    h+='</div>'}
+  h+='<div class="card"><h2>'+esc(t('data.title'))+'</h2><p class="hint">'+esc(t('data.hint'))+'</p><div class="btns"><button class="btn sec" data-act="exportJson">⬇️ '+esc(t('data.backup'))+'</button><button class="btn sec" data-act="importJson">⬆️ '+esc(t('data.restore'))+'</button><button class="btn sec" data-act="exportCsv">📊 '+esc(t('data.bidsCsv'))+'</button></div></div>';
+  $('v-bids').innerHTML=h;
+}
+$('v-bids').addEventListener('click',function(e){var btn=e.target.closest('[data-act]');if(!btn)return;var a=btn.dataset.act,id=btn.dataset.id,b=id&&getBid(id);
+  if(a==='new')openBid(null);
+  else if(a==='edit')openBid(id);
+  else if(a==='prop'){curId=id;renderProposal(b);show('proposal')}
+  else if(a==='dup'){var c=clone(b);c.id=uid();c.client=(b.client||'')+' '+t('bids.copySuffix');c.created=c.updated=nowIso();c.date=today();c.status='Draft';c.number=propNumber();BIDS.push(c);saveBids();renderBids();toast(t('toast.bidCopied'))}
+  else if(a==='del'){if(confirm(t('confirm.delBid',{name:b.client||t('bids.noClient')}))){BIDS=BIDS.filter(function(x){return x.id!==id});saveBids();renderBids();toast(t('toast.bidDeleted'))}}
+  else if(a==='exportJson')exportJson();
+  else if(a==='importJson')$('importFile').click();
+  else if(a==='exportCsv')exportCsv();
+});
+
+/* ===================== Bid editor ===================== */
+function inp(label,path,val,attrs){return '<label class="f">'+esc(label)+'<input data-b="'+path+'" value="'+esc(val)+'" '+(attrs||'')+'></label>'}
+function numInp(label,path,val,extra){return inp(label,path,val,'type="number" inputmode="decimal" min="0" step="any" '+(extra||''))}
+function bsel(label,path,val,opts){return sel(esc(label),'data-b="'+path+'"',val,opts)}
+function openBid(id){var b=id?getBid(id):null;if(!b){b=newBid();BIDS.push(b);saveBids()}curId=b.id;renderBid(b);show('bid')}
+function renderBid(b){
+  var s=pricingSettings(b),L=uiLang();var freqOpts=Object.keys(FREQS).map(function(k){return [k,t('freq.'+k)]});
+  var ft=s.facilityTypes.filter(function(f){return f.id===b.facilityType})[0]||s.facilityTypes[0]||{rate:''};
+  var stale=JSON.stringify(b.pricing||{})!==JSON.stringify(snapshotPricing());var lead=b.leadId&&getLead(b.leadId);
+  var h='';
+  if(lead)h+='<div class="alert info linkbar" data-go="lead" data-lead="'+lead.id+'">👥 '+esc(t('bid.linkedLead'))+': <b>'+esc(lead.business)+'</b> › '+statusBadge(lead.status)+'</div>';
+  if(stale)h+='<div class="alert info noprint">'+esc(t('bid.staleRates'))+' <button class="btn sm sec" data-act="refreshRates" style="margin-top:6px">'+esc(t('bid.useCurrent'))+'</button></div>';
+  h+='<div class="card"><h2><span class="n">1</span>'+esc(t('bid.s1'))+'</h2>'+inp(t('bid.client'),'client',b.client,'autocomplete="organization" placeholder="'+esc(t('bid.clientPh'))+'"')+
+    '<div class="row">'+inp(t('bid.contact'),'contact',b.contact,'placeholder="'+esc(t('bid.contactPh'))+'"')+inp(t('bid.title'),'contactTitle',b.contactTitle,'placeholder="'+esc(t('bid.titlePh'))+'"')+'</div>'+
+    '<div class="row">'+inp(t('lf.phone'),'phone',b.phone,'type="tel" inputmode="tel"')+inp(t('lf.email'),'email',b.email,'type="email" inputmode="email"')+'</div>'+
+    inp(t('lf.address'),'address',b.address,'placeholder="'+esc(t('bid.addressPh'))+'"')+
+    '<div class="row">'+inp(t('bid.date'),'date',b.date,'type="date"')+bsel(t('bid.status'),'status',b.status,BSTATUS.map(function(x){return[x,t('bstatus.'+x)]}))+'</div></div>';
+  h+='<div class="card"><h2><span class="n">2</span>'+esc(t('bid.s2'))+'</h2>'+bsel(t('bid.facType'),'facilityType',b.facilityType,s.facilityTypes.map(function(f){return[f.id,locName(f,'name',L)+' ('+num(f.rate).toLocaleString('en-US')+' '+t('common.sqftHr')+')']}))+
+    '<div class="row">'+numInp(t('bid.sqft'),'sqft',b.sqft,'placeholder="'+esc(t('bid.sqftPh'))+'"')+numInp(t('bid.restrooms'),'restrooms',b.restrooms,'placeholder="0"')+'</div>'+
+    '<div class="row">'+numInp(t('bid.floors'),'floors',b.floors)+numInp(t('bid.prodRate'),'prodRate',b.prodRate,'id="prodRate" placeholder="'+esc(t('bid.defaultPh',{v:num(ft.rate)}))+'"')+'</div>'+
+    '<label class="f">'+esc(t('bid.mix'))+' <span id="mixLbl">'+esc(t('bid.mixLbl',{c:100-num(b.hardPct,50),h:num(b.hardPct,50)}))+'</span><input type="range" min="0" max="100" step="10" data-b="hardPct" value="'+esc(num(b.hardPct,50))+'"></label></div>';
+  h+='<div class="card"><h2><span class="n">3</span>'+esc(t('bid.s3'))+'</h2><label class="f">'+esc(t('bid.vpw'))+'<div class="seg" id="vpwSeg">'+[1,2,3,5,6,7].map(function(v){return '<button type="button" data-vpw="'+v+'" class="'+(num(b.visitsPerWeek)===v?'on':'')+'">'+v+'</button>'}).join('')+'</div></label>'+
+    numInp(t('bid.vpwType'),'visitsPerWeek',b.visitsPerWeek,'id="vpwIn"')+
+    inp(t('bid.days'),'days',b.days,'placeholder="'+esc(t('bid.daysPh'))+'"')+bsel(t('bid.time'),'timeOfService',b.timeOfService,TIMES.map(function(k){return[k,t('time.'+k)]}))+
+    '<h3>'+esc(t('bid.tasks'))+'</h3>'+s.tasks.map(function(x){var on=b.tasks&&b.tasks[x.id];return '<label class="chk'+(on?' on':'')+'"><input type="checkbox" data-b="tasks.'+esc(x.id)+'"'+(on?' checked':'')+'><span class="grow">'+esc(locName(x,'label',L))+'<small>'+esc(num(x.minutes)?t(x.mode==='per1000'?'bid.taskPer1000':(x.qty?'bid.taskPerRoom':'bid.taskPerVisit'),{m:num(x.minutes)}):t('bid.taskIncluded'))+'</small></span></label>'+(x.qty?'<div id="qty-'+esc(x.id)+'" class="'+(on?'':'hidden')+'">'+numInp(t('bid.howManyRooms'),x.qty,b[x.qty])+'</div>':'')}).join('')+'</div>';
+  h+='<div class="card"><h2><span class="n">4</span>'+esc(t('bid.s4'))+' <span class="hint" style="margin:0;font-weight:400">'+esc(t('bid.s4hint'))+'</span></h2>';
+  [['carpet','carpetRate'],['strip','stripRate'],['pressure','pressureRate']].forEach(function(x){var a=(b.addons&&b.addons[x[0]])||{};var on=a.freq&&a.freq!=='none';
+    h+='<div class="addon'+(on?' active':'')+'" id="ad-'+x[0]+'"><div class="ttl">'+esc(t('ad.'+x[0]))+'</div>'+bsel(t('bid.howOften'),'addons.'+x[0]+'.freq',a.freq||'none',freqOpts)+
+      '<div class="det"><div class="row">'+numInp(t('common.sqftCap'),'addons.'+x[0]+'.sqft',a.sqft)+numInp(t('bid.ratePerSqft'),'addons.'+x[0]+'.rate',a.rate,'placeholder="'+esc(t('bid.defaultPh',{v:s.addons[x[1]]}))+'"')+'</div>'+numInp(t('bid.flatPer'),'addons.'+x[0]+'.price',a.price,'placeholder="'+esc(t('bid.optional'))+'"')+'</div></div>'});
+  var dc=(b.addons&&b.addons.deep)||{};
+  h+='<div class="addon'+(dc.on?' active':'')+'" id="ad-deep"><label class="chk" style="margin:0"><input type="checkbox" data-b="addons.deep.on"'+(dc.on?' checked':'')+'><span class="grow"><b>'+esc(t('ad.deep'))+'</b><small>'+esc(t('bid.deepHint',{m:s.addons.deepCleanMult}))+'</small></span></label><div class="det">'+numInp(t('bid.flat'),'addons.deep.price',dc.price,'placeholder="'+esc(t('bid.optional'))+'"')+'</div></div></div>';
+  h+='<div class="card"><h2><span class="n">5</span>'+esc(t('bid.s5'))+'</h2>'+numInp(t('bid.override'),'overridePrice',b.overridePrice,'placeholder="'+esc(t('bid.overridePh'))+'"')+
+    bsel(t('bid.recommend'),'recommendedTier',b.recommendedTier,s.tiers.map(function(x,i){return[String(i),locName(x,'name',L)+' – '+locName(x,'label',L)]}))+
+    bsel(t('bid.clientLang'),'clientLang',b.clientLang||'en',LANGS.map(function(x){return[x.code,x.name]}))+
+    '<label class="f">'+esc(t('bid.scopeNotes'))+'<textarea data-b="scopeNotes" placeholder="'+esc(t('bid.scopeNotesPh'))+'">'+esc(b.scopeNotes)+'</textarea></label>'+
+    '<label class="f">'+esc(t('bid.privNotes'))+'<textarea data-b="notes" placeholder="'+esc(t('bid.privNotesPh'))+'">'+esc(b.notes)+'</textarea></label></div>';
+  h+='<div id="results"></div>';
+  h+='<div class="btns noprint" style="margin-bottom:12px"><button class="btn" data-act="toProp">📄 '+esc(t('bid.viewProp'))+'</button><button class="btn sec" data-act="done">✓ '+esc(t('bid.saveClose'))+'</button></div>';
+  $('v-bid').innerHTML=h;updateResults();
+}
+function updateResults(){
+  var b=getBid(curId);if(!b||!$('results'))return;var r=bidCalc(b),m=r.main,s=pricingSettings(b),L=uiLang();
+  var h='<div class="card" id="resCard"><h2>💲 '+esc(t('res.title'))+'</h2>';
+  r.errors.forEach(function(e){h+='<div class="alert bad">'+esc(t(e.key))+'</div>'});
+  r.warnings.forEach(function(w){h+='<div class="alert '+w.lvl+'">'+(w.lvl==='info'?'ℹ️ ':'⚠️ ')+esc(t(w.key,w.vars))+'</div>'});
+  if(num(b.sqft)&&num(b.visitsPerWeek)&&!r.warnings.some(function(w){return w.lvl!=='info'}))h+='<div class="alert ok">✅ '+esc(t('res.ok',{pct:pct(num(s.targetMarginPct)/100)}))+'</div>';
+  var sep='<div class="sep"></div><div class="hidden"></div>';
+  h+='<div class="kv">'+
+    '<div>'+esc(t('res.monthly'))+'</div><div class="big">'+money(m.price)+'</div>'+
+    '<div>'+esc(t('res.perVisit'))+'</div><div>'+money(m.perVisit,true)+'</div>'+
+    '<div>'+esc(t('res.perSqft'))+'</div><div>'+money(m.perSqft,true)+'</div>'+
+    '<div>'+esc(t('res.billed'))+'</div><div>'+money(m.billedPerHour,true)+esc(t('common.perHr'))+'</div>'+sep+
+    '<div>'+esc(t('res.hrsVisit'))+'</div><div>'+esc(t('common.hrs',{n:m.visitHrs.toFixed(2)}))+'</div>'+
+    '<div>'+esc(t('res.visitsMo',{w:num(s.weeksPerMonth)}))+'</div><div>'+r.visitsPerMonth.toFixed(2)+'</div>'+
+    '<div>'+esc(t('res.hrsMonth'))+'</div><div>'+esc(t('common.hrs',{n:m.monthHrs.toFixed(2)}))+'</div>'+sep+
+    '<div>'+esc(t('res.labor',{rate:money(r.loadedRate,true)}))+'</div><div>'+money(m.labor,true)+'</div>'+
+    '<div>'+esc(t('res.supplies',{p:num(s.supplyPct)}))+'</div><div>'+money(m.supplies,true)+'</div>'+
+    '<div>'+esc(t('res.gross'))+'</div><div>'+money(m.gross,true)+' · '+pct(m.grossPct)+'</div>'+
+    '<div>'+esc(t('res.overhead',{p:num(s.overheadPct)}))+'</div><div>'+money(m.overhead,true)+'</div>'+
+    '<div><b>'+esc(t('res.profit'))+'</b></div><div><b>'+money(m.net,true)+' · '+pct(m.netPct)+'</b></div></div>';
+  h+='<h3>'+esc(t('res.tiers'))+'</h3><div class="tiers">'+r.tiers.map(function(x,i){return '<div class="tier'+(String(i)===String(b.recommendedTier)?' rec':'')+'"><div class="nm">'+esc(locName(x.tier,'name',L))+'</div><div class="lb">'+esc(locName(x.tier,'label',L))+'</div><div class="pr">'+money(x.price)+'</div><div class="sub">'+esc(t('res.tierProfit',{p:pct(x.netPct)}))+'</div><div class="sub">'+esc(t('res.tierHrs',{n:x.visitHrs.toFixed(2)}))+'</div></div>'}).join('')+'</div>';
+  if(r.addons.length){h+='<h3>'+esc(t('res.addons'))+'</h3><div class="kv">'+r.addons.map(function(a){return '<div>'+esc(t('ad.'+a.key))+'<br><small style="color:var(--mut)">'+esc(t('freq.'+a.freq))+' · '+esc(a.key==='deep'?t('res.deepDetail',{h:a.hours.toFixed(1)}):t('res.areaDetail',{sq:a.sqft.toLocaleString('en-US'),rate:money(a.rate,true)}))+'</small></div><div>'+money(a.perService)+(a.monthly?'<br><small style="color:var(--mut)">≈'+money(a.monthly,true)+esc(t('common.perMo'))+'</small>':'')+'</div>'}).join('')+'</div>'}
+  h+='<details style="margin-top:12px"><summary style="cursor:pointer;color:var(--mut);font-size:14px">'+esc(t('res.how'))+'</summary><div class="kv" style="font-size:13.5px;margin-top:8px">'+
+    '<div>'+esc(t('res.hArea',{sq:r.sqft.toLocaleString('en-US'),rate:r.prodRate.toLocaleString('en-US'),f:r.floorFactor.toFixed(3)}))+'</div><div>'+esc(t('common.hrs',{n:r.parts.area.toFixed(2)}))+'</div>'+
+    '<div>'+esc(t('res.hRest',{m:num(s.restroomMin)}))+'</div><div>'+esc(t('common.hrs',{n:r.parts.restrooms.toFixed(2)}))+'</div>'+
+    '<div>'+esc(t('res.hFloors',{m:num(s.extraFloorMin)}))+'</div><div>'+esc(t('common.hrs',{n:r.parts.floors.toFixed(2)}))+'</div>'+
+    '<div>'+esc(t('res.hTasks'))+'</div><div>'+esc(t('common.hrs',{n:r.parts.tasks.toFixed(2)}))+'</div>'+
+    '<div>'+esc(t('res.hSetup'))+'</div><div>'+esc(t('common.hrs',{n:r.parts.setup.toFixed(2)}))+'</div>'+
+    (r.dayFactor!==1?'<div>'+esc(t('res.hDay'))+'</div><div>×'+r.dayFactor.toFixed(2)+'</div>':'')+
+    '<div>'+esc(t('res.hMethod'))+'</div><div>'+esc(s.pricingMode==='rate'?t('res.mRate',{r:money(s.billRate,true)}):t('res.mMargin'))+'</div></div></details></div>';
+  $('results').innerHTML=h;
+  $('stP').textContent=money(m.price)+t('common.perMo');
+  var lvl=m.netPct<0?'bad':(m.netPct<num(s.targetMarginPct)/100-0.0005?'warn':'ok');
+  $('stM').innerHTML=esc(money(m.perVisit,true)+t('common.perVisit'))+' · <span class="badge '+lvl+'">'+esc(t('res.profitBadge',{p:pct(m.netPct)}))+'</span>';
+}
+var vb=$('v-bid');
+function onBidInput(e){
+  var el=e.target,path=el.dataset&&el.dataset.b;if(!path)return;var b=getBid(curId);if(!b)return;
+  var v=el.type==='checkbox'?el.checked:el.value;var old=getPath(b,path);setPath(b,path,v);b.updated=nowIso();saveBids();
+  if(path==='hardPct')$('mixLbl').textContent=t('bid.mixLbl',{c:100-num(v),h:num(v)});
+  if(path==='visitsPerWeek')document.querySelectorAll('#vpwSeg button').forEach(function(x){x.classList.toggle('on',num(x.dataset.vpw)===num(v))});
+  if(el.type==='checkbox'){var c=el.closest('.chk');if(c)c.classList.toggle('on',el.checked)}
+  if(path.indexOf('tasks.')===0){var q=$('qty-'+path.slice(6));if(q)q.classList.toggle('hidden',!el.checked)}
+  var am=/^addons\.(\w+)\.(freq|on)$/.exec(path);if(am){var box=$('ad-'+am[1]);if(box)box.classList.toggle('active',am[2]==='on'?!!v:v!=='none')}
+  if(path==='facilityType'){var s=pricingSettings(b);var f=s.facilityTypes.filter(function(x){return x.id===v})[0];if(f&&$('prodRate'))$('prodRate').placeholder=t('bid.defaultPh',{v:num(f.rate)})}
+  if(path==='status'&&old!==v)syncLeadFromBid(b);
+  updateResults();
+}
+function syncLeadFromBid(b){var l=b.leadId&&getLead(b.leadId);if(!l)return;var map={Sent:'bidsent',Won:'won',Lost:'lost'};var st=map[b.status];if(!st)return;
+  var ch=advance(l,st);logAct(l,'bid'+b.status,b.number+' · '+money(recPrice(b))+t('common.perMo'));if(st==='won'||st==='lost')l.nextFollowUp='';saveLeads();if(ch)toast(t('toast.leadUpdated',{s:t('ls.'+l.status)}))}
+vb.addEventListener('input',onBidInput);vb.addEventListener('change',onBidInput);
+vb.addEventListener('click',function(e){
+  var x=e.target.closest('[data-vpw]');if(x){var i=$('vpwIn');i.value=x.dataset.vpw;onBidInput({target:i});return}
+  var a=e.target.closest('[data-act]');if(!a)return;var b=getBid(curId);
+  if(a.dataset.act==='toProp'){renderProposal(b);show('proposal')}
+  else if(a.dataset.act==='done'){go('bids');toast(t('toast.bidSaved'))}
+  else if(a.dataset.act==='refreshRates'){b.pricing=snapshotPricing();saveBids();renderBid(b);toast(t('toast.ratesUpdated'))}
+});
+$('stProp').addEventListener('click',function(){var b=getBid(curId);if(b){renderProposal(b);show('proposal')}});
+
+/* ===================== Proposal (client language) ===================== */
+function buildScope(b,lang){
+  lang=lang||b.clientLang||'en';var P=function(k,v){return tl(lang,k,v)};
+  var each=[],weekly=[],monthly=[],T2=b.tasks||{},hard=num(b.hardPct,50),rr=num(b.restrooms);
+  if(T2.trash)each.push(P('sc.trash'));
+  if(hard<100)each.push(P('sc.vacuum'));
+  if(hard>0)each.push(P('sc.mop'));
+  if(rr>0){each.push(P('sc.restrooms',{n:P(rr===1?'p.restroom1':'p.restroomN',{n:rr})}));each.push(P('sc.refill'))}
+  if(T2.kitchen)each.push(P('sc.kitchen')+(num(b.breakrooms)>1?' '+P('sc.kitchenN',{n:num(b.breakrooms)}):''));
+  if(T2.glass)each.push(P('sc.glass'));
+  if(T2.disinfect)each.push(P('sc.disinfect'));
+  each.push(P('sc.dust'));
+  [1,2].forEach(function(i){var k='sc.f.'+b.facilityType+i;if(T[k])each.push(P(k))});
+  weekly.push(P('sc.w.dust'));weekly.push(P('sc.w.spot'));if(T2.kitchen)weekly.push(P('sc.w.micro'));if(hard>0)weekly.push(P('sc.w.edges'));
+  monthly.push(P('sc.m.high'));monthly.push(P('sc.m.base'));monthly.push(P('sc.m.uph'));
+  var vpw=num(b.visitsPerWeek);if(vpw>0&&vpw<1)weekly=[];
+  return {each:each,weekly:weekly,monthly:monthly};
+}
+function renderProposal(b){
+  var lang=b.clientLang||'en',P=function(k,v){return tl(lang,k,v)};
+  var r=bidCalc(b),c=S.company,sc=buildScope(b,lang),vpw=num(b.visitsPerWeek);
+  var legal=c.legalName&&c.dba?esc(c.legalName)+' dba '+esc(c.dba):esc(c.dba||c.legalName);var legalTxt=c.legalName&&c.dba?c.legalName+' dba '+c.dba:(c.dba||c.legalName);
+  var freqTxt=vpw===1?P('p.perWeek1'):(vpw>=1?P('p.perWeek',{n:vpw}):(vpw>0?P('p.biweekly'):'—'));
+  var h='<div class="btns noprint" style="margin-bottom:8px"><button class="btn" data-act="print">🖨️ '+esc(t('prop.print'))+'</button><button class="btn sec" data-act="back">‹ '+esc(t('prop.back'))+'</button></div>';
+  h+='<div class="noprint langpick"><span>'+esc(t('prop.lang'))+'</span><div class="seg2">'+LANGS.map(function(x){return '<button data-plang="'+x.code+'" class="'+(x.code===lang?'on':'')+'">'+esc(x.name)+'</button>'}).join('')+'</div></div>';
+  h+='<div class="alert info noprint" style="font-size:13.5px">'+esc(t('prop.pdfHint'))+'</div>';
+  h+='<div class="prop" lang="'+lang+'"><div class="ph">'+logoHTML()+'<div><div class="co">'+esc(c.dba||c.legalName)+'</div><div class="co2">'+legal+'</div><div class="co2">'+[c.phone,c.email,(c.website||'').replace(/^https?:\/\//,'').replace(/\/$/,'')].filter(Boolean).map(esc).join(' · ')+'</div><div class="co2">'+esc(c.serviceArea)+'</div></div></div>';
+  h+='<h1>'+esc(P('p.title'))+'</h1><div class="meta2" style="margin-bottom:6px"><div><b>'+esc(P('p.preparedFor'))+'</b>'+esc(b.client||'—')+(b.contact?'<br>'+esc(P('p.attn'))+' '+esc(b.contact)+(b.contactTitle?', '+esc(b.contactTitle):''):'')+(b.address?'<br>'+esc(b.address):'')+'</div>'+
+    '<div><b>'+esc(P('p.proposal'))+'</b>#'+esc(b.number)+'<br>'+esc(P('p.date'))+': '+esc(fmtDate(b.date,lang))+'<br>'+esc(P('p.valid'))+': '+esc(fmtDate(addDays(b.date||today(),num(S.validDays,30)),lang))+'</div></div>';
+  h+='<h4>'+esc(P('p.facSched'))+'</h4><div class="meta2"><div><b>'+esc(P('p.facility'))+'</b>'+esc(locName(r.facility,'name',lang))+'<br>'+(r.sqft?esc(P('p.sqftClean',{n:r.sqft.toLocaleString('en-US')})):'')+(num(b.restrooms)?' · '+esc(P(num(b.restrooms)===1?'p.restroom1':'p.restroomN',{n:num(b.restrooms)})):'')+(num(b.floors)>1?' · '+esc(P('p.floorsN',{n:num(b.floors)})):'')+'</div>'+
+    '<div><b>'+esc(P('p.schedule'))+'</b>'+esc(freqTxt)+(b.days?' ('+esc(b.days)+')':'')+'<br>'+esc(P('time.'+b.timeOfService))+'</div></div>';
+  var ul=function(a){return '<ul class="scope">'+a.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'};
+  h+='<h4>'+esc(P('p.scope'))+'</h4><div class="freq">'+esc(P('p.each',{f:freqTxt}))+'</div>'+ul(sc.each);
+  if(sc.weekly.length)h+='<div class="freq">'+esc(P('p.weekly'))+'</div>'+ul(sc.weekly);
+  h+='<div class="freq">'+esc(P('p.monthly'))+'</div>'+ul(sc.monthly);
+  if(b.scopeNotes)h+='<div class="freq">'+esc(P('p.notes'))+'</div><p style="margin:2px 0;white-space:pre-wrap">'+esc(b.scopeNotes)+'</p>';
+  h+='<h4>'+esc(P('p.pricing'))+'</h4><div class="ptiers">'+r.tiers.map(function(x,i){var rec=String(i)===String(b.recommendedTier);return '<div class="pt'+(rec?' rec':'')+'">'+(rec?'<div class="tag">'+esc(P('p.recommended'))+'</div>':'')+'<div class="nm">'+esc(locName(x.tier,'name',lang))+' · '+esc(locName(x.tier,'label',lang))+'</div><div class="pr">'+money(x.price)+'<span style="font-size:12px;font-weight:600">'+esc(P('p.month'))+'</span></div><div style="font-size:12px;color:#555">'+esc(P('p.perVisit',{v:money(x.perVisit,true)}))+'</div><div class="d">'+esc(locName(x.tier,'desc',lang))+'</div></div>'}).join('')+'</div>';
+  if(r.addons.length){h+='<h4>'+esc(P('p.addons'))+'</h4><table class="t"><tr><th>'+esc(P('p.service'))+'</th><th>'+esc(P('p.frequency'))+'</th><th class="r">'+esc(P('p.pricePer'))+'</th></tr>'+r.addons.map(function(a){return '<tr><td>'+esc(P('ad.'+a.key))+(a.sqft?'<br><span style="font-size:11.5px;color:#666">'+a.sqft.toLocaleString('en-US')+' '+esc(P('p.sqftUnit'))+'</span>':'')+'</td><td>'+esc(P('freq.'+a.freq))+'</td><td class="r">'+money(a.perService)+'</td></tr>'}).join('')+'</table>'}
+  var terms=(S.terms&&(S.terms[lang]||S.terms.en))||[];var tv={company:c.dba||c.legalName,legal:legalTxt};
+  h+='<h4>'+esc(P('p.terms'))+'</h4><ol class="terms">'+terms.filter(function(x){return String(x).trim()}).map(function(x){return '<li>'+esc(fill(x,tv))+'</li>'}).join('')+'</ol>';
+  var title=lang==='es'?(c.repTitleEs||c.repTitle):c.repTitle;
+  h+='<div class="sigwrap"><h4>'+esc(P('p.accept'))+'</h4><div>'+esc(P('p.selected'))+'</div><div class="choose">'+r.tiers.map(function(x){return '<span>'+esc(locName(x.tier,'name',lang))+' ('+money(x.price)+esc(P('p.month'))+')</span>'}).join('')+'</div>'+
+    '<div>'+esc(P('p.start'))+' ____________________</div><div class="sig"><div><div class="ln"></div><div class="lb">'+esc(P('p.clientSig'))+'</div><div class="ln"></div><div class="lb">'+esc(P('p.printed'))+' — '+esc(b.client||P('p.client'))+'</div></div>'+
+    '<div><div class="ln"></div><div class="lb">'+esc(P('p.coSig',{legal:legalTxt}))+'</div><div class="ln" style="display:flex;align-items:flex-end;padding-bottom:3px">'+esc([c.repName,title].filter(Boolean).join(', '))+'</div><div class="lb">'+esc(P('p.printed'))+'</div></div></div></div>';
+  h+='<div class="foot">'+legal+' · '+esc(c.phone)+' · '+esc(c.email)+' · '+esc(P('p.thanks'))+'</div></div>';
+  $('v-proposal').innerHTML=h;
+}
+$('v-proposal').addEventListener('click',function(e){var pl=e.target.closest('[data-plang]');if(pl){var b0=getBid(curId);if(b0){b0.clientLang=pl.dataset.plang;saveBids();renderProposal(b0)}return}
+  var a=e.target.closest('[data-act]');if(!a)return;
+  if(a.dataset.act==='print')window.print();
+  else if(a.dataset.act==='back'){var b=getBid(curId);if(b){renderBid(b);show('bid')}else go('bids')}});
+
+/* ===================== Scripts & templates ===================== */
+var scriptState={leadId:'',lang:''};
+function renderScripts(){
+  var l=scriptState.leadId&&getLead(scriptState.leadId);if(scriptState.leadId&&!l)scriptState.leadId='';
+  var lang=scriptState.lang||(l&&l.clientLang)||uiLang();var v=templateVars(l,lang);var dnc=l&&l.status==='dnc';
+  COPY={};
+  var h='<div class="card"><h2>💬 '+esc(t('sc.title'))+'</h2><p class="hint">'+esc(t('sc.intro'))+'</p>'+
+    sel(esc(t('sc.lead')),'id="scLead"',scriptState.leadId,[['',t('sc.noLead')]].concat(LEADS.filter(function(x){return x.status!=='dnc'||x.id===scriptState.leadId}).slice().sort(function(a,b){return (a.business||'').localeCompare(b.business||'')}).map(function(x){return[x.id,x.business+(x.city?' – '+cityName(x.city):'')]})))+
+    '<div class="langpick"><span>'+esc(t('sc.clientLang'))+'</span><div class="seg2">'+LANGS.map(function(x){return '<button data-slang="'+x.code+'" class="'+(x.code===lang?'on':'')+'">'+esc(x.name)+'</button>'}).join('')+'</div></div>'+
+    (dnc?'<div class="alert bad">🚫 '+esc(t('lead.dncBanner'))+'</div>':'')+'</div>';
+  h+='<div class="card"><h2>📞 '+esc(t('sc.phone'))+'</h2>'+PHONE_SCRIPTS.map(function(p){var txt=fillTemplate(pick(p,lang),v);return '<div class="tpl"><div class="tname">'+esc(t('sc.p.'+p.id))+'</div><div class="tbody" lang="'+lang+'">'+esc(txt)+'</div>'+copyBtn(txt)+'</div>'}).join('')+
+    '<div class="tpl"><div class="tname">'+esc(t('sc.p.objections'))+'</div>'+OBJECTIONS.map(function(o){var x=pick(o,lang);var ans=fillTemplate(x[1],v);return '<details class="obj"><summary lang="'+lang+'">'+esc(x[0])+'</summary><div class="tbody" lang="'+lang+'">'+esc(ans)+'</div>'+copyBtn(ans)+'</details>'}).join('')+'</div></div>';
+  h+='<div class="card"><h2>✉️ '+esc(t('sc.emails'))+'</h2>'+(l&&!l.email?'<div class="alert warn">'+esc(t('sc.noEmail'))+'</div>':'')+(!l?'<p class="hint">'+esc(t('sc.pickLead'))+'</p>':'')+EMAILS.map(function(m){var x=pick(m,lang);var sub=fillTemplate(x.subject,v),body=fillTemplate(x.body,v);
+    var can=l&&l.email&&!dnc;var href=can?'mailto:'+encodeURIComponent(l.email).replace(/%40/g,'@')+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body.replace(/\n/g,'\r\n')):'';
+    return '<div class="tpl"><div class="tname">'+esc(t('sc.e.'+m.id))+'</div><div class="tsub" lang="'+lang+'"><b>'+esc(t('sc.subject'))+':</b> '+esc(sub)+'</div><div class="tbody" lang="'+lang+'">'+esc(body)+'</div>'+(m.id==='afterwalk'?'<p class="hint">📎 '+esc(t('sc.attachHint'))+'</p>':'')+
+      '<div class="btns">'+(can?'<a class="btn sm" href="'+esc(href)+'" data-mailtpl="'+m.id+'">✉️ '+esc(t('sc.emailLead'))+'</a>':'<button class="btn sm" disabled>✉️ '+esc(t('sc.emailLead'))+'</button>')+copyBtn(body,t('sc.copyBody'))+copyBtn(sub,t('sc.copySubject'))+'</div></div>'}).join('')+'</div>';
+  h+='<div class="card"><h2>🔤 '+esc(t('sc.varsTitle'))+'</h2><p class="hint">'+esc(t('sc.varsHint'))+'</p><p class="hint mono">{contact} {first} {business} {company} {owner} {phone} {email} {website} {city} {area} {walkday} {walkdate}</p></div>';
+  $('v-scripts').innerHTML=h;
+}
+var vsc=$('v-scripts');
+vsc.addEventListener('change',function(e){if(e.target.id==='scLead'){scriptState.leadId=e.target.value;var l=getLead(scriptState.leadId);scriptState.lang=l?(l.clientLang||'en'):'';renderScripts()}});
+vsc.addEventListener('click',function(e){var s=e.target.closest('[data-slang]');if(s){scriptState.lang=s.dataset.slang;renderScripts();return}
+  var m=e.target.closest('[data-mailtpl]');if(m){var l=getLead(scriptState.leadId);if(l){logAct(l,'emailed',t('sc.e.'+m.dataset.mailtpl));if(l.status==='new')advance(l,'called');l.nextFollowUp=addBizDays(today(),3);saveLeads();toast(t('toast.emailLogged'))}}});
+
+/* ===================== Settings ===================== */
+function sInp(label,path,type,hint,attrs){var v=getPath(S,path);return '<label class="f">'+esc(label)+(hint?' <span style="font-weight:400">'+esc(hint)+'</span>':'')+'<input data-s="'+path+'" '+(type==='number'?'type="number" inputmode="decimal" step="any" min="0"':'type="'+(type||'text')+'"')+' value="'+esc(v)+'" '+(attrs||'')+'></label>'}
+function sArea(label,path,rows){var v=getPath(S,path);return '<label class="f">'+esc(label)+'<textarea data-s="'+path+'" data-lines="1" style="min-height:'+(rows||120)+'px">'+esc((v||[]).join('\n'))+'</textarea></label>'}
+function renderSettings(){
+  var loaded=num(S.wage)*(1+num(S.burdenPct)/100);var h='',L=uiLang();
+  h+='<div class="card"><h2>🌐 '+esc(t('set.lang'))+'</h2>'+sel(esc(t('set.uiLang')),'id="uiLangSel"',S.lang||'',[['',t('set.langAuto')]].concat(LANGS.map(function(x){return[x.code,x.name]})))+'<p class="hint">'+esc(t('set.langHint'))+'</p></div>';
+  h+='<div class="alert info">'+esc(t('set.applyNew'))+'</div>';
+  h+='<div class="card"><h2>🏢 '+esc(t('set.company'))+'</h2>'+sInp(t('set.dba'),'company.dba')+sInp(t('set.legal'),'company.legalName')+
+    '<div class="row">'+sInp(t('set.logoText'),'company.logoText','text','','maxlength=4')+sInp(t('set.color'),'company.brandColor','color','','style="padding:4px;height:50px"')+'</div>'+
+    '<div class="btns" style="margin-bottom:12px"><button class="btn sec sm" data-sact="logo">🖼️ '+esc(t('set.uploadLogo'))+'</button>'+(S.company.logoImage?'<button class="btn danger sm" data-sact="nologo">'+esc(t('set.removeLogo'))+'</button>':'')+'</div>'+
+    sInp(t('lf.phone'),'company.phone','tel')+sInp(t('lf.email'),'company.email','email')+sInp(t('lf.website'),'company.website','url')+sInp(t('set.area'),'company.serviceArea')+
+    '<div class="row">'+sInp(t('set.yourName'),'company.repName')+sInp(t('set.prefix'),'company.proposalPrefix')+'</div>'+
+    '<div class="row">'+sInp(t('set.titleEn'),'company.repTitle')+sInp(t('set.titleEs'),'company.repTitleEs')+'</div>'+
+    '<label class="f">'+esc(t('set.servicesEn'))+'<textarea data-s="company.services" style="min-height:70px">'+esc(S.company.services)+'</textarea></label>'+
+    '<label class="f">'+esc(t('set.servicesEs'))+'<textarea data-s="company.servicesEs" style="min-height:70px">'+esc(S.company.servicesEs)+'</textarea></label></div>';
+  h+='<div class="card"><h2>👥 '+esc(t('set.leads'))+'</h2><div class="row">'+sel(esc(t('set.walkDay')),'data-s="walkDay" data-num="1"',S.walkDay,[0,1,2,3,4,5,6].map(function(i){return[i,weekdayName(i,L)]}))+sInp(t('set.walkTime'),'walkTime','time')+'</div>'+
+    sInp(t('set.walkMin'),'walkMinutes','number')+sArea(t('set.cities'),'cities',130)+sArea(t('set.dnc'),'dncList',80)+'<p class="hint">'+esc(t('set.dncHint'))+'</p>'+
+    (typeof STARTER!=='undefined'?'<div class="starter"><b>'+esc(t('set.starterTitle'))+'</b><p class="hint">'+esc(t('set.starterHint',{n:STARTER.leads.length}))+'</p><button class="btn block" data-sact="starter">⬇️ '+esc(t('set.starterBtn'))+'</button></div>':'')+'</div>';
+  h+='<div class="card"><h2>👷 '+esc(t('set.labor'))+'</h2><div class="row">'+sInp(t('set.wage'),'wage','number')+sInp(t('set.burden'),'burdenPct','number')+'</div>'+
+    '<p class="hint">'+esc(t('set.burdenHint'))+' <b id="loadedLbl">'+money(loaded,true)+esc(t('common.perHr'))+'</b></p></div>';
+  h+='<div class="card"><h2>💲 '+esc(t('set.pricing'))+'</h2>'+sel(esc(t('set.method')),'data-s="pricingMode"',S.pricingMode,[['margin',t('set.mMargin')],['rate',t('set.mRate')]])+
+    '<div class="row">'+sInp(t('set.margin'),'targetMarginPct','number')+sInp(t('set.billRate'),'billRate','number')+'</div>'+
+    '<div class="row">'+sInp(t('set.supply'),'supplyPct','number')+sInp(t('set.overhead'),'overheadPct','number')+'</div>'+
+    '<p class="hint">'+esc(t('set.overheadHint'))+'</p>'+
+    '<div class="row">'+sInp(t('set.min'),'minMonthly','number')+sInp(t('set.round'),'roundTo','number')+'</div>'+
+    '<div class="row">'+sInp(t('set.weeks'),'weeksPerMonth','number')+sInp(t('set.valid'),'validDays','number')+'</div></div>';
+  h+='<div class="card"><h2>⏱️ '+esc(t('set.prod'))+'</h2><p class="hint">'+esc(t('set.prodHint'))+'</p>'+
+    S.facilityTypes.map(function(f,i){return '<div class="ftrow"><div class="g3"><input data-s="facilityTypes.'+i+'.name" value="'+esc(f.name)+'" aria-label="'+esc(t('set.nameEn'))+'" placeholder="'+esc(t('set.nameEn'))+'"><input type="number" inputmode="decimal" data-s="facilityTypes.'+i+'.rate" value="'+esc(f.rate)+'" aria-label="'+esc(t('common.sqftHr'))+'"><button class="x" data-sact="delFt" data-i="'+i+'" aria-label="'+esc(t('btn.delete'))+'">×</button></div><input class="es" data-s="facilityTypes.'+i+'.nameEs" value="'+esc(f.nameEs||'')+'" placeholder="'+esc(t('set.nameEs'))+'" aria-label="'+esc(t('set.nameEs'))+'"></div>'}).join('')+
+    '<p class="hint">'+esc(t('set.prodCols'))+'</p><button class="btn sec sm" data-sact="addFt">➕ '+esc(t('set.addFt'))+'</button>'+
+    '<h3>'+esc(t('set.adders'))+'</h3><div class="row">'+sInp(t('set.restMin'),'restroomMin','number')+sInp(t('set.setupMin'),'setupMin','number')+'</div>'+
+    '<div class="row">'+sInp(t('set.floorMin'),'extraFloorMin','number')+sInp(t('set.hardAdj'),'hardFloorAdjPct','number')+'</div>'+sInp(t('set.dayAdj'),'daytimeAdjPct','number')+
+    '<h3>'+esc(t('set.tasks'))+'</h3>'+S.tasks.map(function(x,i){return '<div class="ftrow"><div class="g3b"><input data-s="tasks.'+i+'.label" value="'+esc(x.label)+'" placeholder="'+esc(t('set.nameEn'))+'"><input type="number" inputmode="decimal" data-s="tasks.'+i+'.minutes" value="'+esc(x.minutes)+'" aria-label="'+esc(t('set.minutes'))+'"><select data-s="tasks.'+i+'.mode"><option value="visit"'+(x.mode!=='per1000'?' selected':'')+'>'+esc(t(x.qty?'set.perRoom':'set.perVisit'))+'</option><option value="per1000"'+(x.mode==='per1000'?' selected':'')+'>'+esc(t('set.per1000'))+'</option></select></div><input class="es" data-s="tasks.'+i+'.labelEs" value="'+esc(x.labelEs||'')+'" placeholder="'+esc(t('set.nameEs'))+'"></div>'}).join('')+'<p class="hint">'+esc(t('set.taskCols'))+'</p></div>';
+  h+='<div class="card"><h2>🥇 '+esc(t('set.tiers'))+'</h2><p class="hint">'+esc(t('set.tiersHint'))+'</p>'+S.tiers.map(function(x,i){return '<div class="addon"><div class="row3">'+sInp(t('set.tName'),'tiers.'+i+'.name')+sInp(t('set.tLabel'),'tiers.'+i+'.label')+sInp(t('set.tMult'),'tiers.'+i+'.mult','number')+'</div><div class="row">'+sInp(t('set.tNameEs'),'tiers.'+i+'.nameEs')+sInp(t('set.tLabelEs'),'tiers.'+i+'.labelEs')+'</div>'+
+    '<label class="f">'+esc(t('set.tDesc'))+'<textarea data-s="tiers.'+i+'.desc">'+esc(x.desc)+'</textarea></label><label class="f">'+esc(t('set.tDescEs'))+'<textarea data-s="tiers.'+i+'.descEs">'+esc(x.descEs||'')+'</textarea></label></div>'}).join('')+'</div>';
+  h+='<div class="card"><h2>➕ '+esc(t('set.addonRates'))+'</h2><div class="alert warn">'+esc(t('set.placeholder'))+'</div><div class="row">'+sInp(t('set.carpet'),'addons.carpetRate','number')+sInp(t('set.strip'),'addons.stripRate','number')+'</div><div class="row">'+sInp(t('set.pressure'),'addons.pressureRate','number')+sInp(t('set.addonMin'),'addons.minCharge','number')+'</div>'+sInp(t('set.deepMult'),'addons.deepCleanMult','number')+'</div>';
+  h+='<div class="card"><h2>📜 '+esc(t('set.terms'))+'</h2><p class="hint">'+esc(t('set.termsHint'))+'</p>'+sArea(t('set.termsEn'),'terms.en',200)+sArea(t('set.termsEs'),'terms.es',200)+'</div>';
+  h+='<div class="card"><h2>🧰 '+esc(t('data.title'))+'</h2><div class="btns"><button class="btn sec" data-sact="exportJson">⬇️ '+esc(t('data.backup'))+'</button><button class="btn sec" data-sact="importJson">⬆️ '+esc(t('data.restore'))+'</button></div><div class="btns" style="margin-top:8px"><button class="btn danger" data-sact="reset">'+esc(t('set.reset'))+'</button></div><p class="hint" style="margin-top:10px">'+esc(t('set.version',{v:APP_VERSION}))+'</p></div>';
+  $('v-settings').innerHTML=h;
+}
+var vs=$('v-settings');
+function onSettingsInput(e){var el=e.target;if(el.id==='uiLangSel'){if(e.type==='change')setLang(el.value);return}
+  var path=el.dataset&&el.dataset.s;if(!path)return;var v=el.value;
+  if(el.dataset.lines)v=v.split('\n').map(function(x){return x.replace(/\s+$/,'')}).filter(function(x){return x!==''});
+  else if(el.type==='number')v=el.value===''?'':num(el.value);else if(el.dataset.num)v=num(el.value);
+  setPath(S,path,v);saveSettings();
+  if(path==='dncList'&&e.type==='change'){var n=sweepDnc();if(n)toast(t('toast.dncSwept',{n:n}))}
+  if(path==='wage'||path==='burdenPct'){var l=$('loadedLbl');if(l)l.textContent=money(num(S.wage)*(1+num(S.burdenPct)/100),true)+t('common.perHr')}
+  if(path==='company.dba'||path==='company.logoText')renderShell();}
+vs.addEventListener('input',onSettingsInput);vs.addEventListener('change',onSettingsInput);
+vs.addEventListener('click',function(e){var a=e.target.closest('[data-sact]');if(!a)return;var act=a.dataset.sact;
+  if(act==='addFt'){S.facilityTypes.push({id:'ft'+uid(),name:t('set.newFt'),nameEs:'',rate:3000});saveSettings();renderSettings()}
+  else if(act==='delFt'){if(S.facilityTypes.length<=1)return toast(t('toast.keepOne'));if(confirm(t('confirm.delFt',{name:S.facilityTypes[+a.dataset.i].name}))){S.facilityTypes.splice(+a.dataset.i,1);saveSettings();renderSettings()}}
+  else if(act==='logo')$('logoFile').click();
+  else if(act==='nologo'){S.company.logoImage='';saveSettings();renderSettings()}
+  else if(act==='reset'){if(confirm(t('confirm.reset'))){var keep=S.lang;S=migrateSettings({});S.lang=keep;saveSettings();renderSettings();toast(t('toast.reset'))}}
+  else if(act==='exportJson')exportJson();
+  else if(act==='importJson')$('importFile').click();
+  else if(act==='starter'){var r=loadStarter();toast(t('toast.starter',r))}
+});
+$('logoFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var img=new Image(),rd=new FileReader();
+  rd.onload=function(){img.onload=function(){var max=256,sc=Math.min(1,max/Math.max(img.width,img.height)),cv=document.createElement('canvas');cv.width=Math.round(img.width*sc);cv.height=Math.round(img.height*sc);cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);S.company.logoImage=cv.toDataURL('image/png');saveSettings();renderSettings();toast(t('toast.logo'))};img.src=rd.result};rd.readAsDataURL(f);e.target.value=''});
+
+/* ===================== Export / import ===================== */
+function exportJson(){download('bid-pricer-backup-'+today()+'.json',JSON.stringify({app:'cleaning-bid-pricer',version:APP_VERSION,exported:nowIso(),settings:S,bids:BIDS,leads:LEADS},null,2),'application/json');toast(t('toast.backup'))}
+function csvCell(v){v=v==null?'':String(v);return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+function toCsv(rows){return rows.map(function(r){return r.map(csvCell).join(',')}).join('\r\n')}
+function bidsToCsv(){
+  var head=['Proposal #','Date','Status','Client','Contact','Phone','Email','Address','Facility type','Sq ft','Restrooms','Floors','Hard floor %','Visits/week','Time of service','Hours/visit','Hours/month','Monthly price','Per visit','Per sq ft','Labor cost/mo','Supplies/mo','Overhead/mo','Gross margin %','Profit/mo','Profit %','Good','Better','Best','Add-ons one-time','Add-ons monthly equiv','Proposal language','Lead','Notes'];
+  var rows=BIDS.map(function(b){var r=bidCalc(b),m=r.main,x=r.tiers,l=b.leadId&&getLead(b.leadId);return [b.number,b.date,b.status,b.client,b.contact,b.phone,b.email,b.address,r.facility.name,num(b.sqft),num(b.restrooms),num(b.floors),num(b.hardPct),num(b.visitsPerWeek),tl('en','time.'+b.timeOfService),m.visitHrs.toFixed(2),m.monthHrs.toFixed(2),m.price.toFixed(2),m.perVisit.toFixed(2),m.perSqft.toFixed(4),m.labor.toFixed(2),m.supplies.toFixed(2),m.overhead.toFixed(2),(m.grossPct*100).toFixed(1),m.net.toFixed(2),(m.netPct*100).toFixed(1),x[0]?x[0].price.toFixed(2):'',x[1]?x[1].price.toFixed(2):'',x[2]?x[2].price.toFixed(2):'',r.addonOneTime.toFixed(2),r.addonMonthly.toFixed(2),b.clientLang||'en',l?l.business:'',b.notes]});
+  return toCsv([head].concat(rows));
+}
+function leadsToCsv(){
+  var head=['business','contact','title','phone','email','website','address','city','category','source','status','priority','next_follow_up','walkthrough','best_time','client_language','last_activity','activity_count','linked_bid_monthly','notes'];
+  var rows=LEADS.map(function(l){var la=(l.activity||[])[(l.activity||[]).length-1];var b=bidsForLead(l)[0];return [l.business,l.contact,l.title,l.phone,l.email,l.website,l.address,l.city,l.category,SOURCES.indexOf(l.source)>=0?tl('en','src.'+l.source):l.source,tl('en','ls.'+l.status),l.priority,l.nextFollowUp,l.walkthrough,l.bestTime,l.clientLang,la?la.ts.slice(0,10)+' '+tl('en','act.'+la.type)+(la.note?' – '+la.note:''):'',(l.activity||[]).length,b?recPrice(b).toFixed(2):'',l.notes]});
+  return toCsv([head].concat(rows));
+}
+function exportCsv(){if(!BIDS.length)return toast(t('toast.noBids'));download('bids-'+today()+'.csv',bidsToCsv(),'text/csv');toast(t('toast.csv'))}
+function exportLeadsCsv(){if(!LEADS.length)return toast(t('toast.noLeads'));download('leads-'+today()+'.csv',leadsToCsv(),'text/csv');toast(t('toast.csv'))}
+$('importFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{var d=JSON.parse(rd.result);if(!d||!Array.isArray(d.bids))throw 0;
+  var add=0,rep=0;function mergeIn(list,arr,mig){arr.forEach(function(nb){if(!nb||!nb.id)return;nb=mig(nb);var i=list.findIndex(function(x){return x.id===nb.id});if(i>=0){list[i]=nb;rep++}else{list.push(nb);add++}})}
+  mergeIn(BIDS,d.bids,migrateBid);if(Array.isArray(d.leads))mergeIn(LEADS,d.leads,migrateLead);saveBids();saveLeads();
+  if(d.settings&&confirm(t('confirm.restoreSettings'))){S=migrateSettings(d.settings);saveSettings()}
+  sweepDnc();toast(t('toast.restored',{a:add,r:rep}));render(view);renderShell()}catch(err){alert(t('toast.badBackup'))}};rd.readAsText(f);e.target.value=''});
+
+/* ===================== Boot ===================== */
+$('langBtn').addEventListener('click',function(){setLang(LANG_CODES[(LANG_CODES.indexOf(uiLang())+1)%LANG_CODES.length])});
+sweepDnc();
+window.BidPricer={calcBid:calcBid,DEFAULTS:DEFAULTS,pricingSettings:pricingSettings,buildScope:buildScope,bidsToCsv:bidsToCsv,leadsToCsv:leadsToCsv,newBid:newBid,newLead:newLead,
+  parseCSV:parseCSV,guessMap:guessMap,importRows:importRows,loadStarter:loadStarter,templateVars:templateVars,fillTemplate:fillTemplate,nextWalkDate:nextWalkDate,makeIcs:makeIcs,isDnc:isDnc,guessType:guessType,
+  T:T,LANGS:LANGS,EMAILS:EMAILS,PHONE_SCRIPTS:PHONE_SCRIPTS,OBJECTIONS:OBJECTIONS,tl:tl,hasStarter:typeof STARTER!=='undefined',
+  _state:function(){return {settings:S,bids:BIDS,leads:LEADS,curId:curId,curLeadId:curLeadId,view:view}}};
+render('today');show('today');
+if(window.__PWA&&'serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){})}
+
+})();
+</script>
+</body>
+</html>
