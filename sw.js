@@ -1,8 +1,13 @@
-/* Offline cache for the GitHub Pages copy. Bump VERSION after each deploy. */
-var VERSION='zzp-v2';
+/* Offline cache for the GitHub Pages copy. VERSION is filled in by build.py on every build,
+   so each deploy is a new service worker and phones pick it up on the next launch. */
+var VERSION='zzp-v3-cc28026526';
 var FILES=['./','index.html','manifest.json','icon-192.png','icon-512.png','apple-touch-icon.png'];
-self.addEventListener('install',function(e){e.waitUntil(caches.open(VERSION).then(function(c){return c.addAll(FILES)}).then(function(){return self.skipWaiting()}))});
+self.addEventListener('install',function(e){e.waitUntil(caches.open(VERSION).then(function(c){return c.addAll(FILES.map(function(f){return new Request(f,{cache:'reload'})}))}).then(function(){return self.skipWaiting()}))});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==VERSION}).map(function(k){return caches.delete(k)}))}).then(function(){return self.clients.claim()}))});
-/* Network first (so updates show up), cache as fallback when offline */
-self.addEventListener('fetch',function(e){if(e.request.method!=='GET'||new URL(e.request.url).origin!==location.origin)return;
-  e.respondWith(fetch(e.request).then(function(r){var cp=r.clone();caches.open(VERSION).then(function(c){c.put(e.request,cp)});return r}).catch(function(){return caches.match(e.request).then(function(m){return m||caches.match('index.html')})}))});
+self.addEventListener('message',function(e){if(e.data==='skipWaiting')self.skipWaiting()});
+/* Network first, skipping the browser's HTTP cache (GitHub Pages caches pages for 10 minutes), so an update shows
+   on the next launch. The cached copy is used only when there is no signal. version.json is never cached. */
+self.addEventListener('fetch',function(e){var req=e.request,url=new URL(req.url);if(req.method!=='GET'||url.origin!==location.origin)return;
+  if(/version\.json$/.test(url.pathname)){e.respondWith(fetch(req,{cache:'no-store'}).catch(function(){return new Response('{}',{headers:{'Content-Type':'application/json'}})}));return}
+  e.respondWith(fetch(req,{cache:'no-cache'}).then(function(r){if(r&&r.ok){var cp=r.clone();caches.open(VERSION).then(function(c){c.put(req,cp)})}return r})
+    .catch(function(){return caches.match(req,{ignoreSearch:true}).then(function(m){return m||caches.match('index.html')})}))});

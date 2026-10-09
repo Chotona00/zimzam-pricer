@@ -1,11 +1,11 @@
 {
   "name": "Zim Zam Cleaning Bid Pricer",
-  "short_name": "Bid Pricer",
+  "short_name": "Zim Zam",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f2f5f4",
-  "theme_color": "#0e7c66",
+  "background_color": "#f4f7f8",
+  "theme_color": "#162c3c",
   "icons": [
     {
       "src": "icon-192.png",
