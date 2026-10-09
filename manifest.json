@@ -7,6 +7,16 @@
   "display": "standalone",
   "background_color": "#162c3c",
   "theme_color": "#162c3c",
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
   "icons": [
     {
       "src": "app-icon-192.png?v=logo2",
