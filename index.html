@@ -684,6 +684,32 @@ details.menu .mlist .dangertxt,details.menu .mlist .dangertxt .ico{color:var(--b
 .osmbar{opacity:1}.osmbar .btn[disabled]{background:#dfe8ea;color:#2f4550}
 .osmbar .btn[disabled]{opacity:1}
 
+/* v6 home */
+#v-today .hhero{margin:-4px -4px 14px;padding:22px 18px 26px;border-radius:0 0 26px 26px;background:linear-gradient(135deg,#162c3c 0%,#1d4450 55%,#245c64 100%);color:#fff;box-shadow:0 10px 30px rgba(22,44,60,.25);position:relative;overflow:hidden}
+#v-today .hhero:after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(122,192,133,.35),transparent 70%)}
+#v-today .hhtop{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+#v-today .hlogo{width:58px;height:58px;border-radius:16px;background:#fff;object-fit:contain;padding:4px;box-shadow:0 4px 14px rgba(0,0,0,.25);display:grid;place-items:center;color:#245c64;flex:0 0 58px}
+#v-today .hdate{font-size:13px;opacity:.8;text-transform:capitalize}#v-today .greet{margin:2px 0 0;font-size:26px;line-height:1.15;color:#fff}
+#v-today .htiles{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 16px}
+@media(min-width:700px){#v-today .htiles{grid-template-columns:repeat(4,1fr)}#v-today .htile{min-height:190px}}
+#v-today .htile{position:relative;min-height:156px;border:0;border-radius:24px;padding:18px 14px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;text-align:left;font:inherit;cursor:pointer;box-shadow:0 10px 24px rgba(22,44,60,.22),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .15s ease,box-shadow .15s ease;-webkit-tap-highlight-color:transparent;overflow:hidden}
+#v-today .htile:active{transform:scale(.95);box-shadow:0 4px 10px rgba(22,44,60,.25)}
+#v-today .htile b{font-size:20px;line-height:1.15;position:relative;z-index:1}
+#v-today .hti{width:62px;height:62px;border-radius:18px;background:rgba(255,255,255,.2);display:grid;place-items:center;margin-bottom:auto;backdrop-filter:blur(2px)}
+#v-today .hti svg{width:36px;height:36px}
+#v-today .htile:after{content:"";position:absolute;right:-30px;bottom:-30px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.1)}
+#v-today .g1{background:linear-gradient(140deg,#8fd09a,#4f9a5c);color:#0f2a1a}#v-today .g1 .hti{background:rgba(255,255,255,.4)}
+#v-today .g2{background:linear-gradient(140deg,#2f7a84,#1a454c)}
+#v-today .g3{background:linear-gradient(140deg,#2c4c63,#162c3c)}
+#v-today .g4{background:linear-gradient(140deg,#e39a4c,#b8642a)}
+#v-today .hbadge{position:absolute;top:14px;right:14px;min-width:28px;height:28px;padding:0 8px;border-radius:14px;background:#fff;color:#162c3c;font:700 14px/28px system-ui;font-style:normal;text-align:center}
+#v-today .hbadge.hot{background:#fff;color:#b42318}
+#v-today .tstrip h3{font-size:14px;margin:10px 0 4px;color:var(--mut)}#v-today .tstrip h3.bad{color:var(--bad)}
+#v-today .start.mini p{margin:6px 0 10px;color:var(--mut)}
+@media (prefers-reduced-motion:reduce){#v-today .htile{transition:none}}
+.verline{text-align:center;color:var(--mut);font-size:13px;margin:18px 0 6px}
+#v-today .hdate{text-transform:none}#v-today .hdate::first-letter{text-transform:uppercase}
+
 </style>
 </head>
 <body>
@@ -1118,7 +1144,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 </script>
 <script>
-window.__BUILD="v5-a52c1d4a3d";
+window.__BUILD="v6-427cd41cac";
 window.__PWA=true;
 (function(){
 'use strict';
@@ -1139,7 +1165,7 @@ var T={
 'help.photo.t':['Add photos to a quote','Agregar fotos a una cotización'],'help.photo.d':['In a quote, tap Take photo. Photos stay on your phone and can go in the PDF.','En una cotización, toque Tomar foto. Las fotos se quedan en su teléfono y pueden ir en el PDF.'],
 'help.pdf.t':['Send the quote','Enviar la cotización'],'help.pdf.d':['Tap Create quote, then Save PDF or Send by email. Use the English | Español switch for the client.','Toque Crear cotización y luego Guardar PDF o Enviar por correo. Use el selector English | Español para el cliente.'],
 'help.install.t':['Install and update','Instalar y actualizar'],'help.install.d':['iPhone: Share › Add to Home Screen. Android: menu › Install app. When the green “Update available” bar shows, tap it.','iPhone: Compartir › Agregar a inicio. Android: menú › Instalar app. Cuando aparezca la barra verde “Hay una actualización”, tóquela.'],
-'app.title':['Bid Pricer','Cotizador'],
+'more.version':['Version','Versión'],'app.title':['Bid Pricer','Cotizador'],
 'lang.switch':['Cambiar a español / Switch language','Switch to English / Cambiar idioma'],
 'nav.today':['Home','Inicio'],'nav.leads':['Clients','Clientes'],'nav.bids':['Quotes','Cotizaciones'],'nav.more':['More','Más'],'nav.scripts':['Scripts','Guiones'],'nav.settings':['Settings','Ajustes'],
 'sub.today':['Home','Inicio'],'sub.more':['More','Más'],'sub.leads':['Clients','Clientes'],'sub.lead':['Lead','Prospecto'],'sub.finder':['Find new leads','Buscar prospectos'],'sub.import':['Import leads','Importar prospectos'],
@@ -1463,7 +1489,7 @@ var T={
 'p.photosIntro':['Photos taken during our walkthrough at {client}.','Fotos tomadas durante nuestro recorrido en {client}.'],
 'home.morning':['Good morning, {name}','Buenos días, {name}'],'home.afternoon':['Good afternoon, {name}','Buenas tardes, {name}'],'home.evening':['Good evening, {name}','Buenas noches, {name}'],
 'home.morning0':['Good morning!','¡Buenos días!'],'home.afternoon0':['Good afternoon!','¡Buenas tardes!'],'home.evening0':['Good evening!','¡Buenas noches!'],
-'home.newQuote':['New quote','Nueva cotización'],'home.callList':['Call list','Llamadas'],'home.due':['{n} due','{n} pendientes'],
+'home.findBiz':['Find businesses','Buscar negocios'],'home.myClients':['My clients','Mis clientes'],'home.newQuote':['New quote','Nueva cotización'],'home.callList':['Call list','Llamadas'],'home.due':['{n} due','{n} pendientes'],
 'home.find':['Find clients','Buscar clientes'],'home.findSub':['By ZIP or near me','Por código postal o cerca'],'home.quotes':['My quotes','Mis cotizaciones'],'home.saved':['{n} saved','{n} guardadas'],
 'home.toCall':['To call','Por llamar'],'home.out':['Quotes out','Enviadas'],'home.wonMo':['Won / mo','Ganado / mes'],
 'home.allClear':['You’re all caught up. No calls due today.','Todo al día. No hay llamadas pendientes hoy.'],
@@ -2035,7 +2061,7 @@ function emptyState(icon,title,body,btns){return '<div class="card empty"><div c
 /* ===================== More (Scripts, Settings, import, backup) ===================== */
 function renderMore(){function row(attr,icon,title,sub){return '<button type="button" class="mrow" '+attr+'><span class="mic">'+ic(icon)+'</span><span class="grow"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span>'+ic('chevR','chev')+'</button>'}
   $('v-more').innerHTML=pageHero('more')+'<div class="mrows">'+row('data-nav="scripts"','scripts',t('nav.scripts'),t('more.scriptsSub'))+row('data-nav="settings"','settings',t('nav.settings'),t('more.settingsSub'))+
-    row('data-go="import"','upload',t('leads.import'),t('more.importSub'))+row('data-mact="backup"','save',t('data.backup'),t('more.backupSub'))+row('data-mact="restore"','data',t('data.restore'),t('more.restoreSub'))+row('data-mact="help"','help',t('help.title'),t('help.sub'))+row('data-mact="wizard"','wand',t('set.runSetup'),t('more.setupSub'))+'</div>'+helpHTML()}
+    row('data-go="import"','upload',t('leads.import'),t('more.importSub'))+row('data-mact="backup"','save',t('data.backup'),t('more.backupSub'))+row('data-mact="restore"','data',t('data.restore'),t('more.restoreSub'))+row('data-mact="help"','help',t('help.title'),t('help.sub'))+row('data-mact="wizard"','wand',t('set.runSetup'),t('more.setupSub'))+'</div>'+helpHTML()+'<p class="verline">'+esc(t('more.version'))+' '+esc(window.__BUILD||'dev')+'</p>'}
 var HELP_TIPS=[['search','find'],['plus','add'],['rHouse','home'],['camera','photo'],['send','pdf'],['download','install']];
 function helpHTML(){return '<div class="card helpsheet hidden" id="helpSheet"><h2>'+ic('help')+'<span>'+esc(t('help.title'))+'</span></h2>'+HELP_TIPS.map(function(x,i){return '<div class="htip"><span class="hic">'+ic(x[0],'big')+'<i>'+(i+1)+'</i></span><span class="grow"><b>'+esc(t('help.'+x[1]+'.t'))+'</b><small>'+esc(t('help.'+x[1]+'.d'))+'</small></span></div>'}).join('')+'</div>'}
 $('v-more').addEventListener('click',function(e){var a=e.target.closest('[data-mact]');if(!a)return;var x=a.dataset.mact;if(x==='backup')exportJson();else if(x==='restore')$('importFile').click();else if(x==='help'){var h=$('helpSheet');h.classList.toggle('hidden');if(!h.classList.contains('hidden'))h.scrollIntoView({block:'start',behavior:'smooth'})}else if(x==='wizard'){wiz.step=0;render('setup');show('setup')}});
@@ -2061,31 +2087,20 @@ function renderToday(){
   var dueToday=act.filter(function(l){return l.nextFollowUp===td});
   var end=addDays(td,7);
   var walks=LEADS.filter(function(l){var p=dtParts(l.walkthrough);return p&&p.date>=td&&p.date<=end&&l.status!=='dnc'}).sort(function(a,b){return a.walkthrough.localeCompare(b.walkthrough)});
-  var due=overdue.concat(dueToday),won=0,out=0;BIDS.forEach(function(b){if(b.status==='Won')won+=recPrice(b);if(b.status==='Sent')out++});
-  var h='<div class="hero home"><div class="hdate">'+esc(parseD(td).toLocaleDateString(loc(uiLang()),{weekday:'long',month:'long',day:'numeric'}))+'</div><h1 class="greet">'+esc(greet())+'</h1>'+
-    '<button class="btn hbig" data-act="newBid">'+B('bids',t('home.newQuote'))+'</button>'+
-    '<div class="tiles"><button class="tile t1" data-go="leads" data-filter="due">'+ic('phone')+'<span class="tl">'+esc(t('home.callList'))+'</span><span class="tn">'+esc(t('home.due',{n:due.length}))+'</span></button>'+
-    '<button class="tile t2" data-go="finder">'+ic('search')+'<span class="tl">'+esc(t('home.find'))+'</span><span class="tn">'+esc(t('home.findSub'))+'</span></button>'+
-    '<button class="tile t3" data-go="bids">'+ic('file')+'<span class="tl">'+esc(t('home.quotes'))+'</span><span class="tn">'+esc(t('home.saved',{n:BIDS.length}))+'</span></button></div>'+
-    (LEADS.length||BIDS.length?'<div class="stats"><div><b>'+due.length+'</b><span>'+esc(t('home.toCall'))+'</span></div><div><b>'+out+'</b><span>'+esc(t('home.out'))+'</span></div><div><b>'+money(won)+'</b><span>'+esc(t('home.wonMo'))+'</span></div></div>':'')+'</div>';
+  var due=overdue.concat(dueToday),lg=logoSrc();
+  var h='<div class="hhero"><div class="hhtop">'+(lg?'<img class="hlogo" src="'+esc(lg)+'" alt="">':'<span class="hlogo">'+ic('sparkles')+'</span>')+
+    '<div><div class="hdate">'+esc(parseD(td).toLocaleDateString(loc(uiLang()),{weekday:'long',month:'long',day:'numeric'}))+'</div><h1 class="greet">'+esc(greet())+'</h1></div></div></div>'+
+    '<div class="htiles">'+
+    '<button class="htile g1" data-act="newBid"><span class="hti">'+ic('spray')+'</span><b>'+esc(t('home.newQuote'))+'</b></button>'+
+    '<button class="htile g2" data-go="finder"><span class="hti">'+ic('pin')+'</span><b>'+esc(t('home.findBiz'))+'</b></button>'+
+    '<button class="htile g3" data-go="leads"><span class="hti">'+ic('leads')+'</span><b>'+esc(t('home.myClients'))+'</b>'+(LEADS.length?'<i class="hbadge">'+LEADS.length+'</i>':'')+'</button>'+
+    '<button class="htile g4" data-go="leads" data-filter="due"><span class="hti">'+ic('phone')+'</span><b>'+esc(t('home.callList'))+'</b>'+(due.length?'<i class="hbadge hot">'+due.length+'</i>':'')+'</button></div>';
+  function rows(title,list,cls){if(!list.length)return '';return '<div class="tsec"><h3 class="'+(cls||'')+'">'+esc(title)+' <span class="cnt '+(cls||'')+'">'+list.length+'</span></h3>'+list.slice(0,3).map(function(l){return leadRow(l,l.walkthrough&&list===walks?'<div class="walkwhen">'+ic('calClock')+esc(fmtWhen(l.walkthrough))+'</div>':'')}).join('')+(list.length>3?'<button class="linkbtn" data-go="leads" data-filter="due">'+esc(t('home.seeAll',{n:list.length}))+'</button>':'')+'</div>'}
+  var strip=rows(t('today.overdue'),overdue,'bad')+rows(t('today.dueToday'),dueToday,'')+rows(t('today.walks'),walks,'');
+  if(strip)h+='<div class="card tstrip"><h2>'+ic('today')+'<span>'+esc(t('common.today'))+'</span></h2>'+strip+'</div>';
   if(!LEADS.length&&!BIDS.length){
-    h+='<div class="card start"><div class="starttag">'+ic('star')+esc(t('today.startHere'))+'</div><h2>'+esc(t('today.startTitle'))+'</h2><ol class="steps">'+
-      '<li><b>'+esc(t('today.step1'))+'</b><span>'+esc(t('today.step1b'))+'</span><div class="btns"><button class="btn" data-go="import">'+B('upload',t('today.import'))+'</button></div></li>'+
-      '<li><b>'+esc(t('today.step2'))+'</b><span>'+esc(t('today.step2b'))+'</span></li>'+
-      '<li><b>'+esc(t('today.step3'))+'</b><span>'+esc(t('today.step3b'))+'</span></li></ol>'+
-      (typeof STARTER!=='undefined'?'<div class="starter"><p class="hint">'+esc(t('today.starterHint'))+'</p><button class="btn sec block" data-act="starter">'+B('download',t('set.starterBtn'))+'</button></div>':'')+'</div>';
-  }else if(!LEADS.length){
-    h+='<p class="calm">'+ic('info')+' '+esc(t('home.noLeads'))+' <button class="linkbtn" data-go="import">'+esc(t('today.import'))+'</button></p>'+
-      (typeof STARTER!=='undefined'?'<div class="card starter"><p class="hint">'+esc(t('today.starterHint'))+'</p><button class="btn sec block" data-act="starter">'+B('download',t('set.starterBtn'))+'</button></div>':'');
-  }
-  function sect(icon,title,list,cls){var more2=list.length>5?'<button class="btn sec block sm" data-go="leads" data-filter="due">'+B('chevR',t('home.seeAll',{n:list.length}))+'</button>':'';
-    return '<div class="card soft"><h2>'+ic(icon)+'<span>'+esc(title)+'</span> <span class="cnt '+(cls||'')+'">'+list.length+'</span></h2>'+list.slice(0,5).map(function(l){return leadRow(l)}).join('')+more2+'</div>'}
-  if(LEADS.length){var cards=[];
-    if(overdue.length)cards.push(sect('warn',t('today.overdue'),overdue,'bad'));
-    if(dueToday.length)cards.push(sect('phone',t('today.dueToday'),dueToday,''));
-    if(walks.length)cards.push('<div class="card soft"><h2>'+ic('walk')+'<span>'+esc(t('today.walks'))+'</span> <span class="cnt">'+walks.length+'</span></h2>'+walks.map(function(l){return leadRow(l,'<div class="walkwhen">'+ic('calClock')+esc(fmtWhen(l.walkthrough))+'</div>')}).join('')+'</div>');
-    if(cards.length)h+='<div class="hcards'+(cards.length>1?' two':'')+'">'+cards.join('')+'</div>';
-    if(!due.length&&!walks.length)h+='<p class="calm">'+ic('ok')+' '+esc(t('home.allClear'))+'</p>';
+    h+='<div class="card start mini"><div class="starttag">'+ic('star')+esc(t('today.startHere'))+'</div><p>'+esc(t('today.step1b'))+'</p><div class="btns"><button class="btn" data-go="import">'+B('upload',t('today.import'))+'</button></div>'+
+      (typeof STARTER!=='undefined'?'<button class="btn sec block" data-act="starter">'+B('download',t('set.starterBtn'))+'</button>':'')+'</div>';
   }
   $('v-today').innerHTML=h;
 }
@@ -3494,7 +3509,7 @@ var updReg=null;
 function showUpdate(){var bar=$('updBar');if(!bar||!bar.classList.contains('hidden'))return;bar.innerHTML='<button type="button" id="updBtn">'+B('refresh',t('upd.msg'))+'<b>'+esc(t('upd.tap'))+'</b></button>';bar.classList.remove('hidden')}
 function applyUpdate(){var done=false;function reload(){if(done)return;done=true;location.reload()}
   if(updReg){updReg.update().catch(function(){}).then(function(){if(updReg.waiting){navigator.serviceWorker.addEventListener('controllerchange',reload);updReg.waiting.postMessage('skipWaiting')}else reload()})}else reload();setTimeout(reload,2500)}
-function checkVersion(){if(!window.__BUILD||!window.fetch)return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.build&&j.build!==window.__BUILD)showUpdate()}).catch(function(){})}
+function checkVersion(){if(!window.__BUILD||!window.fetch)return;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.build&&j.build!==window.__BUILD){var k='zzp_autoupd';var tried=null;try{tried=sessionStorage.getItem(k)}catch(e){}if(tried!==j.build){try{sessionStorage.setItem(k,j.build)}catch(e){}applyUpdate()}else showUpdate()}}).catch(function(){})}
 function initUpdates(){
   document.addEventListener('click',function(e){if(e.target.closest('#updBtn'))applyUpdate()});
   if(!window.__PWA||location.protocol!=='https:'&&location.hostname!=='localhost')return;
