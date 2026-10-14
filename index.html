@@ -600,6 +600,50 @@ details.menu .mlist .dangertxt,details.menu .mlist .dangertxt .ico{color:var(--b
 .linkonly p{margin:4px 0 12px}
 .linkonly ol.steps{margin-top:14px}
 .linkonly .alert{margin:6px 0 12px}
+/* ===== v5: closest businesses finder + logos ===== */
+.av{position:relative;width:48px;height:48px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.av::before{content:attr(data-i);font-size:17px;letter-spacing:.3px}
+.av .avc{position:absolute;right:3px;bottom:2px;opacity:.8;line-height:0}.av .avc svg{width:13px;height:13px}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;padding:7px;opacity:0;transition:opacity .25s}
+.av.haslogo img{opacity:1}.av.haslogo{box-shadow:inset 0 0 0 1px var(--line)}
+.lhtop{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center}.lhtop .av{grid-row:1/4;width:56px;height:56px}
+.osmctl{background:linear-gradient(135deg,#162c3c,#245c64);color:#fff;border:0}
+.osmctl h2{color:#fff}.osmctl .osub{font-size:13px;font-weight:700;opacity:.85;margin:10px 0 6px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:rgba(255,255,255,.12);padding:4px;border-radius:14px}
+.seg button{border:0;border-radius:10px;min-height:46px;font-size:16px;font-weight:800;background:transparent;color:#fff}
+.seg button.on{background:#7ac085;color:#0f1f2a}
+.ocats{display:flex;flex-wrap:wrap;gap:7px}
+.ocat{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:7px 12px;min-height:44px;font-size:14px;font-weight:600}
+.ocat svg{width:20px;height:20px}.ocat b{background:rgba(255,255,255,.2);border-radius:999px;padding:0 7px;font-size:12px}
+.ocat.on{background:#fff;color:#162c3c;border-color:#fff}.ocat.on b{background:#e6f3e8;color:#1f6b33}
+.osmhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 2px 10px}
+.osmhead b{display:block;font-size:17px;color:var(--brand)}.osmhead small{color:var(--mut);font-size:13px}
+.osmnote{margin-bottom:10px;font-size:13.5px}
+.olist{display:grid;gap:10px}
+.ocard{display:flex;gap:11px;align-items:flex-start;background:#fff;border-radius:16px;padding:12px;border:1px solid var(--line);border-left:5px solid #7ac085;transition:box-shadow .2s,border-color .2s}
+.ocard.sel{border-color:#7ac085;box-shadow:0 0 0 2px #7ac085}
+.ocard.have{border-left-color:#9fb3bd;background:#f6f9fa}
+.ochk{flex:none;width:28px;padding-top:12px}.ochk input{width:24px;height:24px;accent-color:#245c64}
+.omain{flex:1;min-width:0}.omain .nm{font-weight:800;font-size:17px;color:var(--brand);line-height:1.25}
+.omain .meta{font-size:13.5px;color:var(--mut);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.omain .meta svg{width:15px;height:15px;vertical-align:-2px;margin-right:3px}
+.omain .meta a{color:#245c64;font-weight:700;text-decoration:none}
+.ocat-t{font-weight:700;color:#245c64}.odist{background:#e6f3e8;color:#1f6b33;border-radius:999px;padding:1px 8px;font-weight:700}
+.nophone{font-style:italic}
+.obtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.obtns .oadd{background:#7ac085;color:#0f1f2a;min-width:96px}
+.ohave{display:inline-flex;align-items:center;gap:4px;color:#1f6b33;font-weight:800;font-size:13.5px;background:#e6f3e8;border-radius:999px;padding:6px 10px}
+.ohave svg{width:16px;height:16px}
+.osmattr{font-size:12px;color:var(--mut);text-align:center;margin:12px 0}.osmattr a{color:inherit}
+.osmbar{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));z-index:15;padding:8px 0;opacity:.75}
+.osmbar.on{opacity:1}.osmbar .btn{box-shadow:0 6px 18px rgba(22,44,60,.3)}.osmbar .btn[disabled]{background:#c9d4d8;color:#4a5a63;box-shadow:none}
+.osmload{text-align:center;padding:28px 14px}.osmload p{margin:10px 0 0;color:var(--mut)}
+.spin{display:inline-block;width:36px;height:36px;border:4px solid #e3e8eb;border-top-color:#245c64;border-radius:50%;animation:zzspin .8s linear infinite}
+@keyframes zzspin{to{transform:rotate(360deg)}}
+@media (min-width:700px){.olist{grid-template-columns:1fr 1fr}}
+.ocats{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:2px 14px 4px;scroll-snap-type:x proximity}
+.ocats::-webkit-scrollbar{display:none}.ocat{flex:none;scroll-snap-align:start}
+@media (min-width:700px){.ocats{flex-wrap:wrap;overflow:visible;margin:0;padding:0}}
 
 </style>
 </head>
@@ -1035,7 +1079,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 </script>
 <script>
-window.__BUILD="v4-a94bf594ac";
+window.__BUILD="v5-65c27c6d4a";
 window.__PWA=true;
 (function(){
 'use strict';
@@ -1276,7 +1320,7 @@ var T={
 'lead.newTitle':['New client','Nuevo cliente'],'lead.newHint':['Only the business name is required. You can add the rest later.','Solo el nombre del negocio es obligatorio. El resto lo puede agregar después.'],
 'lead.logHint':['After a call, tap what happened. The next follow-up is set for you.','Después de una llamada, toque lo que pasó. El siguiente seguimiento se programa solo.'],
 'lead.pickTime':['Or pick a date and time','O elija fecha y hora'],
-'finder.whereTitle':['Where do you want clients?','¿Dónde quiere clientes?'],'finder.whereHint':['Type a ZIP code or tap Near me. Then tap a type of business to see every one nearby on Google Maps.','Escriba un código postal o toque Cerca de mí. Luego toque un tipo de negocio para verlos todos en Google Maps.'],
+'finder.whereTitle':['Where do you want clients?','¿Dónde quiere clientes?'],'finder.whereHint':['Type a ZIP code or tap Near me. We list the businesses closest to you, ready to add.','Escriba un código postal o toque Cerca de mí. Le mostramos los negocios más cercanos, listos para agregar.'],
 'finder.zip':['ZIP code','Código postal (ZIP)'],'finder.zipPh':['e.g. 27519','p. ej., 27519'],'finder.zipGo':['Search','Buscar'],'finder.or':['or','o'],
 'finder.nearMe':['Near me (use my location)','Cerca de mí (usar mi ubicación)'],'finder.nearMeLabel':['your location','su ubicación'],
 'finder.badZip':['Please type a 5-digit ZIP code, like 27519.','Escriba un código postal de 5 dígitos, como 27519.'],
@@ -1389,7 +1433,26 @@ var T={
 'leads.cDue':['To call today','Llamar hoy'],'leads.cInt':['Interested','Interesados'],'leads.cAll':['All','Todos'],
 'lead.detHint':['Name, phone, email, address, notes','Nombre, teléfono, correo, dirección, notas'],
 'sc.tCall':['Call','Llamada'],'sc.tVm':['Voicemail','Buzón'],'sc.tObj':['Objections','Objeciones'],'sc.tEmail':['Emails','Correos'],
-'sc.stepOf':['Step {n} of {total}','Paso {n} de {total}'],'sc.next':['Next step','Siguiente paso'],'sc.objHint':['Tap a question to see what to say.','Toque una pregunta para ver qué responder.']
+'sc.stepOf':['Step {n} of {total}','Paso {n} de {total}'],'sc.next':['Next step','Siguiente paso'],'sc.objHint':['Tap a question to see what to say.','Toque una pregunta para ver qué responder.'],
+/* v5: closest businesses (OpenStreetMap) */
+'cat.schools':['Schools','Escuelas'],'cat.bank':['Banks','Bancos'],'cat.restaurant':['Restaurants & cafes','Restaurantes y cafés'],'src.osm':['Find clients (map list)','Buscar clientes (lista del mapa)'],
+'osm.title':['Businesses near {where}','Negocios cerca de {where}'],'osm.radius':['How far?','¿Qué tan lejos?'],'osm.mi':['{n} mi','{n} mi'],'osm.types':['Types of business (tap to turn on or off)','Tipos de negocio (toque para activar o quitar)'],
+'osm.loading':['Looking for businesses near you…','Buscando negocios cerca de usted…'],
+'osm.offline':['You’re offline. Connect to the internet and tap Try again.','No tiene conexión. Conéctese a internet y toque Intentar de nuevo.'],
+'osm.busy':['The free map service is busy right now. Wait a minute and tap Try again.','El servicio gratis de mapas está ocupado. Espere un minuto y toque Intentar de nuevo.'],
+'osm.noZip':['We couldn’t find that ZIP code. Check it and try again.','No encontramos ese código postal. Revíselo e intente de nuevo.'],
+'osm.saved':['The map service is busy, so this is your saved list from {when}.','El servicio de mapas está ocupado; esta es su lista guardada del {when}.'],'osm.slow':['The main map server is slow. Trying the backup… (about 15 seconds)','El servidor principal está lento. Probando el de respaldo… (unos 15 segundos)'],'osm.viaNom':['The main map server was busy, so this is a shorter list from the backup. Tap Try again later for the full list.','El servidor principal estaba ocupado; esta es una lista más corta del respaldo. Más tarde toque Intentar de nuevo para la lista completa.'],'osm.retry':['Try again','Intentar de nuevo'],
+'osm.found':['{n} businesses, closest first','{n} negocios, los más cercanos primero'],'osm.phones':['{n} of {total} have a phone number','{n} de {total} tienen teléfono'],
+'osm.phoneNote':['The free map doesn’t have every phone number. Tap Google Maps on a business to see its phone.','El mapa gratis no tiene todos los teléfonos. Toque Google Maps en un negocio para ver su teléfono.'],
+'osm.noPhone':['No phone listed','Sin teléfono'],'osm.dist':['{d} mi away','a {d} mi'],
+'osm.add':['Add','Agregar'],'osm.maps':['Google Maps','Google Maps'],'osm.have':['Already in your clients','Ya está en sus clientes'],'osm.open':['Open','Abrir'],
+'osm.select':['Select {name}','Seleccionar {name}'],'osm.selAll':['Select all','Seleccionar todos'],
+'osm.addSel':['Add {n} selected','Agregar {n} seleccionados'],'osm.pickSome':['Check the boxes to add several at once','Marque las casillas para agregar varios a la vez'],
+'osm.addedN':['{n} added to your clients','{n} agregados a sus clientes'],
+'osm.showMore':['Show {n} more','Ver {n} más'],
+'osm.none':['No businesses found here','No encontramos negocios aquí'],'osm.noneBody':['Try a bigger distance or turn on more types.','Pruebe una distancia mayor o active más tipos.'],'osm.wider':['Search 10 miles','Buscar a 10 millas'],
+'osm.dataBy':['Business list from','Lista de negocios de'],
+'osm.mapsLinks':['Search Google Maps instead','Buscar en Google Maps'],'osm.mapsLinksHint':['Opens Maps by type of business','Abre Maps por tipo de negocio']
 };
 
 
@@ -1587,7 +1650,7 @@ var TIMES=['afterhours','earlymorning','weekend','daytime'];
 var BSTATUS=['Draft','Sent','Won','Lost'];
 var LSTATUS=['new','called','vm','interested','walk','bidsent','won','lost','dnc'];
 var RANK={new:0,called:1,vm:2,interested:3,walk:4,bidsent:5,won:6,lost:6,dnc:9};
-var SOURCES=['maps','google','linkedin','yelp','driveby','referral','calllist','webform','import','other'];
+var SOURCES=['osm','maps','google','linkedin','yelp','driveby','referral','calllist','webform','import','other'];
 var LEAD_FIELDS=['business','contact','title','phone','email','website','address','city','category','source','status','priority','nextFollowUp','bestTime','notes'];
 
 /* ===================== Helpers ===================== */
@@ -1865,7 +1928,7 @@ function leadRow(l,extra,big){
   var due=l.nextFollowUp&&isActive(l)?(l.nextFollowUp<today()?'<span class="due od">'+ic('clock')+esc(fmtShort(l.nextFollowUp))+'</span>':(l.nextFollowUp===today()?'<span class="due td">'+ic('clock')+esc(t('common.today'))+'</span>':'<span class="due">'+ic('clock')+esc(fmtShort(l.nextFollowUp))+'</span>')):'';
   var call=l.phone&&l.status!=='dnc'?'<a class="callbtn" href="'+esc(telHref(l.phone))+'" data-calllead="'+l.id+'">'+B('phone',t('lead.call'))+'</a>':'';
   if(big){var mail=l.email&&l.status!=='dnc'?'<a class="mailbtn" href="mailto:'+esc(l.email)+'" data-maillead="'+l.id+'">'+B('mail',t('lead.email'))+'</a>':'';
-    return '<div class="lrow lcard s-'+esc(l.status)+'"><div class="lmain" data-go="lead" data-lead="'+l.id+'"><div class="nm">'+(l.priority?'<span class="pri">'+esc(l.priority)+'</span> ':'')+esc(l.business||t('lead.noName'))+'</div>'+
+    return '<div class="lrow lcard s-'+esc(l.status)+'">'+avatarHTML(l.business,l.logo||logoFor(l.website),leadCatKey(l))+'<div class="lmain" data-go="lead" data-lead="'+l.id+'"><div class="nm">'+(l.priority?'<span class="pri">'+esc(l.priority)+'</span> ':'')+esc(l.business||t('lead.noName'))+'</div>'+
       '<div class="meta">'+esc([l.contact,l.category,cityName(l.city)].filter(Boolean).join(' · '))+'</div><div class="meta">'+statusBadge(l.status)+' '+due+(extra||'')+'</div></div>'+(call||mail?'<div class="lacts">'+call+mail+'</div>':'')+'</div>'}
   return '<div class="lrow"><div class="lmain" data-go="lead" data-lead="'+l.id+'"><div class="nm">'+(l.priority?'<span class="pri">'+esc(l.priority)+'</span> ':'')+esc(l.business||t('lead.noName'))+'</div>'+
     '<div class="meta">'+esc([l.category,cityName(l.city)].filter(Boolean).join(' · '))+'</div><div class="meta">'+statusBadge(l.status)+' '+due+(extra||'')+'</div></div>'+call+'</div>';
@@ -1957,7 +2020,7 @@ $('v-leads').addEventListener('click',function(e){var a=e.target.closest('[data-
 /* ===================== Lead detail ===================== */
 function lInp(key,val,attrs,label){return '<label class="f">'+esc(label||t('lf.'+key))+'<input data-l="'+key+'" value="'+esc(val)+'" '+(attrs||'')+'></label>'}
 function leadHeadHTML(l){var dnc=l.status==='dnc';
-  var h='<div class="card lhead"><div class="lt">'+(l.priority?'<span class="pri">'+esc(l.priority)+'</span> ':'')+esc(l.business||t('lead.noName'))+'</div><div class="meta">'+esc([l.contact,l.title].filter(Boolean).join(', '))+'</div><div style="margin-top:6px">'+statusBadge(l.status)+'</div>';
+  var h='<div class="card lhead"><div class="lhtop">'+avatarHTML(l.business,l.logo||logoFor(l.website),leadCatKey(l))+'<div class="lt">'+(l.priority?'<span class="pri">'+esc(l.priority)+'</span> ':'')+esc(l.business||t('lead.noName'))+'</div><div class="meta">'+esc([l.contact,l.title].filter(Boolean).join(', '))+'</div><div style="margin-top:6px">'+statusBadge(l.status)+'</div></div>';
   if(dnc)h+='<div class="alert bad" style="margin-top:10px">'+ic('ban')+' '+esc(t('lead.dncBanner'))+'</div>';
   h+='<div class="abtns">'+
     (l.phone&&!dnc?'<a class="btn callbig" href="'+esc(telHref(l.phone))+'" data-act="call">'+B('phone',t('lead.call'))+'<small>'+esc(l.phone)+'</small></a>':'<button class="btn" disabled>'+B('phone',t('lead.call'))+'</button>')+
@@ -2097,7 +2160,7 @@ var finder={cat:'dental',city:'',kw:'',zip:'',coords:null,geoMsg:'',places:null,
 function finderWhere(){if(finder.coords)return {label:t('finder.nearMeLabel'),q:''};if(finder.zip)return {label:finder.zip,q:finder.zip};return null}
 function mapsUrl(q){var E=encodeURIComponent;if(finder.coords)return 'https://www.google.com/maps/search/'+E(q)+'/@'+finder.coords.lat.toFixed(5)+','+finder.coords.lng.toFixed(5)+',13z';return 'https://www.google.com/maps/search/?api=1&query='+E(q+' near '+finder.zip)}
 function googleUrl(q){var near=finder.coords?'near me':'near '+finder.zip;return 'https://www.google.com/search?q='+encodeURIComponent(q+' '+near)}
-function catIcon(k){return ({office:'building',medical:'shield',dental:'sparkles',chiro:'hand',church:'star',daycare:'party',gym:'timer',vet:'interested',property:'layers',apartment:'building',dealership:'store',cowork:'leads',school:'clipboard',retail:'store'})[k]||'store'}
+function catIcon(k){return ({office:'ftOffice',medical:'ftMedical',dental:'ftDental',chiro:'hand',church:'ftChurch',daycare:'ftDaycare',gym:'ftGym',vet:'ftVet',property:'layers',apartment:'ftApartment',dealership:'ftDealer',cowork:'leads',school:'hat',retail:'ftStore',bank:'dollar',restaurant:'store',home:'home'})[k]||'ftStore'}
 function finderLinks(){
   var c=FINDER_CATS.filter(function(x){return x.k===finder.cat})[0]||FINDER_CATS[0];var city=finder.city||(S.cities||[])[0]||'';var cn=cityName(city);
   var q=finder.kw.trim()||c.q;var yr=new Date().getFullYear();var E=encodeURIComponent;
@@ -2142,15 +2205,15 @@ function renderFinderCats(){
   var w=finderWhere(),el=$('fcats');if(!el)return;
   if(!w){el.innerHTML='<div class="card tipcard">'+ic('bulb')+'<span>'+esc(t('finder.pickFirst'))+'</span></div>';return}
   var lv=placesOn();
-  var h='<div class="card"><h2>'+ic('store')+'<span>'+esc(t('finder.catsTitle',{where:w.label}))+'</span></h2><p class="hint">'+esc(t('finder.catsHint'))+'</p>'+
+  var g='<p class="hint">'+esc(t('finder.catsHint'))+'</p>'+
     '<a class="btn block big" target="_blank" rel="noopener" data-fcat="all" href="'+esc(mapsUrl('businesses'))+'">'+B('map',t('finder.searchAll'))+ic('ext','sm')+'</a>'+
     '<div class="catgrid">'+FINDER_CATS.map(function(c){return '<div class="catcard'+(finder.cat===c.k?' on':'')+'"><div class="cname">'+ic(catIcon(c.k))+'<span>'+esc(t('cat.'+c.k))+'</span></div>'+
       '<div class="cbtns"><a class="btn sm" target="_blank" rel="noopener" data-fcat="'+c.k+'" data-kind="maps" href="'+esc(mapsUrl(c.q))+'">'+B('map',t('finder.openMaps'))+'</a>'+
       '<a class="btn sec sm" target="_blank" rel="noopener" data-fcat="'+c.k+'" data-kind="google" href="'+esc(googleUrl(c.q))+'">'+B('search',t('finder.openGoogle'))+'</a>'+
       (lv?'<button class="btn sec sm" data-places="'+c.k+'">'+B('list',t('finder.showHere'))+'</button>':'')+'</div></div>'}).join('')+'</div>'+
-    '<p class="hint" style="margin-top:10px">'+ic('info')+' '+esc(t('finder.mapsNote'))+'</p></div>';
-  if(lv)h+='<div id="placesRes">'+placesHTML()+'</div>';
-  el.innerHTML=h;
+    '<p class="hint" style="margin-top:10px">'+ic('info')+' '+esc(t('finder.mapsNote'))+'</p>';
+  if(lv){OPEN.mapsLinks=true;g+='<div id="placesRes">'+placesHTML()+'</div>'}
+  el.innerHTML='<div id="osmCtl">'+osmCtlHTML(w)+'</div><div id="osmRes">'+osmResHTML()+'</div>'+more('mapsLinks',t('osm.mapsLinks',{where:w.label}),'map',g,t('osm.mapsLinksHint'));
 }
 function placesHTML(){
   if(finder.placesErr)return '<div class="alert bad">'+ic('warn')+' '+esc(finder.placesErr)+'</div>';
@@ -2175,6 +2238,158 @@ function placesSearch(k){
 function cityFromAddress(a){var m=/,\s*([^,]+),\s*([A-Z]{2})\s+\d{5}/.exec(a||'');return m?m[1].trim()+', '+m[2]:''}
 function addPlace(p,k){var l=newLead({business:p.name,phone:p.phone,website:p.website,address:p.address,city:cityFromAddress(p.address),category:t('cat.'+k),source:'maps',sourceUrl:p.url,nextFollowUp:today()});
   logAct(l,'created',srcLabel('maps'));var d=enforceDnc(l);LEADS.push(l);saveLeads();toast(d?t('toast.dncMatch'):t('toast.leadSaved',{name:p.name}));return l}
+/* ===================== Closest businesses: free OpenStreetMap finder (no key, no cost) =====================
+   ZIP -> Nominatim (1 request/second max, cached on the phone), or the phone's location for Near me.
+   Then one Overpass query for every business type within the chosen radius; results are cached for 30 minutes.
+   Data © OpenStreetMap contributors (ODbL). Logos: the business website's icon from Google's free favicon service. */
+var LINK_RESOLVER_URL=''; // optional helper (e.g. Cloudflare Worker) that expands maps.app.goo.gl links. Empty = off.
+var OSM_EMAIL='NapoleonChotojr@gmail.com';
+var NOMINATIM_URL='https://nominatim.openstreetmap.org/search';
+var OVERPASS_URLS=['https://overpass-api.de/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter','https://overpass.private.coffee/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
+var OSM_CATS=[
+  {k:'office',q:['nw[office][name]']},
+  {k:'medical',am:['doctors','clinic'],q:['nw[healthcare][name]']},
+  {k:'dental',am:['dentist']},
+  {k:'church',am:['place_of_worship']},
+  {k:'daycare',am:['childcare','kindergarten']},
+  {k:'gym',q:['nw[leisure=fitness_centre][name]']},
+  {k:'vet',am:['veterinary']},
+  {k:'apartment',q:['nw[building=apartments][name]','nw[landuse=residential][residential~"^(apartments|condominium)$"][name]']},
+  {k:'dealership',q:['nw[shop=car][name]']},
+  {k:'bank',am:['bank']},
+  {k:'school',am:['school','college']},
+  {k:'retail',q:['nw[shop][name]'],off:1},
+  {k:'restaurant',am:['restaurant','cafe','fast_food'],off:1}
+];
+var OSM_RADII=[1,3,5,10],OVERPASS_BUDGET=(typeof window!=='undefined'&&window.__OSM_BUDGET)||25000;
+finder.radius=3;finder.ocats={};OSM_CATS.forEach(function(c){finder.ocats[c.k]=!c.off});
+finder.osm={status:'idle',list:[],sel:{},shown:40,err:'',cats:''};
+var osmTicket=0,nomLast=0,OSM_CACHE={};
+function osmLbl(k){return t(k==='school'?'cat.schools':'cat.'+k)}
+function osmCatOn(k){return !!finder.ocats[k]}
+function osmCatOf(t){var a=t.amenity||'',h=t.healthcare||'';
+  if(a==='dentist'||h==='dentist')return 'dental';if(a==='veterinary')return 'vet';
+  if(a==='doctors'||a==='clinic'||h)return 'medical';if(a==='childcare'||a==='kindergarten')return 'daycare';
+  if(t.leisure==='fitness_centre')return 'gym';if(a==='place_of_worship')return 'church';if(t.shop==='car')return 'dealership';
+  if(a==='bank')return 'bank';if(a==='school'||a==='college')return 'school';
+  if(t.building==='apartments'||t.landuse==='residential')return 'apartment';
+  if(a==='restaurant'||a==='cafe'||a==='fast_food')return 'restaurant';if(t.office)return 'office';if(t.shop)return 'retail';return ''}
+function osmMiles(a,lat,lon){var R=3958.8,r=Math.PI/180,dl=(lat-a.lat)*r,dn=(lon-a.lon)*r;
+  var x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.lat*r)*Math.cos(lat*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.min(1,Math.sqrt(x)))}
+function osmBox(c0,mi){var d=mi/69,dl=mi/(69*Math.cos(c0.lat*Math.PI/180));return [c0.lat-d,c0.lon-dl,c0.lat+d,c0.lon+dl].map(function(x){return x.toFixed(5)}).join(',')}
+function osmQuery(c0,mi,cats){/* one small query: a bounding box (fast on the server), then we keep only what is inside the circle */
+  var C=OSM_CATS.filter(function(c){return cats.indexOf(c.k)>=0}),am=[],q=[];
+  C.forEach(function(c){am=am.concat(c.am||[]);q=q.concat(c.q||[])});
+  if(cats.indexOf('retail')>=0)q=q.filter(function(x){return x!=='nw[shop=car][name]'});
+  if(am.length)q.unshift('nw[amenity~"^('+am.join('|')+')$"][name]');
+  return '[out:json][timeout:25][bbox:'+osmBox(c0,mi)+'];('+q.join(';')+';);out center tags 2000;'}
+function siteDomain(u){var m=/^(?:[a-z]+:\/\/)?(?:www\.)?([^\/?#:\s]+)/i.exec(String(u||'').trim());return m&&/\.[a-z]{2,}$/i.test(m[1])?m[1].toLowerCase():''}
+function webHref(u){u=String(u||'').trim();return /^https?:\/\//i.test(u)?u:(u?'https://'+u:'')}
+function logoFor(site){var d=siteDomain(site);return d?'https://www.google.com/s2/favicons?domain='+encodeURIComponent(d)+'&sz=128':''}
+function osmParse(j,c0,cats){var seen={},out=[];
+  (j&&j.elements||[]).forEach(function(e){var t=e.tags||{};if(!t.name)return;var lat=e.lat!=null?e.lat:(e.center&&e.center.lat),lon=e.lon!=null?e.lon:(e.center&&e.center.lon);if(lat==null||lon==null)return;
+    var cat=osmCatOf(t);if(!cat||(cats&&cats.indexOf(cat)<0))return;
+    var key=norm(t.name)+'@'+lat.toFixed(3)+','+lon.toFixed(3);if(seen[key])return;seen[key]=1;
+    var street=[t['addr:housenumber'],t['addr:street']].filter(Boolean).join(' '),city=t['addr:city']||'',st=t['addr:state']||'',zip=t['addr:postcode']||'';
+    var web=t.website||t['contact:website']||t.url||'';
+    out.push({id:e.type+'/'+e.id,name:t.name,cat:cat,lat:lat,lon:lon,dist:osmMiles(c0,lat,lon),
+      address:[street+(t['addr:unit']?' '+t['addr:unit']:''),city,[st,zip].filter(Boolean).join(' ')].filter(function(x){return String(x).trim()}).join(', '),
+      city:city?(st?city+', '+st:city):'',phone:t.phone||t['contact:phone']||'',website:web})});
+  return out.sort(function(a,b){return a.dist-b.dist})}
+function osmFetch(url,opt,ms){var c=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(c)c.abort()},ms||30000);if(c)opt.signal=c.signal;
+  return fetch(url,opt).then(function(r){clearTimeout(tm);return r},function(e){clearTimeout(tm);throw e})}
+function overpass(q){/* free public servers are often slow: ask the main one, and if it hasn't answered in 12 s also ask the next mirror. First good answer wins. */
+  return new Promise(function(res,rej){var done=false,left=OVERPASS_URLS.length,timers=[];
+    function fin(){timers.forEach(clearTimeout)}
+    function ask(u){if(done)return;osmFetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q)},60000)
+      .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
+      .then(function(j){if(done)return;if(!j||!j.elements)throw new Error('bad');done=true;fin();res(j)})
+      .catch(function(){left--;if(done)return;var nx=OVERPASS_URLS.filter(function(x,k){return k>idx[u]&&!started[x]})[0];if(nx){start(nx)}if(left<=0){done=true;fin();rej(new Error('busy'))}})}
+    var idx={},started={};OVERPASS_URLS.forEach(function(u,k){idx[u]=k});
+    function start(u){if(started[u]||done)return;started[u]=1;ask(u)}
+    OVERPASS_URLS.forEach(function(u,k){if(!k)start(u);else timers.push(setTimeout(function(){start(u)},8000*k))});
+    timers.push(setTimeout(function(){if(!done){done=true;fin();rej(new Error('busy'))}},OVERPASS_BUDGET))})}
+/* Backup when every Overpass server is busy: Nominatim's "[key=value]" search inside the box, one type per second (its usage limit). Fewer results, still free. */
+var NOM_PHRASES={office:['office=company','office=insurance','office=lawyer','office=estate_agent','office=accountant'],medical:['amenity=doctors','amenity=clinic'],dental:['amenity=dentist'],
+  church:['amenity=place_of_worship'],daycare:['amenity=childcare','amenity=kindergarten'],gym:['leisure=fitness_centre'],vet:['amenity=veterinary'],dealership:['shop=car'],bank:['amenity=bank'],
+  school:['amenity=school'],retail:['shop=supermarket','shop=clothes','shop=furniture','shop=hardware'],restaurant:['amenity=restaurant','amenity=cafe','amenity=fast_food']};
+function nomBackup(c0,rad,cats,tk){var d=rad/69,dl=rad/(69*Math.cos(c0.lat*Math.PI/180)),vb=[c0.lon-dl,c0.lat+d,c0.lon+dl,c0.lat-d].map(function(x){return x.toFixed(5)}).join(',');
+  var jobs=[];cats.forEach(function(k){(NOM_PHRASES[k]||[]).forEach(function(ph){jobs.push(ph)})});var els=[],ok=0;
+  return jobs.reduce(function(pr,ph){return pr.then(function(){if(tk!==osmTicket)return;return nomWait().then(function(){return osmFetch(NOMINATIM_URL+'?q='+encodeURIComponent('['+ph+']')+'&viewbox='+vb+'&bounded=1&format=jsonv2&extratags=1&addressdetails=1&limit=40&email='+encodeURIComponent(OSM_EMAIL),{headers:{'Accept':'application/json'}},15000)})
+      .then(function(r){if(!r.ok)throw new Error('net');return r.json()}).then(function(a){ok++;(a||[]).forEach(function(x){var ad=x.address||{},tg=Object.assign({},x.extratags||{});var kv=ph.split('=');tg[kv[0]]=kv[1];tg.name=x.name;
+        if(ad.house_number)tg['addr:housenumber']=ad.house_number;if(ad.road)tg['addr:street']=ad.road;var cty=ad.city||ad.town||ad.village||ad.hamlet;if(cty)tg['addr:city']=cty;
+        if(ad.state)tg['addr:state']=ST_NAMES[String(ad.state).toLowerCase()]||ad.state;if(ad.postcode)tg['addr:postcode']=ad.postcode;
+        els.push({type:x.osm_type,id:x.osm_id,lat:+x.lat,lon:+x.lon,tags:tg})})},function(){})})},Promise.resolve())
+    .then(function(){if(!ok)throw new Error('busy');return {elements:els}})}
+
+function nomWait(){var w=Math.max(0,nomLast+1100-Date.now());nomLast=Date.now()+w;return new Promise(function(r){setTimeout(r,w)})}
+function geocodeZip(z){var gc=load('zzp_geo_v1')||{};if(gc[z])return Promise.resolve(gc[z]);
+  return nomWait().then(function(){return osmFetch(NOMINATIM_URL+'?postalcode='+encodeURIComponent(z)+'&country=us&format=json&limit=1&email='+encodeURIComponent(OSM_EMAIL),{headers:{'Accept':'application/json'}},15000)})
+    .then(function(r){if(!r.ok)throw new Error('net');return r.json()})
+    .then(function(a){if(!a||!a.length)throw new Error('nozip');var p={lat:+a[0].lat,lon:+a[0].lon,label:String(a[0].display_name||'').split(',').slice(0,2).join(',').trim()};gc[z]=p;store('zzp_geo_v1',gc);return p})}
+function osmCenter(){return finder.coords?Promise.resolve({lat:finder.coords.lat,lon:finder.coords.lng}):geocodeZip(finder.zip)}
+function osmCats(){return OSM_CATS.filter(function(c){return !c.off||finder.ocats[c.k]}).map(function(c){return c.k})}
+function osmCacheGet(key){var m=OSM_CACHE[key];if(m)return m;var all=load('zzp_osm_cache_v1')||{};return all[key]||null}
+function osmCacheSet(key,list){var v={at:Date.now(),list:list};OSM_CACHE[key]=v;var all=load('zzp_osm_cache_v1')||{};all[key]=v;
+  var ks=Object.keys(all).sort(function(x,y){return all[y].at-all[x].at});ks.slice(4).forEach(function(k){delete all[k]});try{localStorage.setItem('zzp_osm_cache_v1',JSON.stringify(all))}catch(e){}}
+function osmSearch(){if(!finderWhere()||window.__NO_OSM_NET)return Promise.resolve();var cats=osmCats(),tk=++osmTicket,rad=finder.radius;
+  finder.osm={status:'loading',list:[],sel:{},shown:40,err:'',cats:cats.join(','),old:0};osmPaint();
+  if(navigator.onLine===false&&!finder.coords&&!(load('zzp_geo_v1')||{})[finder.zip]){finder.osm.status='err';finder.osm.err=t('osm.offline');osmPaint();return Promise.resolve()}
+  var stale=null;
+  return osmCenter().then(function(c0){var key=[c0.lat.toFixed(3),c0.lon.toFixed(3),rad,cats.join(',')].join('|'),hit=osmCacheGet(key);
+      if(hit&&Date.now()-hit.at<1800000)return hit.list;if(hit&&Date.now()-hit.at<7*864e5)stale=hit;
+      if(navigator.onLine===false){if(stale){finder.osm.old=stale.at;return stale.list}throw new Error('offline')}
+      return overpass(osmQuery(c0,rad,cats)).catch(function(e){if(tk!==osmTicket)throw e;finder.osm.via='nom';var lp=$('osmLoadMsg');if(lp)lp.textContent=t('osm.slow');return nomBackup(c0,rad,cats,tk)}).then(function(j){var l=osmParse(j,c0,cats).filter(function(p){return p.dist<=rad});if(finder.osm.via!=='nom')osmCacheSet(key,l);return l},
+        function(e){if(stale){finder.osm.old=stale.at;return stale.list}throw e})})
+    .then(function(list){if(tk!==osmTicket)return;finder.osm.status='ok';finder.osm.list=list;osmPaint()},
+      function(err){if(tk!==osmTicket)return;var m=err&&err.message;finder.osm.status='err';finder.osm.err=t(m==='nozip'?'osm.noZip':((m==='offline'||navigator.onLine===false)?'osm.offline':'osm.busy'));osmPaint()})}
+function osmVisible(){return (finder.osm.list||[]).filter(function(p){return osmCatOn(p.cat)})}
+function initials(n){var w=String(n||'').replace(/[^A-Za-zÀ-ÿ0-9 ]+/g,' ').trim().split(/\s+/).filter(function(x){return x&&!/^(the|of|and|at|la|el|de|del|los|las)$/i.test(x)});return (w.slice(0,2).map(function(x){return x[0].toUpperCase()}).join(''))||'?'}
+var AV_COLORS=['#162c3c','#245c64','#43694a','#2f6f8f','#7a5c2e','#5b4b8a'];
+function avatarHTML(name,logo,cat){var h=0,s=String(name||'');for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;
+  return '<span class="av" aria-hidden="true" data-i="'+esc(initials(s))+'" style="background:'+AV_COLORS[h%AV_COLORS.length]+'"><span class="avc">'+ic(catIcon(cat||''))+'</span>'+
+    (logo?'<img alt="" loading="lazy" referrerpolicy="no-referrer" src="'+esc(logo)+'" onload="zzLogo(this)" onerror="this.remove()">':'')+'</span>'}
+window.zzLogo=function(im){if(!im.naturalWidth||im.naturalWidth<=16){im.remove();return}if(im.parentNode)im.parentNode.classList.add('haslogo')};
+function leadCatKey(l){if(l.catKey)return l.catKey;var c=norm(l.category);var hit=FINDER_CATS.concat(OSM_CATS).filter(function(x){return norm(t('cat.'+x.k))===c||norm(tl('cat.'+x.k,'en'))===c})[0];return hit?hit.k:''}
+function osmMapsUrl(p){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.name+' '+(p.address||(p.lat.toFixed(5)+','+p.lon.toFixed(5))))}
+function osmDup(p){return findDup({business:p.name})}
+function osmCardHTML(p){var d=osmDup(p),sel=!!finder.osm.sel[p.id];
+  return '<div class="ocard'+(d?' have':'')+(sel?' sel':'')+'" data-oid="'+esc(p.id)+'">'+
+    (d?'<span class="ochk"></span>':'<label class="ochk"><input type="checkbox" data-osel="'+esc(p.id)+'"'+(sel?' checked':'')+' aria-label="'+esc(t('osm.select',{name:p.name}))+'"></label>')+
+    avatarHTML(p.name,logoFor(p.website),p.cat)+
+    '<div class="omain"><div class="nm">'+esc(p.name)+'</div><div class="meta"><span class="ocat-t">'+ic(catIcon(p.cat))+esc(osmLbl(p.cat))+'</span><span class="odist">'+esc(t('osm.dist',{d:p.dist<0.1?'0.1':p.dist.toFixed(1)}))+'</span></div>'+
+    (p.address?'<div class="meta">'+ic('pin')+esc(p.address)+'</div>':'')+
+    '<div class="meta">'+(p.phone?'<a class="ophone" href="'+esc(telHref(p.phone))+'">'+ic('phone')+esc(p.phone)+'</a>':'<span class="nophone">'+esc(t('osm.noPhone'))+'</span>')+
+      (p.website?'<a class="oweb" target="_blank" rel="noopener" href="'+esc(webHref(p.website))+'">'+ic('ext')+esc(siteDomain(p.website)||p.website)+'</a>':'')+'</div>'+
+    '<div class="obtns">'+(d?'<span class="ohave">'+ic('check')+esc(t('osm.have'))+'</span><button class="btn sec sm" data-go="lead" data-lead="'+d.id+'">'+B('leads',t('osm.open'))+'</button>'
+      :'<button class="btn sm oadd" data-oadd="'+esc(p.id)+'">'+B('plus',t('osm.add'))+'</button>')+
+      '<a class="btn sec sm" target="_blank" rel="noopener" data-omaps="1" href="'+esc(osmMapsUrl(p))+'">'+B('map',t('osm.maps'))+'</a></div></div></div>'}
+function osmSelN(){var s=finder.osm.sel;return Object.keys(s).filter(function(k){return s[k]}).length}
+function osmBarHTML(){var n=osmSelN();return '<div class="osmbar'+(n?' on':'')+'" id="osmBar"><button class="btn big block" data-act="osmAddSel"'+(n?'':' disabled')+'>'+B('userPlus',n?t('osm.addSel',{n:n}):t('osm.pickSome'))+'</button></div>'}
+function osmResHTML(){var o=finder.osm;
+  if(o.status==='loading')return '<div class="card osmload"><span class="spin"></span><p id="osmLoadMsg">'+esc(t(o.via==='nom'?'osm.slow':'osm.loading'))+'</p></div>';
+  if(o.status==='err')return '<div class="card"><div class="alert bad">'+ic('warn')+' '+esc(o.err)+'</div><button class="btn block big" data-act="osmRetry">'+B('search',t('osm.retry'))+'</button></div>';
+  if(o.status!=='ok')return '';
+  var v=osmVisible(),ph=v.filter(function(p){return p.phone}).length,news=v.filter(function(p){return !osmDup(p)}).length;
+  var attr='<p class="osmattr">'+esc(t('osm.dataBy'))+' <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a></p>';
+  if(!v.length)return emptyState('search',t('osm.none'),t('osm.noneBody'),finder.radius<10?'<button class="btn big" data-orad="10">'+B('search',t('osm.wider'))+'</button>':'')+attr;
+  var h='<div class="osmhead"><div><b>'+esc(t('osm.found',{n:v.length}))+'</b><small>'+esc(t('osm.phones',{n:ph,total:v.length}))+'</small></div>'+
+    (news?'<button class="btn sec sm" data-act="osmSelAll">'+B('check',t('osm.selAll'))+'</button>':'')+'</div>';
+  if(o.via==='nom')h+='<div class="alert info osmnote">'+ic('info')+' '+esc(t('osm.viaNom'))+' <button class="btn sec sm" data-act="osmRetry">'+B('refresh',t('osm.retry'))+'</button></div>';
+  if(o.old)h+='<div class="alert warn osmnote">'+ic('clock')+' '+esc(t('osm.saved',{when:fmtShort(new Date(o.old).toISOString().slice(0,10))}))+'</div>';
+  if(ph<v.length)h+='<div class="alert info osmnote">'+ic('info')+' '+esc(t('osm.phoneNote'))+'</div>';
+  h+='<div class="olist">'+v.slice(0,o.shown).map(osmCardHTML).join('')+'</div>';
+  if(v.length>o.shown)h+='<button class="btn sec block" data-act="osmMore">'+B('down',t('osm.showMore',{n:Math.min(40,v.length-o.shown)}))+'</button>';
+  return h+attr+osmBarHTML()}
+function osmCtlHTML(w){var cnt={};(finder.osm.status==='ok'?finder.osm.list:[]).forEach(function(p){cnt[p.cat]=(cnt[p.cat]||0)+1});
+  return '<div class="card osmctl"><h2>'+ic('store')+'<span>'+esc(t('osm.title',{where:w.label}))+'</span></h2>'+
+    '<div class="osub">'+esc(t('osm.radius'))+'</div><div class="seg">'+OSM_RADII.map(function(m){return '<button class="'+(finder.radius===m?'on':'')+'" data-orad="'+m+'">'+esc(t('osm.mi',{n:m}))+'</button>'}).join('')+'</div>'+
+    '<div class="osub">'+esc(t('osm.types'))+'</div><div class="ocats">'+OSM_CATS.map(function(c){return '<button class="ocat'+(osmCatOn(c.k)?' on':'')+'" data-ocat="'+c.k+'" aria-pressed="'+osmCatOn(c.k)+'">'+ic(catIcon(c.k))+'<span>'+esc(osmLbl(c.k))+'</span>'+(cnt[c.k]?'<b>'+cnt[c.k]+'</b>':'')+'</button>'}).join('')+'</div></div>'}
+function osmPaint(){var w=finderWhere(),c=$('osmCtl'),r=$('osmRes');if(!w)return;if(c)c.innerHTML=osmCtlHTML(w);if(r)r.innerHTML=osmResHTML()}
+function osmAdd(p){var l=newLead({business:p.name,phone:p.phone,website:p.website,address:p.address,city:cityFromAny(p.address)||p.city,category:osmLbl(p.cat),catKey:p.cat,logo:logoFor(p.website),
+    source:'osm',sourceUrl:osmMapsUrl(p),nextFollowUp:today(),notes:'[OpenStreetMap '+today()+'] '+p.id+' · '+p.lat.toFixed(5)+','+p.lon.toFixed(5)});
+  logAct(l,'created',srcLabel('osm'));enforceDnc(l);LEADS.push(l);return l}
+function osmById(id){return (finder.osm.list||[]).filter(function(p){return p.id===id})[0]}
 /* ===================== Share from Google Maps (free: no API key, nothing paid) =====================
    Android: the installed app is a Web Share Target (manifest share_target, GET), so "Zim Zam" shows in the Google Maps
    and Chrome share sheet and the shared title/text/url arrive as ?title=&text=&url=. iPhone and everyone else:
@@ -2266,22 +2481,30 @@ function readClip(box,apply){
   if(!navigator.clipboard||!navigator.clipboard.readText)return manual();
   navigator.clipboard.readText().then(function(txt){if(!String(txt||'').trim())return manual();var b=$(box);if(b)b.value=txt;apply(txt)},manual)}
 function setZip(z){z=String(z||'').trim();var m=/^\d{5}(-\d{4})?$/.exec(z);if(!m){finder.geoMsg=t('finder.badZip');renderFinder();var f=$('fzip');if(f)f.focus();return false}
-  finder.zip=z.slice(0,5);finder.coords=null;finder.geoMsg='';finder.places=null;S.lastZip=finder.zip;saveSettings();renderFinder();var c=$('fcats');if(c)window.scrollTo(0,c.getBoundingClientRect().top+window.scrollY-70);return true}
+  finder.zip=z.slice(0,5);finder.coords=null;finder.geoMsg='';finder.places=null;S.lastZip=finder.zip;saveSettings();renderFinder();osmSearch();var c=$('fcats');if(c)window.scrollTo(0,c.getBoundingClientRect().top+window.scrollY-70);return true}
 function nearMe(){
   function fail(msg){finder.geoMsg=msg;renderFinder();var f=$('fzip');if(f)f.focus()}
   if(!navigator.geolocation)return fail(t('finder.geoNone'));
   var m=$('geoMsg');if(m)m.innerHTML='<p class="hint" style="margin-top:10px">'+esc(t('finder.geoAsk'))+'</p>';
-  navigator.geolocation.getCurrentPosition(function(pos){finder.coords={lat:pos.coords.latitude,lng:pos.coords.longitude};finder.geoMsg='';finder.places=null;renderFinder();var c=$('fcats');if(c)window.scrollTo(0,c.getBoundingClientRect().top+window.scrollY-70)},
+  navigator.geolocation.getCurrentPosition(function(pos){finder.coords={lat:pos.coords.latitude,lng:pos.coords.longitude};finder.geoMsg='';finder.places=null;renderFinder();osmSearch();var c=$('fcats');if(c)window.scrollTo(0,c.getBoundingClientRect().top+window.scrollY-70)},
     function(err){fail(err&&err.code===1?t('finder.geoDenied'):t('finder.geoFail'))},{enableHighAccuracy:false,timeout:15000,maximumAge:600000});
 }
 function renderFinderLinks(){var el=$('flinks');if(!el)return;var L=finderLinks();function grp(icon,title,arr){return '<h3>'+ic(icon)+' '+esc(title)+'</h3><div class="linkgrid">'+arr.map(function(x){return '<a class="btn sec lk" target="_blank" rel="noopener" data-src="'+x[0]+'" href="'+esc(x[2])+'">'+esc(x[1])+ic('ext','sm')+'</a>'}).join('')+'</div>'}
   el.innerHTML=grp('building',t('finder.gBiz'),L.biz)+grp('user',t('finder.gPeople'),L.people)+grp('news',t('finder.gFresh'),L.fresh)+'<p class="hint" style="margin-top:10px">'+esc(t('finder.netNote'))+'</p>'}
 var vf=$('v-finder');
-vf.addEventListener('change',function(e){if(e.target.id==='fShareBox'){onShareBox(e,false);return}if(e.target.id==='fcat'){finder.cat=e.target.value;var q=$('qa_cat');if(q)q.value=finder.cat;renderFinderLinks()}if(e.target.id==='fcity'){finder.city=e.target.value;var qc=$('qa_city');if(qc)qc.value=finder.city;renderFinderLinks()}});
+vf.addEventListener('change',function(e){if(e.target.dataset&&e.target.dataset.osel){var id=e.target.dataset.osel;finder.osm.sel[id]=e.target.checked;var cd=e.target.closest('.ocard');if(cd)cd.classList.toggle('sel',e.target.checked);var bar=$('osmBar');if(bar)bar.outerHTML=osmBarHTML();return}if(e.target.id==='fShareBox'){onShareBox(e,false);return}if(e.target.id==='fcat'){finder.cat=e.target.value;var q=$('qa_cat');if(q)q.value=finder.cat;renderFinderLinks()}if(e.target.id==='fcity'){finder.city=e.target.value;var qc=$('qa_city');if(qc)qc.value=finder.city;renderFinderLinks()}});
 vf.addEventListener('input',function(e){if(e.target.id==='fkw'){finder.kw=e.target.value;renderFinderLinks()}
   if(e.target.id==='fShareBox')onShareBox(e,false)});
 vf.addEventListener('keydown',function(e){if(e.target.id==='fzip'&&e.key==='Enter'){e.preventDefault();setZip(e.target.value)}});
 vf.addEventListener('click',function(e){
+  var orad=e.target.closest('[data-orad]');if(orad){finder.radius=+orad.dataset.orad;osmSearch();return}
+  var oc=e.target.closest('[data-ocat]');if(oc){var k0=oc.dataset.ocat;finder.ocats[k0]=!finder.ocats[k0];if(osmCats().join(',')!==finder.osm.cats&&finder.ocats[k0])osmSearch();else{finder.osm.shown=40;osmPaint()}return}
+  var oa=e.target.closest('[data-oadd]');if(oa){var op=osmById(oa.dataset.oadd);if(op&&!osmDup(op)){osmAdd(op);saveLeads();delete finder.osm.sel[op.id];toast(t('toast.leadSaved',{name:op.name}));osmPaint()}return}
+  var oac=e.target.closest('[data-act]');var oact=oac&&oac.dataset.act;
+  if(oact==='osmRetry'){osmSearch();return}
+  if(oact==='osmMore'){finder.osm.shown+=40;osmPaint();return}
+  if(oact==='osmSelAll'){var vis=osmVisible().slice(0,finder.osm.shown).filter(function(p){return !osmDup(p)});var all=vis.every(function(p){return finder.osm.sel[p.id]});vis.forEach(function(p){finder.osm.sel[p.id]=!all});osmPaint();return}
+  if(oact==='osmAddSel'){var n0=0;osmVisible().forEach(function(p){if(finder.osm.sel[p.id]&&!osmDup(p)){osmAdd(p);n0++}});finder.osm.sel={};if(n0){saveLeads();toast(t('osm.addedN',{n:n0}))}osmPaint();return}
   var lk=e.target.closest('a.lk');if(lk){var s=$('qa_source');if(s&&SOURCES.indexOf(lk.dataset.src)>=0)s.value=lk.dataset.src;return}
   var fc=e.target.closest('[data-fcat]');if(fc){var k=fc.dataset.fcat;if(k!=='all'){finder.cat=k;var q=$('qa_cat');if(q)q.value=k;vf.querySelectorAll('.catcard').forEach(function(x){x.classList.toggle('on',x.querySelector('[data-fcat="'+k+'"]')!==null)})}
     var src=$('qa_source');if(src)src.value=fc.dataset.kind==='google'?'google':'maps';setTimeout(function(){toast(t('finder.comeBack'))},300);return}
