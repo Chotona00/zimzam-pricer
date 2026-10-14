@@ -670,6 +670,20 @@ details.menu .mlist .dangertxt,details.menu .mlist .dangertxt .ico{color:var(--b
 .qcard .sctl.mini input{position:static!important;opacity:1!important;display:block!important;pointer-events:auto!important;width:46px!important;height:36px;padding:0;background:#fff;color:var(--ink);font-weight:800}
 .qstep.sub{gap:8px;color:var(--brand);font-size:15px}.qstep.sub .ico{width:22px;height:22px;color:#245c64}
 
+/* v5 phase 3: brand + help */
+:root{--navy:#162c3c;--teal:#245c64;--green:#7ac085}
+:root{--bg:#e9f0f1;--line:#d3dfe2}
+.card{border-color:#cfdde0}
+.helpsheet .htip{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid #dbe6e8}
+.helpsheet .htip:first-of-type{border-top:0}
+.helpsheet .hic{position:relative;flex:0 0 52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#245c64,#162c3c);color:#fff;display:grid;place-items:center}
+.helpsheet .hic i{position:absolute;right:-5px;top:-5px;width:20px;height:20px;border-radius:50%;background:#7ac085;color:#162c3c;font:700 12px/20px system-ui;text-align:center;font-style:normal}
+.helpsheet b{display:block;color:#162c3c}.helpsheet small{color:#3d5560;font-size:14px;line-height:1.4}
+#updBar{background:#7ac085;color:#162c3c}
+.osmhead{background:var(--card);border-radius:14px;padding:10px 12px;box-shadow:0 2px 10px rgba(22,44,60,.08)}
+.osmbar{opacity:1}.osmbar .btn[disabled]{background:#dfe8ea;color:#2f4550}
+.osmbar .btn[disabled]{opacity:1}
+
 </style>
 </head>
 <body>
@@ -1104,7 +1118,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 </script>
 <script>
-window.__BUILD="v5-2763726501";
+window.__BUILD="v5-a52c1d4a3d";
 window.__PWA=true;
 (function(){
 'use strict';
@@ -1118,6 +1132,13 @@ function ic(n,cls){var p=ICONS[n];return p?'<svg class="ico'+(cls?' '+cls:'')+'"
    The test suite fails if any key is missing for any language. */
 var LANGS=[{code:'en',name:'English'},{code:'es',name:'Español'}];
 var T={
+'help.title':['How do I…?','¿Cómo hago…?'],'help.sub':['6 quick tips','6 consejos rápidos'],
+'help.find.t':['Find businesses near me','Encontrar negocios cercanos'],'help.find.d':['Clients › Find leads. Type a ZIP or tap Near me, pick a distance, then tap Add on a business.','Clientes › Buscar. Escriba un código postal o toque Cerca de mí, elija la distancia y toque Agregar en un negocio.'],
+'help.add.t':['Add many at once','Agregar varios a la vez'],'help.add.d':['In the results, tap Select all, then Add selected. They land in Clients with their phone.','En los resultados, toque Seleccionar todos y luego Agregar seleccionados. Quedan en Clientes con su teléfono.'],
+'help.home.t':['Price a house cleaning','Cotizar una limpieza de casa'],'help.home.d':['Quotes › New › Home. Tap the pictures and the + / − buttons. The price updates as you go.','Cotizaciones › Nueva › Casa. Toque las imágenes y los botones + / −. El precio cambia al instante.'],
+'help.photo.t':['Add photos to a quote','Agregar fotos a una cotización'],'help.photo.d':['In a quote, tap Take photo. Photos stay on your phone and can go in the PDF.','En una cotización, toque Tomar foto. Las fotos se quedan en su teléfono y pueden ir en el PDF.'],
+'help.pdf.t':['Send the quote','Enviar la cotización'],'help.pdf.d':['Tap Create quote, then Save PDF or Send by email. Use the English | Español switch for the client.','Toque Crear cotización y luego Guardar PDF o Enviar por correo. Use el selector English | Español para el cliente.'],
+'help.install.t':['Install and update','Instalar y actualizar'],'help.install.d':['iPhone: Share › Add to Home Screen. Android: menu › Install app. When the green “Update available” bar shows, tap it.','iPhone: Compartir › Agregar a inicio. Android: menú › Instalar app. Cuando aparezca la barra verde “Hay una actualización”, tóquela.'],
 'app.title':['Bid Pricer','Cotizador'],
 'lang.switch':['Cambiar a español / Switch language','Switch to English / Cambiar idioma'],
 'nav.today':['Home','Inicio'],'nav.leads':['Clients','Clientes'],'nav.bids':['Quotes','Cotizaciones'],'nav.more':['More','Más'],'nav.scripts':['Scripts','Guiones'],'nav.settings':['Settings','Ajustes'],
@@ -2014,8 +2035,10 @@ function emptyState(icon,title,body,btns){return '<div class="card empty"><div c
 /* ===================== More (Scripts, Settings, import, backup) ===================== */
 function renderMore(){function row(attr,icon,title,sub){return '<button type="button" class="mrow" '+attr+'><span class="mic">'+ic(icon)+'</span><span class="grow"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span>'+ic('chevR','chev')+'</button>'}
   $('v-more').innerHTML=pageHero('more')+'<div class="mrows">'+row('data-nav="scripts"','scripts',t('nav.scripts'),t('more.scriptsSub'))+row('data-nav="settings"','settings',t('nav.settings'),t('more.settingsSub'))+
-    row('data-go="import"','upload',t('leads.import'),t('more.importSub'))+row('data-mact="backup"','save',t('data.backup'),t('more.backupSub'))+row('data-mact="restore"','data',t('data.restore'),t('more.restoreSub'))+row('data-mact="wizard"','wand',t('set.runSetup'),t('more.setupSub'))+'</div>'}
-$('v-more').addEventListener('click',function(e){var a=e.target.closest('[data-mact]');if(!a)return;var x=a.dataset.mact;if(x==='backup')exportJson();else if(x==='restore')$('importFile').click();else if(x==='wizard'){wiz.step=0;render('setup');show('setup')}});
+    row('data-go="import"','upload',t('leads.import'),t('more.importSub'))+row('data-mact="backup"','save',t('data.backup'),t('more.backupSub'))+row('data-mact="restore"','data',t('data.restore'),t('more.restoreSub'))+row('data-mact="help"','help',t('help.title'),t('help.sub'))+row('data-mact="wizard"','wand',t('set.runSetup'),t('more.setupSub'))+'</div>'+helpHTML()}
+var HELP_TIPS=[['search','find'],['plus','add'],['rHouse','home'],['camera','photo'],['send','pdf'],['download','install']];
+function helpHTML(){return '<div class="card helpsheet hidden" id="helpSheet"><h2>'+ic('help')+'<span>'+esc(t('help.title'))+'</span></h2>'+HELP_TIPS.map(function(x,i){return '<div class="htip"><span class="hic">'+ic(x[0],'big')+'<i>'+(i+1)+'</i></span><span class="grow"><b>'+esc(t('help.'+x[1]+'.t'))+'</b><small>'+esc(t('help.'+x[1]+'.d'))+'</small></span></div>'}).join('')+'</div>'}
+$('v-more').addEventListener('click',function(e){var a=e.target.closest('[data-mact]');if(!a)return;var x=a.dataset.mact;if(x==='backup')exportJson();else if(x==='restore')$('importFile').click();else if(x==='help'){var h=$('helpSheet');h.classList.toggle('hidden');if(!h.classList.contains('hidden'))h.scrollIntoView({block:'start',behavior:'smooth'})}else if(x==='wizard'){wiz.step=0;render('setup');show('setup')}});
 
 /* ===================== Lead UI helpers ===================== */
 function statusBadge(s){return '<span class="lstatus s-'+esc(s)+'">'+esc(t('ls.'+s))+'</span>'}
@@ -2924,7 +2947,7 @@ function phAdd(files){var b=getBid(curId);if(!b)return;b.photos=b.photos||[];var
 }
 function photoCardHTML(b){var ps=b.photos||[],full=ps.length>=PH_MAX;
   var h='<h2>'+ic('camera')+'<span>'+esc(t('ph.title'))+'</span> <span class="cnt">'+ps.length+' / '+PH_MAX+'</span></h2>'+
-    '<div class="qstep"><span class="n">5</span>'+esc(t('ph.step'))+'</div><p class="hint">'+esc(t('ph.hint'))+'</p>'+
+    (b.kind==='res'?'<div class="qstep sub">'+ic('camera')+esc(t('ph.step'))+'</div>':'<div class="qstep"><span class="n">5</span>'+esc(t('ph.step'))+'</div>')+'<p class="hint">'+esc(t('ph.hint'))+'</p>'+
     '<div class="phadd"><button type="button" class="btn big" data-ph="cam"'+(full?' disabled':'')+'>'+B('camera',t('ph.take'))+'</button><button type="button" class="btn sec big" data-ph="pick"'+(full?' disabled':'')+'>'+B('images',t('ph.pick'))+'</button></div>'+
     '<div id="phMsg">'+phMsgHTML()+'</div>';
   if(!ps.length)return h+'<div class="phempty">'+ic('image','big')+'<span>'+esc(t('ph.empty'))+'</span></div>';
