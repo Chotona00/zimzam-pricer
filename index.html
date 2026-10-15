@@ -712,6 +712,12 @@ details.menu .mlist .dangertxt,details.menu .mlist .dangertxt .ico{color:var(--b
 #v-today .hdate{text-transform:none}#v-today .hdate::first-letter{text-transform:uppercase}
 .planwall{position:fixed;inset:0;z-index:60;background:rgba(15,31,42,.6);display:grid;place-items:center;padding:20px}.planwall.hidden{display:none}.planwall .card{max-width:420px;width:100%}
 .movecard{background:linear-gradient(135deg,#fff,#e6f3e8);border:2px solid #7ac085}.movecard p{margin:6px 0 12px}
+/* v7: one matching tile set in brand colors (no orange) */
+#v-today .g4{background:linear-gradient(140deg,#5cd4e1,#245c64);color:#fff}
+#v-today .g4 b{text-shadow:0 1px 2px rgba(15,31,42,.35)}
+#v-today .g1 .hti,#v-today .g4 .hti{background:rgba(255,255,255,.25)}
+#v-today .hbadge.hot{background:#fff;color:#162c3c;box-shadow:0 0 0 3px rgba(122,192,133,.9)}
+#v-today .htile{margin:0;height:auto;align-self:stretch;box-sizing:border-box}
 
 </style>
 </head>
@@ -1147,7 +1153,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 </script>
 <script>
-window.__BUILD="v7-5651cfe456";
+window.__BUILD="v7-66ef387086";
 window.__PWA=true;
 (function(){
 'use strict';
