@@ -1146,7 +1146,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 </script>
 <script>
-window.__BUILD="v7-1545fc9000";
+window.__BUILD="v7-27cf58fd0f";
 window.__PWA=true;
 (function(){
 'use strict';
@@ -1171,7 +1171,7 @@ var T={
 'plan.upgradeSoon':['Upgrade (coming soon)','Mejorar plan (próximamente)'],'plan.account':['Your account','Su cuenta'],'plan.current':['Plan','Plan'],
 'plan.used':['{n} of {m} proposals this month','{n} de {m} propuestas este mes'],'plan.signInSoon':['Sign in (coming soon)','Iniciar sesión (próximamente)'],
 'plan.n.free':['Free','Gratis'],'plan.n.pro':['Pro','Pro'],'plan.n.team':['Team','Equipo'],'plan.n.founder':['Founding member','Miembro fundador'],
-'move.title':['Your app has a new address','Su app tiene una nueva dirección'],'move.body':['Zim Zam now lives at app.zimzamcleaning.com. Tap below once to bring your clients and quotes with you.','Zim Zam ahora está en app.zimzamcleaning.com. Toque abajo una vez para llevar sus clientes y cotizaciones.'],
+'move.title':['Your app has a new address','Su app tiene una nueva dirección'],'move.body':['Zim Zam now lives at zimzamcleaning.com/app. Tap below once to bring your clients and quotes with you.','Zim Zam ahora está en zimzamcleaning.com/app. Toque abajo una vez para llevar sus clientes y cotizaciones.'],
 'move.btn':['Move my data','Mover mis datos'],'move.hint':['A backup file of your {n} clients is saved first, just in case.','Primero se guarda un archivo de respaldo de sus {n} clientes, por si acaso.'],
 'move.confirm':['Bring in {n} clients and {m} quotes from your old app?','¿Traer {n} clientes y {m} cotizaciones de su app anterior?'],'move.done':['Done! {n} clients moved.','¡Listo! Se movieron {n} clientes.'],
 'app.title':['Bid Pricer','Cotizador'],
@@ -3570,11 +3570,11 @@ function restoreData(d,auto){if(!d||!Array.isArray(d.bids))throw 0;
   sweepDnc();toast(t('toast.restored',{a:add,r:rep}));render(view);renderShell();return {a:add,r:rep}}
 $('importFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{restoreData(JSON.parse(rd.result))}catch(err){alert(t('toast.badBackup'))}};rd.readAsText(f);e.target.value=''});
 
-/* ===================== Move to app.zimzamcleaning.com =====================
+/* ===================== Move to zimzamcleaning.com/app =====================
    Each web address keeps its own data on the phone. On the old github.io address, "Move my data" saves a backup file
    (just in case) and opens the new address with the data packed in the # part of the link. The # part never leaves
    the phone (browsers do not send it to any server). The new address unpacks it once, asks first, then clears it. */
-var NEW_HOME='https://app.zimzamcleaning.com/';
+var NEW_HOME='https://zimzamcleaning.com/app/';
 function isOldHome(){return !!window.__OLD_HOME||location.hostname==='chotona00.github.io'}
 function b64u(bytes){var s='';for(var i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 function unb64u(str){var s=atob(str.replace(/-/g,'+').replace(/_/g,'/'));var u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
