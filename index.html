@@ -709,6 +709,8 @@ details.menu .mlist .dangertxt,details.menu .mlist .dangertxt .ico{color:var(--b
 @media (prefers-reduced-motion:reduce){#v-today .htile{transition:none}}
 .verline{text-align:center;color:var(--mut);font-size:13px;margin:18px 0 6px}
 #v-today .hdate{text-transform:none}#v-today .hdate::first-letter{text-transform:uppercase}
+.planwall{position:fixed;inset:0;z-index:60;background:rgba(15,31,42,.6);display:grid;place-items:center;padding:20px}.planwall.hidden{display:none}.planwall .card{max-width:420px;width:100%}
+.movecard{background:linear-gradient(135deg,#fff,#e6f3e8);border:2px solid #7ac085}.movecard p{margin:6px 0 12px}
 
 </style>
 </head>
@@ -1144,7 +1146,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 </script>
 <script>
-window.__BUILD="v6-427cd41cac";
+window.__BUILD="v7-1545fc9000";
 window.__PWA=true;
 (function(){
 'use strict';
@@ -1165,7 +1167,14 @@ var T={
 'help.photo.t':['Add photos to a quote','Agregar fotos a una cotización'],'help.photo.d':['In a quote, tap Take photo. Photos stay on your phone and can go in the PDF.','En una cotización, toque Tomar foto. Las fotos se quedan en su teléfono y pueden ir en el PDF.'],
 'help.pdf.t':['Send the quote','Enviar la cotización'],'help.pdf.d':['Tap Create quote, then Save PDF or Send by email. Use the English | Español switch for the client.','Toque Crear cotización y luego Guardar PDF o Enviar por correo. Use el selector English | Español para el cliente.'],
 'help.install.t':['Install and update','Instalar y actualizar'],'help.install.d':['iPhone: Share › Add to Home Screen. Android: menu › Install app. When the green “Update available” bar shows, tap it.','iPhone: Compartir › Agregar a inicio. Android: menú › Instalar app. Cuando aparezca la barra verde “Hay una actualización”, tóquela.'],
-'more.version':['Version','Versión'],'app.title':['Bid Pricer','Cotizador'],
+'more.version':['Version','Versión'],'btn.close':['Close','Cerrar'],'plan.limitT':['Free plan limit reached','Llegó al límite del plan gratis'],'plan.limitD':['The free plan includes {n} proposals a month. Pro gives you unlimited proposals.','El plan gratis incluye {n} propuestas al mes. Pro le da propuestas ilimitadas.'],
+'plan.upgradeSoon':['Upgrade (coming soon)','Mejorar plan (próximamente)'],'plan.account':['Your account','Su cuenta'],'plan.current':['Plan','Plan'],
+'plan.used':['{n} of {m} proposals this month','{n} de {m} propuestas este mes'],'plan.signInSoon':['Sign in (coming soon)','Iniciar sesión (próximamente)'],
+'plan.n.free':['Free','Gratis'],'plan.n.pro':['Pro','Pro'],'plan.n.team':['Team','Equipo'],'plan.n.founder':['Founding member','Miembro fundador'],
+'move.title':['Your app has a new address','Su app tiene una nueva dirección'],'move.body':['Zim Zam now lives at app.zimzamcleaning.com. Tap below once to bring your clients and quotes with you.','Zim Zam ahora está en app.zimzamcleaning.com. Toque abajo una vez para llevar sus clientes y cotizaciones.'],
+'move.btn':['Move my data','Mover mis datos'],'move.hint':['A backup file of your {n} clients is saved first, just in case.','Primero se guarda un archivo de respaldo de sus {n} clientes, por si acaso.'],
+'move.confirm':['Bring in {n} clients and {m} quotes from your old app?','¿Traer {n} clientes y {m} cotizaciones de su app anterior?'],'move.done':['Done! {n} clients moved.','¡Listo! Se movieron {n} clientes.'],
+'app.title':['Bid Pricer','Cotizador'],
 'lang.switch':['Cambiar a español / Switch language','Switch to English / Cambiar idioma'],
 'nav.today':['Home','Inicio'],'nav.leads':['Clients','Clientes'],'nav.bids':['Quotes','Cotizaciones'],'nav.more':['More','Más'],'nav.scripts':['Scripts','Guiones'],'nav.settings':['Settings','Ajustes'],
 'sub.today':['Home','Inicio'],'sub.more':['More','Más'],'sub.leads':['Clients','Clientes'],'sub.lead':['Lead','Prospecto'],'sub.finder':['Find new leads','Buscar prospectos'],'sub.import':['Import leads','Importar prospectos'],
@@ -2061,7 +2070,7 @@ function emptyState(icon,title,body,btns){return '<div class="card empty"><div c
 /* ===================== More (Scripts, Settings, import, backup) ===================== */
 function renderMore(){function row(attr,icon,title,sub){return '<button type="button" class="mrow" '+attr+'><span class="mic">'+ic(icon)+'</span><span class="grow"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span>'+ic('chevR','chev')+'</button>'}
   $('v-more').innerHTML=pageHero('more')+'<div class="mrows">'+row('data-nav="scripts"','scripts',t('nav.scripts'),t('more.scriptsSub'))+row('data-nav="settings"','settings',t('nav.settings'),t('more.settingsSub'))+
-    row('data-go="import"','upload',t('leads.import'),t('more.importSub'))+row('data-mact="backup"','save',t('data.backup'),t('more.backupSub'))+row('data-mact="restore"','data',t('data.restore'),t('more.restoreSub'))+row('data-mact="help"','help',t('help.title'),t('help.sub'))+row('data-mact="wizard"','wand',t('set.runSetup'),t('more.setupSub'))+'</div>'+helpHTML()+'<p class="verline">'+esc(t('more.version'))+' '+esc(window.__BUILD||'dev')+'</p>'}
+    row('data-go="import"','upload',t('leads.import'),t('more.importSub'))+row('data-mact="backup"','save',t('data.backup'),t('more.backupSub'))+row('data-mact="restore"','data',t('data.restore'),t('more.restoreSub'))+row('data-mact="help"','help',t('help.title'),t('help.sub'))+row('data-mact="wizard"','wand',t('set.runSetup'),t('more.setupSub'))+'</div>'+helpHTML()+planCardHTML()+'<p class="verline">'+esc(t('more.version'))+' '+esc(window.__BUILD||'dev')+'</p>'}
 var HELP_TIPS=[['search','find'],['plus','add'],['rHouse','home'],['camera','photo'],['send','pdf'],['download','install']];
 function helpHTML(){return '<div class="card helpsheet hidden" id="helpSheet"><h2>'+ic('help')+'<span>'+esc(t('help.title'))+'</span></h2>'+HELP_TIPS.map(function(x,i){return '<div class="htip"><span class="hic">'+ic(x[0],'big')+'<i>'+(i+1)+'</i></span><span class="grow"><b>'+esc(t('help.'+x[1]+'.t'))+'</b><small>'+esc(t('help.'+x[1]+'.d'))+'</small></span></div>'}).join('')+'</div>'}
 $('v-more').addEventListener('click',function(e){var a=e.target.closest('[data-mact]');if(!a)return;var x=a.dataset.mact;if(x==='backup')exportJson();else if(x==='restore')$('importFile').click();else if(x==='help'){var h=$('helpSheet');h.classList.toggle('hidden');if(!h.classList.contains('hidden'))h.scrollIntoView({block:'start',behavior:'smooth'})}else if(x==='wizard'){wiz.step=0;render('setup');show('setup')}});
@@ -2102,6 +2111,7 @@ function renderToday(){
     h+='<div class="card start mini"><div class="starttag">'+ic('star')+esc(t('today.startHere'))+'</div><p>'+esc(t('today.step1b'))+'</p><div class="btns"><button class="btn" data-go="import">'+B('upload',t('today.import'))+'</button></div>'+
       (typeof STARTER!=='undefined'?'<button class="btn sec block" data-act="starter">'+B('download',t('set.starterBtn'))+'</button>':'')+'</div>';
   }
+  h=moveBannerHTML()+h;
   $('v-today').innerHTML=h;
 }
 function greet(){var hr=new Date().getHours(),k=hr<12?'morning':hr<18?'afternoon':'evening';var nm=String((S.company.repName||'').trim().split(/\s+/)[0]||'');return nm?t('home.'+k,{name:nm}):t('home.'+k+'0')}
@@ -2255,7 +2265,7 @@ vl.addEventListener('click',function(e){
   if(x==='suggestWalk'){l.walkthrough=nextWalkDate()+'T'+(S.walkTime||'10:00');advance(l,'walk');logAct(l,'walk',fmtWhen(l.walkthrough));saveLeads();render('lead');toast(t('toast.walkSet'));return}
   if(x==='clearWalk'){l.walkthrough='';logAct(l,'walkCleared');saveLeads();render('lead');return}
   if(x==='ics'){download('walkthrough-'+norm(l.business).slice(0,24)+'.ics',makeIcs(l),'text/calendar');return}
-  if(x==='createBid'){createBidFromLead(l);return}
+  if(x==='createBid'){if(planAllow())createBidFromLead(l);return}
   if(x==='delLead'){if(confirm(t('confirm.delLead',{name:l.business||t('lead.noName')}))){deleteLead(l.id);toast(t('toast.leadDeleted'));go('leads')}}
 });
 function deleteLead(id){LEADS=LEADS.filter(function(y){return y.id!==id});BIDS.forEach(function(b){if(b.leadId===id)b.leadId=''});saveLeads();saveBids()}
@@ -2781,7 +2791,22 @@ $('v-bids').addEventListener('click',function(e){var btn=e.target.closest('[data
 function inp(label,path,val,attrs){return '<label class="f">'+esc(label)+'<input data-b="'+path+'" value="'+esc(val)+'" '+(attrs||'')+'></label>'}
 function numInp(label,path,val,extra){return inp(label,path,val,'type="number" inputmode="decimal" min="0" step="any" '+(extra||''))}
 function bsel(label,path,val,opts){return sel(esc(label),'data-b="'+path+'"',val,opts)}
-function openBid(id){var b=id?getBid(id):null;if(!b){if((S.services||'both')==='both'&&!window.__NO_KINDPICK){curId='';renderKindPick();show('bid');window.scrollTo(0,0);return}b=S.services==='res'?newResBid():newBid();BIDS.push(b);saveBids()}curId=b.id;renderBid(b);show('bid')}
+/* ===================== Plans (white-label / subscription scaffold) =====================
+   OFF unless the page sets window.__PLAN_MODE=true (a future generic "--saas" build). Napoleon's own copy never sets it,
+   so nothing here changes his app. No payments happen in this file: sign-in and upgrade are placeholders until
+   Supabase + Stripe are connected (see paid-plan.md). */
+var PLANS={free:{proposals:3},pro:{proposals:Infinity},team:{proposals:Infinity},founder:{proposals:Infinity}};
+function planOn(){return !!window.__PLAN_MODE}
+function planId(){var p=(S&&S.plan)||'free';return PLANS[p]?p:'free'}
+function proposalsThisMonth(){var m=today().slice(0,7);return BIDS.filter(function(b){return String(b.created||'').slice(0,7)===m}).length}
+function planAllow(){if(!planOn())return true;var lim=PLANS[planId()].proposals;if(proposalsThisMonth()<lim)return true;planWall();return false}
+function planWall(){var x=$('planWall');if(!x){x=document.createElement('div');x.id='planWall';x.className='planwall';document.body.appendChild(x)}
+  x.innerHTML='<div class="card"><h2>'+ic('star')+'<span>'+esc(t('plan.limitT'))+'</span></h2><p>'+esc(t('plan.limitD',{n:PLANS.free.proposals}))+'</p>'+
+  '<button class="btn block big" data-plan="upgrade" disabled>'+B('rocket',t('plan.upgradeSoon'))+'</button><button class="btn sec block" data-plan="close">'+esc(t('btn.close'))+'</button></div>';x.classList.remove('hidden')}
+document.addEventListener('click',function(e){var a=e.target.closest('[data-plan="close"]');if(a){var w=$('planWall');if(w)w.classList.add('hidden')}});
+function planCardHTML(){if(!planOn())return '';return '<div class="card plancard"><h2>'+ic('user')+'<span>'+esc(t('plan.account'))+'</span></h2><p>'+esc(t('plan.current'))+': <b>'+esc(t('plan.n.'+planId()))+'</b> · '+esc(t('plan.used',{n:proposalsThisMonth(),m:PLANS[planId()].proposals===Infinity?'∞':PLANS[planId()].proposals}))+'</p>'+
+  '<button class="btn sec block" disabled>'+B('user',t('plan.signInSoon'))+'</button></div>'}
+function openBid(id){var b=id?getBid(id):null;if(!b){if(!planAllow())return;if((S.services||'both')==='both'&&!window.__NO_KINDPICK){curId='';renderKindPick();show('bid');window.scrollTo(0,0);return}b=S.services==='res'?newResBid():newBid();BIDS.push(b);saveBids()}curId=b.id;renderBid(b);show('bid')}
 var FT_ICONS={office:'ftOffice',medical:'ftMedical',dental:'ftDental',church:'ftChurch',daycare:'ftDaycare',gym:'ftGym',vet:'ftVet',apartment:'ftApartment',dealership:'ftDealer',other:'ftStore',retail:'ftStore'};
 function ftIcon(f){if(FT_ICONS[f.id])return FT_ICONS[f.id];var n=(f.name||'')+' '+(f.nameEs||'');if(/dent/i.test(n))return 'ftDental';var g=guessType(n);return FT_ICONS[g]||'ftOffice'}
 var TASK_ICONS={trash:'tTrash',kitchen:'tKitchen',glass:'tGlass',disinfect:'tDisinfect'};
@@ -2903,7 +2928,7 @@ function syncLeadFromBid(b){var l=b.leadId&&getLead(b.leadId);if(!l)return;var m
 vb.addEventListener('input',onBidInput);vb.addEventListener('change',onBidInput);
 function setField(sel2,val){var i=vb.querySelector(sel2);if(!i)return;i.value=val;onBidInput({target:i})}
 vb.addEventListener('click',function(e){
-  var kd=e.target.closest('[data-kind]');if(kd){var nb=kd.dataset.kind==='res'?newResBid():newBid();BIDS.push(nb);saveBids();curId=nb.id;renderBid(nb);window.scrollTo(0,0);return}
+  var kd=e.target.closest('[data-kind]');if(kd){if(!planAllow())return;var nb=kd.dataset.kind==='res'?newResBid():newBid();BIDS.push(nb);saveBids();curId=nb.id;renderBid(nb);window.scrollTo(0,0);return}
   var bb0=getBid(curId);if(bb0&&bb0.kind==='res'){if(resClick(e,bb0))return;var trr=e.target.closest('[data-tier]');if(trr){bb0.recommendedTier=trr.dataset.tier;bb0.updated=nowIso();saveBids();updateRes();return}}
   var x=e.target.closest('[data-vpw]');if(x){setField('#vpwIn',x.dataset.vpw);return}
   var ftb=e.target.closest('[data-ft]');if(ftb){setField('[data-b="facilityType"]',ftb.dataset.ft);return}
@@ -3537,17 +3562,43 @@ function leadsToCsv(){
 }
 function exportCsv(){if(!BIDS.length)return toast(t('toast.noBids'));download('bids-'+today()+'.csv',bidsToCsv(),'text/csv');toast(t('toast.csv'))}
 function exportLeadsCsv(){if(!LEADS.length)return toast(t('toast.noLeads'));download('leads-'+today()+'.csv',leadsToCsv(),'text/csv');toast(t('toast.csv'))}
-$('importFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{var d=JSON.parse(rd.result);if(!d||!Array.isArray(d.bids))throw 0;
+function restoreData(d,auto){if(!d||!Array.isArray(d.bids))throw 0;
   var add=0,rep=0;function mergeIn(list,arr,mig){arr.forEach(function(nb){if(!nb||!nb.id)return;nb=mig(nb);var i=list.findIndex(function(x){return x.id===nb.id});if(i>=0){list[i]=nb;rep++}else{list.push(nb);add++}})}
   mergeIn(BIDS,d.bids,migrateBid);if(Array.isArray(d.leads))mergeIn(LEADS,d.leads,migrateLead);saveBids();saveLeads();
   if(Array.isArray(d.photos)&&d.photos.length){d.photos.reduce(function(ch,r){return ch.then(function(){if(!r||!r.id||!/^data:image\//.test(r.data||''))return;return phPut({id:r.id,bidId:r.bidId,data:r.data,w:r.w,h:r.h,created:nowIso()}).then(function(){PH_CACHE[r.id]=r.data})})},Promise.resolve()).catch(function(e){alert(phErrText(e))})}
-  if(d.settings&&confirm(t('confirm.restoreSettings'))){S=migrateSettings(d.settings);saveSettings()}
-  sweepDnc();toast(t('toast.restored',{a:add,r:rep}));render(view);renderShell()}catch(err){alert(t('toast.badBackup'))}};rd.readAsText(f);e.target.value=''});
+  if(d.settings&&(auto||confirm(t('confirm.restoreSettings')))){S=migrateSettings(d.settings);saveSettings()}
+  sweepDnc();toast(t('toast.restored',{a:add,r:rep}));render(view);renderShell();return {a:add,r:rep}}
+$('importFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{restoreData(JSON.parse(rd.result))}catch(err){alert(t('toast.badBackup'))}};rd.readAsText(f);e.target.value=''});
+
+/* ===================== Move to app.zimzamcleaning.com =====================
+   Each web address keeps its own data on the phone. On the old github.io address, "Move my data" saves a backup file
+   (just in case) and opens the new address with the data packed in the # part of the link. The # part never leaves
+   the phone (browsers do not send it to any server). The new address unpacks it once, asks first, then clears it. */
+var NEW_HOME='https://app.zimzamcleaning.com/';
+function isOldHome(){return !!window.__OLD_HOME||location.hostname==='chotona00.github.io'}
+function b64u(bytes){var s='';for(var i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function unb64u(str){var s=atob(str.replace(/-/g,'+').replace(/_/g,'/'));var u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+function zipText(txt){if(!window.CompressionStream)return Promise.resolve('p'+b64u(new TextEncoder().encode(txt)));
+  return new Response(new Blob([txt]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer().then(function(ab){return 'g'+b64u(new Uint8Array(ab))})}
+function unzipText(str){var kind=str[0],u=unb64u(str.slice(1));if(kind==='p')return Promise.resolve(new TextDecoder().decode(u));
+  return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).text()}
+function moveData(){exportJson();
+  var used={};BIDS.forEach(function(b){(b.photos||[]).forEach(function(p){used[p.id]=1})});
+  var pack=function(photos){var txt=JSON.stringify({app:'cleaning-bid-pricer',version:APP_VERSION,exported:nowIso(),settings:S,bids:BIDS,leads:LEADS,photos:photos});
+    return zipText(txt).then(function(z){if(z.length>1500000&&photos.length)return pack([]);var url=NEW_HOME+'#zzmove='+z;if(window.__MOVE_NAV)return window.__MOVE_NAV(url);location.href=url})};
+  setTimeout(function(){(Object.keys(used).length?phAll().then(function(all){return (all||[]).filter(function(r){return used[r.id]}).map(function(r){return {id:r.id,bidId:r.bidId,w:r.w,h:r.h,data:r.data}})},function(){return []}):Promise.resolve([])).then(pack)},600)}
+function moveBannerHTML(){if(!isOldHome()||(S&&S.movedDismissed))return '';
+  return '<div class="card movecard"><h2>'+ic('rocket')+'<span>'+esc(t('move.title'))+'</span></h2><p>'+esc(t('move.body'))+'</p><button class="btn block big" data-act="moveData">'+B('send',t('move.btn'))+'</button><p class="hint">'+esc(t('move.hint',{n:LEADS.length}))+'</p></div>'}
+function checkMoveIn(){var h=location.hash||'';if(h.indexOf('#zzmove=')!==0)return;var z=h.slice(8);
+  try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+  unzipText(z).then(function(txt){var d=JSON.parse(txt);var n=(d.leads||[]).length,m=(d.bids||[]).length;
+    if(!(window.__MOVE_YES||confirm(t('move.confirm',{n:n,m:m}))))return;restoreData(d,true);if(view==='setup'||!S.setupDone){S.setupDone=true;saveSettings()}go('today');toast(t('move.done',{n:n}))}).catch(function(){alert(t('toast.badBackup'))})}
+document.addEventListener('click',function(e){if(e.target.closest('[data-act="moveData"]'))moveData()});
 
 /* ===================== Boot ===================== */
 $('langBtn').addEventListener('click',function(){setLang(LANG_CODES[(LANG_CODES.indexOf(uiLang())+1)%LANG_CODES.length])});
 sweepDnc();
-window.BidPricer={go:function(v){go(v)},calcBid:calcBid,DEFAULTS:DEFAULTS,pricingSettings:pricingSettings,buildScope:buildScope,bidsToCsv:bidsToCsv,leadsToCsv:leadsToCsv,newBid:newBid,newLead:newLead,
+window.BidPricer={planAllow:function(){return planAllow()},proposalsThisMonth:function(){return proposalsThisMonth()},go:function(v){go(v)},calcBid:calcBid,DEFAULTS:DEFAULTS,pricingSettings:pricingSettings,buildScope:buildScope,bidsToCsv:bidsToCsv,leadsToCsv:leadsToCsv,newBid:newBid,newLead:newLead,
   parseCSV:parseCSV,phAll:phAll,phLoad:phLoad,phProcess:phProcess,photoCache:PH_CACHE,PH_MAX:PH_MAX,guessMap:guessMap,importRows:importRows,setRows:setRows,makePdf:makePdf,quoteSummary:quoteSummary,pdfName:pdfName,mailtoFor:mailtoFor,readImportFile:readImportFile,isBlankLead:isBlankLead,mapsUrl:mapsUrl,finder:finder,setZip:setZip,needsSetup:needsSetup,deleteLead:deleteLead,loadStarter:loadStarter,templateVars:templateVars,fillTemplate:fillTemplate,nextWalkDate:nextWalkDate,makeIcs:makeIcs,isDnc:isDnc,guessType:guessType,parseShare:parseShare,findDup:findDup,mapsKey:mapsKey,openShared:openShared,
   T:T,LANGS:LANGS,EMAILS:EMAILS,PHONE_SCRIPTS:PHONE_SCRIPTS,OBJECTIONS:OBJECTIONS,tl:tl,hasStarter:typeof STARTER!=='undefined',
   resPrice:function(b,R){return resPrice(b,R)},newResBid:function(){return newResBid()},osmParse:function(j,c,cats){return osmParse(j,c,cats)},_pdf:function(id,lang){return makePdf(getBid(id),lang).output('datauristring')},
@@ -3555,7 +3606,7 @@ window.BidPricer={go:function(v){go(v)},calcBid:calcBid,DEFAULTS:DEFAULTS,pricin
 var SHARED=sharedFromUrl();
 if(SHARED){render('today');if(!openShared(parseShare(SHARED)))show('today')}
 else if(needsSetup()){wiz.step=0;render('setup');show('setup')}else{render('today');show('today')}
-initUpdates();
+initUpdates();checkMoveIn();
 
 })();
 </script>
